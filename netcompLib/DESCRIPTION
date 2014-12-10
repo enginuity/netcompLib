@@ -1,4 +1,4 @@
-Package: netcomp_lib
+Package: netcompLib
 Type: Package
 Title: Functions for network comparison project
 Version: 0.1
