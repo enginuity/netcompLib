@@ -1,0 +1,252 @@
+##@S New functions for performing simulations. 
+
+
+#' Does simulation for a single pair of generating/fitting models. 
+#' 
+#' @param Nnodes Number of nodes in network
+#' @param Nsim Number of pairs of adjacency matrices to test
+#' @param gen_null T/F: Null hypothesis?
+#' @param gen_mode Model class for generating models
+#' @param gen_models If NULL: Generates random models. If given, this is the generating models data. 
+#' @param fit_mode Model class for fitting models
+#' @param fit_models If NULL: Generates random models. If given, this is the fitting models data. 
+#' @param param_list List of paramters for simulation
+#' thres_ignore -- Ignore all edge groups with smaller number of edges than this value. Set to 0 to use every single edge group
+#' cc_adj -- The amout of SE's away from the correlation estimate used. (Larger = more conservative). Set to 2 by default; 0 uses correlation estimate. 
+#' alphas -- Size of the test
+#' n_models -- Number of fixed models to use
+#' @param complete T/F: Return EVERYTHING? 
+#' @param pval_adj_fx List of functions for methods of p-value adjustment 
+#' @param adjmats List of adjacency matrices to test if non-NULL. If this is given, code/data regarding generating models is ignored. 
+#' 
+#' @return List of simulation results. To be described in detail in more final versions. 
+#' 
+#' @export
+#' 
+sim_test = function(Nnodes, Nsim, gen_null = TRUE, 
+                    gen_mode, gen_models = NULL, fit_mode, fit_models = NULL,
+                    param_list, complete = FALSE, pval_adj_fx, adjmats = NULL) {
+  ## TODO: [Obselete] Remove all calls to this function? (update with calls to sim_test_v2)
+  ## TODO: CHANGED PARAMETERIZATION. FIX THIS. 
+  
+  if (FALSE) {
+    Nnodes = 20
+    Nsim = 100
+    gen1 = NULL; gen2 = NULL; gen_null = TRUE; gen_mode = "block"
+    fit_mode = "blockmodel"; fit_models = NULL
+    param_list = list(cc_adj = c(1,2), thres_ignore = c(2,5), alphas = c(0.05, 0.01), n_models = c(1, 10, 50))
+  }
+  
+  ## Setup logfile
+  Nfit = max(param_list$n_models)
+  dir.create("netcomp_logfile", showWarnings = FALSE)
+  logfile = paste("netcomp_logfile/SIMNULL_", gsub("[^0-9]", "", Sys.time()), "_log.txt", sep = "")  
+  cat("Simulation log \n", file = logfile, append = TRUE)
+  
+  ## Generate 'generating models'
+  if (is.null(gen_models)) { gen_models = gen_model_fx(NN = Nnodes, mode = gen_mode, is_null = gen_null) }
+  
+  
+  ## Generate 'fitting models'
+  if (is.null(fit_models)) { fit_models = generate_fitting_models(mode = fit_mode, Nnodes = Nnodes, Nmodels = Nfit, bm_Nclasses = 3) }
+  partial_indices = lapply(param_list$n_models, function(x) { 1:x })
+  
+  print("All models generated.")
+  
+  ## Do simulations
+  adjm_list = list()
+  result_list = list()
+  num_outputs = length(pval_adj_fx)
+  pval_reslist = list()
+  
+  for(f in 1:num_outputs) { result_list[[f]] = list() } 
+  for(j in 1:Nsim) {
+    
+    if (j %% 10 == 0) { print(paste("Simulation number:", j)) }
+    
+    if (is.null(adjmats)) {
+      adjm_list[[j]] = gen_network_pair(gen_models)
+    } else {
+      adjm_list[[j]] = adjmats[[j]]
+    }
+    
+    pval_results <- lapply(1:Nfit, function(x) { 
+      fast_compute_pval(adj1 = adjm_list[[j]][,,1], adj2 = adjm_list[[j]][,,2], 
+                        mode = fit_mode, pl = param_list, fl = fit_models$model_list[[x]]) })
+    pval_results = abind(pval_results, along = 3)
+    pval_reslist[[j]] = pval_results
+    
+    for(f in 1:num_outputs) {
+      result_list[[f]][[j]] = array(0, dim = c(length(param_list$cc_adj), length(param_list$thres_ignore), length(param_list$n_models), length(param_list$alphas)))
+      for (k in seq_along(param_list$n_models)) {
+        for (a in seq_along(param_list$alphas)) {
+          result_list[[f]][[j]][,,k,a] = apply(pval_results[,,partial_indices[[k]], drop = FALSE], c(1,2),pval_adj_fx[[f]])
+        }
+      }
+    }
+  }
+  
+  ## Output full or partial depending on 'complete'
+  if (complete) { 
+    full_output = list(gen_mode = gen_mode, gen_models = gen_models, 
+                       fit_mode = fit_mode, fit_models = fit_models, 
+                       adjm_list = adjm_list, param_list = param_list,
+                       result_list = result_list, pval_reslist = pval_reslist)
+    return(full_output) 
+  } else { 
+    return(result_list) 
+  }
+}
+
+
+
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sim_test_v2)
+#' Does simulation for a single pair of generating/fitting models. 
+#' 
+#' @param Nnodes Number of nodes in network
+#' @param Nsim Number of pairs of adjacency matrices to test
+#' @param Nobs Number of pairs of adjacency matrices observed on each try
+#' @param gen_null T/F: Null hypothesis?
+#' @param gen_mode Model class for generating models
+#' @param gen_models If NULL: Generates random models. If given, this is the generating models data. 
+#' @param fit_mode Model class for fitting models
+#' @param fit_models If NULL: Generates random models. If given, this is the fitting models data. 
+#' @param param_list List of paramters for simulation
+#' thres_ignore -- Ignore all edge groups with smaller number of edges than this value. Set to 0 to use every single edge group
+#' cc_adj -- The amout of SE's away from the correlation estimate used. (Larger = more conservative). Set to 2 by default; 0 uses correlation estimate. 
+#' alphas -- Size of the test
+#' n_models -- Number of fixed models to use
+#' @param complete T/F: Return EVERYTHING? 
+#' @param pval_adj_fx List of functions for methods of p-value adjustment 
+#' @param adjmats List of adjacency matrices to test if non-NULL. If this is given, code/data regarding generating models is ignored. 
+#' @param return_chisq Return chi-squared test statistics?
+#' @param verbose temp
+#' 
+#' @return List of simulation results. To be described in detail in more final versions. 
+#' 
+#' @export
+#' 
+sim_test_v2 = function(Nnodes, Nsim, Nobs = 1, gen_null = TRUE, 
+                       gen_mode, gen_models = NULL, fit_mode, fit_models = NULL,
+                       param_list, complete = FALSE, pval_adj_fx, adjmats = NULL, return_chisq = FALSE, 
+                       verbose = TRUE) {
+  
+  if (FALSE) {
+    Nnodes = 20
+    Nsim = 100
+    gen1 = NULL; gen2 = NULL; gen_null = TRUE; gen_mode = "block"
+    fit_mode = "blockmodel"; fit_models = NULL
+    param_list = list(cc_adj = c(1,2), thres_ignore = c(2,5), alphas = c(0.05, 0.01), n_models = c(1, 10, 50))
+  }
+  
+  ## Setup logfile
+  Nfit = max(param_list$n_models)
+  dir.create("netcomp_logfile", showWarnings = FALSE)
+  logfile = paste("netcomp_logfile/SIMNULL_", gsub("[^0-9]", "", Sys.time()), "_log.txt", sep = "")  
+  if (verbose) {cat("Simulation log \n", file = logfile, append = TRUE)}
+  
+  ## Generate 'generating models'
+  if (is.null(gen_models)) { gen_models = sample_generating_models(Nnodes = Nnodes, mode = gen_mode, is_null = gen_null) }
+  
+  ## Generate 'fitting models'
+  if (is.null(fit_models)) { fit_models = sample_fitting_models(mode = fit_mode, Nnodes = Nnodes, Nmodels = Nfit) }
+
+  partial_indices = lapply(param_list$n_models, function(x) { 1:x })
+  
+  if (verbose) {print("All models generated.")}
+  
+  ## Do simulations
+  adjm_list = list()
+  result_list = list()
+  num_outputs = length(pval_adj_fx)
+  pval_reslist = list()
+  
+  for(f in 1:num_outputs) { result_list[[f]] = list() } 
+  for(j in 1:Nsim) {
+    
+    if (j %% 10 == 0) { if (verbose) {print(paste("Simulation number:", j))} }
+    
+    if (is.null(adjmats)) {
+      adjm_list[[j]] = sample_network_pair(gen_model = gen_models, Nobs = Nobs)
+    } else {
+      adjm_list[[j]] = adjmats[[j]]
+    }
+    
+    pval_results = fast_compute_pval_v2(adja1 = adjm_list[[j]][[1]], adja2 = adjm_list[[j]][[2]], Nobs = Nobs, 
+                                        pl = param_list, fit_models = fit_models, return_chisq = return_chisq)
+    
+    pval_results = abind(pval_results, along = 3)
+    pval_reslist[[j]] = pval_results
+    
+    for(f in 1:num_outputs) {
+      result_list[[f]][[j]] = array(0, dim = c(length(param_list$cc_adj), length(param_list$thres_ignore), length(param_list$n_models), length(param_list$alphas)))
+      for (k in seq_along(param_list$n_models)) {
+        for (a in seq_along(param_list$alphas)) {
+          result_list[[f]][[j]][,,k,a] = apply(pval_results[,,partial_indices[[k]], drop = FALSE], c(1,2),pval_adj_fx[[f]])
+        }
+      }
+    }
+  }
+  
+  ## Output full or partial depending on 'complete'
+  if (return_chisq) { return(pval_reslist) }
+  if (complete) { 
+    full_output = list(gen_mode = gen_mode, gen_models = gen_models, 
+                       fit_mode = fit_mode, fit_models = fit_models, 
+                       adjm_list = adjm_list, param_list = param_list,
+                       result_list = result_list, pval_reslist = pval_reslist)
+    return(full_output) 
+  } else { 
+    return(result_list) 
+  }
+}
+
+
+
+
+#' Extracts p-values (or aggregated p-values) for a specific class of testing. 
+#' 
+#' @param full_output Full result list from sim_test
+#' @param cc_adj Value for correlation adjustment
+#' @param thres_ignore Value for thresholding
+#' @param alphas Size of test
+#' @param n_models Number of fixed models to use
+#' @param raw_pvals T/F: Output raw p-values as a list?
+#' 
+#' @return Vector of aggregated p-values (and a list of raw p-values if desired)
+#' 
+#' @export
+#' 
+extract_result_list = function(full_output, cc_adj = 2, thres_ignore = 5, alphas = 0.05, n_models = 50, raw_pvals = FALSE) {
+  
+  rl = full_output$result_list
+  pl = full_output$param_list
+  pvl = full_output$pval_reslist
+  
+  i1 = which(pl$cc_adj == cc_adj)
+  i2 = which(pl$thres_ignore == thres_ignore)
+  i3 = which(pl$n_models == n_models)
+  i4 = which(pl$alphas == alphas)
+  
+  #   result_list[[f]][[j]] = array(0, dim = c(length(param_list$cc_adj), length(param_list$thres_ignore), length(param_list$n_models), length(param_list$alphas)))  
+  res = matrix(0, nrow = length(rl[[1]]), ncol = length(rl))
+  for(j in 1:length(rl)) {
+    inl = rl[[j]]    
+    for(k in seq_along(inl)) {
+      res[k,j] = inl[[k]][i1,i2,i3,i4]
+    }
+  }
+  
+  if (raw_pvals) {
+    pvals = list()
+    for(k in seq_along(inl)) {
+      pvals[[k]] = pvl[[k]][i1, i2, 1:n_models]
+    }
+    return(list(res = res, rawpvallist = pvals))
+  } else {
+    return(res)
+  }
+}
+
+
+
