@@ -9,7 +9,7 @@ require(metacode) ## This is a package I've written to speed up my own coding
 require(stringr)
 
 ## Update documentation -- this looks for new parameters & 
-update_fx_documentation(FD = FilesDescription(dirlist = "netcomplib/R/"), fill_emptyparam = FALSE)
+update_fx_documentation(FD = FilesDescription(dirlist = "netcompLib/R/"), fill_emptyparam = FALSE)
 
 
 # Compile Package ---------------------------------------------------------
