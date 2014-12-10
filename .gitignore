@@ -1,0 +1,9 @@
+*.gml
+*.Rdata
+*.RData
+*.o
+netcomp_lib.Rproj
+.Rproj.user
+.Rhistory
+*~
+*.Rd
