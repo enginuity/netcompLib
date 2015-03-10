@@ -6,3 +6,4 @@ library(netcompLib)
 
 ## Source other libraries
 require(abind)
+require(diagram)

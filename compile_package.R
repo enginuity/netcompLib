@@ -5,10 +5,10 @@
 ## These only need to be run, if the source code was edited. 
 
 ## Load up needed libraries
-require(codeProcessing) ## This is a package I've written to speed up my own coding
+require(codeProcessing) ## This is a package I've written to speed up my own coding efficiency
 require(stringr)
 
-## Update documentation -- this looks for new parameters & 
+## Update documentation -- this looks for new parameters and creates documentation lines for it
 update_fx_documentation(FD = FilesDescription(dirlist = "netcompLib/R/"), fill_emptyparam = FALSE)
 
 
