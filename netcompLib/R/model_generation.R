@@ -22,13 +22,12 @@ gen_network_pair = function(gen_model) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (gen_model_fx)
 #' Generate model parameters in several classes
 #' 
 #' @param NN Number of network nodes
 #' @param mode Type of model
 #' @param K Parameter for block model if applicable, otherwise, dimension of space for latent space model
-#' @param is_null temp
+#' @param is_null If TRUE: This assumes the null hypothesis is true (makes m2 = m1)
 #' 
 #' @return Model information in list format (gen_model)
 #' 
@@ -125,10 +124,12 @@ generate_fitting_models = function(mode = c("tree", "block", "random"), Nnodes, 
 # Newer versions of code --------------------------------------------------
 
 
-#' Set up default parameters for generating models
+#' Create a list of model parameters
 #' 
-#' @param pmin Minimal edge probability
-#' @param pmax Maximal edge probability
+#' This function sets up the model parameters to be passed into model generation functions (eg. sets the max number of blocks in a SBM). There are default parameters that are used if this function is called with no arguments. 
+#' 
+#' @param pmin Minimal possible edge probability
+#' @param pmax Maximal possible edge probability
 #' @param block_nclass Number of blocks in block model
 #' @param block_avgdensity Set average density in block model (ignored if NULL)
 #' @param random_ngroups Number of groups for completely random edge partition
@@ -136,9 +137,9 @@ generate_fitting_models = function(mode = c("tree", "block", "random"), Nnodes, 
 #' @param latent_dim Dimension of latent space in latent space models
 #' @param latent_nclass Number of clusters in latent space model
 #' @param latent_sdcenter SD on centers of latent space model
-#' @param latent_isgennorm Use normal distribution for latent locations? otherwise uniform dist. 
+#' @param latent_isgennorm If TRUE: Uses normal distribution for latent locations. Otherwise, uses uniform distribution. 
 #' 
-#' @return Return list of parameter
+#' @return Return list of parameters
 #' 
 #' @export
 #' 
@@ -147,7 +148,11 @@ set_model_param = function(pmin = 0, pmax = 1, block_nclass = 3, block_avgdensit
 }
 
 
-#' Generate model parameters in several classes
+## TODO: Create a function that only samples a single network model?
+
+#' Generates a pair of random network models
+#' 
+#' Generates a pair of network models of a specific type. If the null is true, then only one network model is generated. 
 #' 
 #' @param Nnodes Number of network nodes
 #' @param mode Type of model
@@ -172,7 +177,9 @@ sample_generating_models = function(Nnodes, mode, model_param = set_model_param(
 }
 
 
-#' Generates a pair of network observations from a pair of models (they can be the same model ... under null)
+#' Samples a pair of network observations
+#' 
+#' From a pair of network models, this function samples network observations from each model. The number of networks sampled can vary. 
 #' 
 #' @param gen_model gen_model object containing both models
 #' @param Nobs Number of network observation pairs to generate
@@ -197,7 +204,11 @@ sample_network_pair = function(gen_model, Nobs = 1) {
 }
 
 
-#' Generate a number of fixed model structures
+#' Generates random network model structures
+#' 
+#' This function generates network model structures. Essentially, these store information only about the edge partitions, but with nothing given as the edge probabilities. Thus, it wouldn't be possible to sample networks from these models, since they lack probabilities. 
+#' 
+#' It's also possible to convert a more specific model (generating models) into this format, by passing it in. Note that latent network models cannot work in this way (since they usually do not correspond to a discrete edge partitioning).
 #' 
 #' @param mode Either 'tree', 'block', or 'random'
 #' @param Nnodes Number of nodes in the network
