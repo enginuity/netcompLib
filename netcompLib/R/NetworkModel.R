@@ -6,9 +6,13 @@
 
 # Defines the NetworkModel Class and its subclasses -----------------------
 setClass("NetworkModel", representation(Nnodes = "numeric", Type = "character"))
-setClass("LSMNetworkModel", contains = "NetworkModel")
-setClass("HRGNetworkModel", contains = "NetworkModel")
-setClass("RNDNetworkModel", contains = "NetworkModel")
+setClass("NetworkModelLSM", contains = "NetworkModel")
+setClass("NetworkModelHRG", contains = "NetworkModel")
+setClass("NetworkModelRND", contains = "NetworkModel")
+
+# 
+# setMethod("getNetType", signature(NetM = "NetworkModelLSM"), function(NetM) { "latent" })
+# getNetType(new("NetworkModelLSM"))
 
 
 #' Instantiates an object of class NetworkModel
@@ -25,7 +29,6 @@ NetworkModel = function() {
   
   NetM = new("NetworkModel", Nnodes = 10, Type = "none")
 }
-
 
 
 # Define Generic Methods --------------------------------------------------
@@ -46,58 +49,66 @@ getNnodes.NetworkModel = function(NetM) {
   # NetM should be object of type NetworkModel
   return(NetM@Nnodes)
 }
-
 setMethod("getNnodes", signature("NetworkModel"), getNnodes.NetworkModel)
 
 
 
 
-### New method to extract the type of network model
+
+
+
+
+# Define Default print/summary methods ------------------------------------
+
+
+
+
+
+## Methods for network-model specific information
+## These are the functions that need to be defined for each specific network model. 
+
+
+# Define generic functions that are model-specific ------------------------
+
+
 setGeneric("getNetType", function(NetM) standardGeneric("getNetType"))
 
-#' Extracts the type of network model
+#' Generic Function -- Extracts the type of network model
 #' 
 #' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @param NetM Object of class NetworkModel
+#' @param NetM Object of class NetworkModel (or inherits this type)
 #' 
-#' @return Type of network model
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 
-getNetType.NetworkModel = function(NetM) {
-  return(NetM@Type)
-}
-
-setMethod("getNetType", signature("NetworkModel"), getNetType.NetworkModel)
+getNetType = function(NetM) { NULL }
 
 
 
 
+setGeneric("getEdgeProbMat", function(NetM) standardGeneric("getEdgeProbMat"))
+
+getEdgeProbMat = function(NetM) { return(NULL) }
 
 
 
 
+setGeneric("sampleNetwork", function(NetM, Nobs = 1, ...) standardGeneric("sampleNetwork"))
+
+sampleNetwork = function(NetM, Nobs = 1, ...) { return(NULL) }
 
 
+# Define generic null-model values so this doesn't crash ------------------
+
+getNetType.NetworkModel = function(netM) { "none" }
+setMethod("getNetType", signature(NetM = "NetworkModel"), getNetType.NetworkModel)
+
+getEdgeProbMat.NetworkModel = function(NetM) { NULL }
+setMethod("getEdgeProbMat", signature = (NetM = "NetworkModel"), getEdgeProbMat.NetworkModel)
+
+sampleNetwork.NetworkModel = function(NetM, Nobs = 1, ...) { NULL }
+setMethod("sampleNetwork", signature = (NetM = "NetworkModel"), sampleNetwork.NetworkModel)
 
 
-
-
-
-
-# 
-# ## test 
-# 
-# 
-# test = new("NetworkModel", Nnodes = 20)
-# test = new("SBMNetworkModel", Nnodes = 3)
-# test
-# getNnodes(test)
-# 
-# showMethods(classes = "NetworkModel")
-# 
-# getNodes
-# 
-# 
-# 

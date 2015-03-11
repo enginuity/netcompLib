@@ -1,4 +1,8 @@
 # Defines the SBMNetworkModel class
-setClass("SBMNetworkModel", contains = "NetworkModel")
+setClass("NetworkModelSBM", contains = "NetworkModel")
 
+#test = new("NetworkModelSBM", Nnodes = 3)
+#library(netcompLib)
+#getNnodes(test)
+#getN
 
