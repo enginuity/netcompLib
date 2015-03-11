@@ -3,11 +3,13 @@
 ## TODO: Add validity checks?
 
 
+
 # Defines the NetworkModel Class and its subclasses -----------------------
 setClass("NetworkModel", representation(Nnodes = "numeric", Type = "character"))
 setClass("SBMNetworkModel", contains = "NetworkModel")
 setClass("LSMNetworkModel", contains = "NetworkModel")
 setClass("HRGNetworkModel", contains = "NetworkModel")
+setClass("RNDNetworkModel", contains = "NetworkModel")
 
 
 #' Instantiates an object of class NetworkModel
@@ -25,12 +27,22 @@ NetworkModel = function() {
   NetM = new("NetworkModel", Nnodes = 10, Type = NA)
 }
 
+
+
 # Define Generic Methods --------------------------------------------------
 
 
 ### New method to extract the number of nodes from a network
 setGeneric("getNnodes", function(NetM) standardGeneric("getNnodes"))
 
+#' Gets the number of nodes in the network model
+#' 
+#' @param NetM Object of class NetworkModel
+#' 
+#' @return Number of nodes
+#' 
+#' @export
+#' 
 getNnodes.NetworkModel = function(NetM) {
   # NetM should be object of type NetworkModel
   return(NetM@Nnodes)
@@ -44,6 +56,16 @@ setMethod("getNnodes", signature("NetworkModel"), getNnodes.NetworkModel)
 ### New method to extract the type of network model
 setGeneric("getNetType", function(NetM) standardGeneric("getNetType"))
 
+#' Extracts the type of network model
+#' 
+#' Allowable types are currently: "block", "tree", "latent", "random"
+#' 
+#' @param NetM Object of class NetworkModel
+#' 
+#' @return Type of network model
+#' 
+#' @export
+#' 
 getNetType.NetworkModel = function(NetM) {
   return(NetM@Type)
 }
