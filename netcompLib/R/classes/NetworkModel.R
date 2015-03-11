@@ -9,6 +9,13 @@ setClass("SBMNetworkModel", contains = "NetworkModel")
 setClass("LSMNetworkModel", contains = "NetworkModel")
 setClass("HRGNetworkModel", contains = "NetworkModel")
 
+
+#' Instantiates an object of class NetworkModel
+#' 
+#' @return Object of class NetworkModel
+#' 
+#' @export
+#' 
 NetworkModel = function() {
   # creates a default networkmodel object -- this is the default constructor, but probably should never be used. the specific ones for a specific model should be used. 
   # maybe want to make this eventually call the network generation methods
