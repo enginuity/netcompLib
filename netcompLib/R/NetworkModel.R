@@ -6,7 +6,6 @@
 
 # Defines the NetworkModel Class and its subclasses -----------------------
 setClass("NetworkModel", representation(Nnodes = "numeric", Type = "character"))
-setClass("SBMNetworkModel", contains = "NetworkModel")
 setClass("LSMNetworkModel", contains = "NetworkModel")
 setClass("HRGNetworkModel", contains = "NetworkModel")
 setClass("RNDNetworkModel", contains = "NetworkModel")
@@ -24,7 +23,7 @@ NetworkModel = function() {
   
   ## currently this does nothing but return a lame object, that satisfies the generic methods (although the generic methods would not do much?)
   
-  NetM = new("NetworkModel", Nnodes = 10, Type = NA)
+  NetM = new("NetworkModel", Nnodes = 10, Type = "none")
 }
 
 
