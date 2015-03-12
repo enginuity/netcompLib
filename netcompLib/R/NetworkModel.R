@@ -5,7 +5,7 @@
 
 
 # Defines the NetworkModel Class and its subclasses -----------------------
-setClass("NetworkModel", representation(Nnodes = "numeric", Type = "character"))
+setClass("NetworkModel", representation(Nnodes = "numeric"))
 setClass("NetworkModelLSM", contains = "NetworkModel")
 setClass("NetworkModelHRG", contains = "NetworkModel")
 setClass("NetworkModelRND", contains = "NetworkModel")
@@ -27,7 +27,7 @@ NetworkModel = function() {
   
   ## currently this does nothing but return a lame object, that satisfies the generic methods (although the generic methods would not do much?)
   
-  NetM = new("NetworkModel", Nnodes = 10, Type = "none")
+  NetM = new("NetworkModel", Nnodes = 10)
 }
 
 
@@ -36,6 +36,17 @@ NetworkModel = function() {
 
 ### New method to extract the number of nodes from a network
 setGeneric("getNnodes", function(NetM) standardGeneric("getNnodes"))
+
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNnodes)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
+getNnodes = function(NetM) { NULL }
 
 #' Gets the number of nodes in the network model
 #' 
@@ -90,6 +101,15 @@ getNetType = function(NetM) { NULL }
 
 setGeneric("getEdgeProbMat", function(NetM) standardGeneric("getEdgeProbMat"))
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 getEdgeProbMat = function(NetM) { return(NULL) }
 
 
@@ -97,17 +117,59 @@ getEdgeProbMat = function(NetM) { return(NULL) }
 
 setGeneric("sampleNetwork", function(NetM, Nobs = 1, ...) standardGeneric("sampleNetwork"))
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' @param Nobs temp
+#' @param ... temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 sampleNetwork = function(NetM, Nobs = 1, ...) { return(NULL) }
 
 
 # Define generic null-model values so this doesn't crash ------------------
 
-getNetType.NetworkModel = function(netM) { "none" }
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNetType.NetworkModel)
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNetType.NetworkModel)
+#' <What does this function do>
+#' 
+#' @param netM temp
+#' @param NetM temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
+getNetType.NetworkModel = function(NetM) { "none" }
 setMethod("getNetType", signature(NetM = "NetworkModel"), getNetType.NetworkModel)
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat.NetworkModel)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 getEdgeProbMat.NetworkModel = function(NetM) { NULL }
 setMethod("getEdgeProbMat", signature = (NetM = "NetworkModel"), getEdgeProbMat.NetworkModel)
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork.NetworkModel)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' @param Nobs temp
+#' @param ... temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 sampleNetwork.NetworkModel = function(NetM, Nobs = 1, ...) { NULL }
 setMethod("sampleNetwork", signature = (NetM = "NetworkModel"), sampleNetwork.NetworkModel)
 
