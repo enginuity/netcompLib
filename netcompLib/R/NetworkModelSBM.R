@@ -6,7 +6,17 @@ setClass("NetworkModelSBM", representation(assign = "numeric", probmat = "matrix
 # getNnodes(test)
 # getN
 
-NetworkModelSBM = function(Nnodes = 10, model_params = set_model_param()) {
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelSBM)
+#' <What does this function do>
+#' 
+#' @param Nnodes temp
+#' @param model_params temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
+NetworkModelSBM = function(Nnodes = 10, model_param = set_model_param()) {
   
   ## Helper function for adjusting block model probabilities  
   adjust_blockprobs = function(mod, avgden = 0.4, plimit = c(0.05, 0.95)) {
@@ -72,12 +82,41 @@ NetworkModelSBM = function(Nnodes = 10, model_params = set_model_param()) {
   return(netm)
 }
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNetType.NetworkModelSBM)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 getNetType.NetworkModelSBM = function(NetM) { "block" }
 setMethod("getNetType", signature(NetM = "NetworkModelSBM"), getNetType.NetworkModel)
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat.NetworkModelSBM)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 getEdgeProbMat.NetworkModelSBM = function(NetM) { NULL }
 setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelSBM"), getEdgeProbMat.NetworkModelSBM)
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork.NetworkModelSBM)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' @param Nobs temp
+#' @param ... temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 sampleNetwork.NetworkModelSBM = function(NetM, Nobs = 1, ...) { 
   NULL
 }

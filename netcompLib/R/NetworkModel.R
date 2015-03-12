@@ -15,19 +15,24 @@ setClass("NetworkModelRND", contains = "NetworkModel")
 # getNetType(new("NetworkModelLSM"))
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModel)
 #' Instantiates an object of class NetworkModel
+#' 
+#' @param Nnodes temp
+#' @param type temp
+#' @param model_params temp
 #' 
 #' @return Object of class NetworkModel
 #' 
 #' @export
 #' 
-NetworkModel = function(Nnodes = 10, type = "none", model_params = set_model_param()) {
+NetworkModel = function(Nnodes = 10, type = "none", model_param = set_model_param()) {
   # creates a default networkmodel object -- this is the default constructor, but probably should never be used. the specific ones for a specific model should be used. 
   # maybe want to make this eventually call the network generation methods
   
   ## currently this does nothing but return a lame object, that satisfies the generic methods (although the generic methods would not do much?)
   if (type == "none") { return(new("NetworkModel", Nnodes = Nnodes)) }
-  if (type == "block") { return(NetworkModelSBM(Nnodes = Nnodes, model_params = model_params)) }
+  if (type == "block") { return(NetworkModelSBM(Nnodes = Nnodes, model_param = model_param)) }
   stop("Invalid 'type' specified")
 }
 
