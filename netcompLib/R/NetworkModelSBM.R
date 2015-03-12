@@ -95,7 +95,7 @@ setMethod("getNetType", signature(NetM = "NetworkModelSBM"), getNetType.NetworkM
 
 #' Computes the edge probability matrix
 #' 
-#' @param NetM temp
+#' @param NetM Network Model Object
 #' 
 #' @return Edge probability matrix defined by model
 #' 
