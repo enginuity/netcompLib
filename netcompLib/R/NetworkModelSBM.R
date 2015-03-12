@@ -1,18 +1,14 @@
 # Defines the SBMNetworkModel class
 setClass("NetworkModelSBM", representation(assign = "numeric", probmat = "matrix"), contains = "NetworkModel")
 
-# test = new("NetworkModelSBM", Nnodes = 3)
-# library(netcompLib)
-# getNnodes(test)
-# getN
-
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelSBM)
-#' Generates an example of a SBM model. 
+#' Constructor for SBM network model
 #' 
-#' @param Nnodes temp
-#' @param model_param temp
+#' This will generate a network model with random class assignments and class probabilities (unless otherwise specified)
 #' 
-#' @return temp
+#' @param Nnodes Number of nodes in the network model
+#' @param model_param A list of model parameters -- see set_model_param()
+#' 
+#' @return NetworkModelSBM object
 #' 
 #' @export
 #' 
@@ -85,9 +81,11 @@ NetworkModelSBM = function(Nnodes = 10, model_param = set_model_param()) {
 
 #' Returns the type of network model
 #' 
-#' @param NetM temp
+#' Specifically for NetworkModelSBM objects, this returns "block"
 #' 
-#' @return temp
+#' @param NetM Network Model Object
+#' 
+#' @return character 'block'
 #' 
 #' @export
 #' 
@@ -99,7 +97,7 @@ setMethod("getNetType", signature(NetM = "NetworkModelSBM"), getNetType.NetworkM
 #' 
 #' @param NetM temp
 #' 
-#' @return temp
+#' @return Edge probability matrix defined by model
 #' 
 #' @export
 #' 

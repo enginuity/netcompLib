@@ -10,19 +10,11 @@ setClass("NetworkModelLSM", contains = "NetworkModel")
 setClass("NetworkModelHRG", contains = "NetworkModel")
 setClass("NetworkModelRND", contains = "NetworkModel")
 
-# 
-# setMethod("getNetType", signature(NetM = "NetworkModelLSM"), function(NetM) { "latent" })
-# getNetType(new("NetworkModelLSM"))
-
-
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModel)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModel)
 #' Instantiates an object of class NetworkModel
 #' 
-#' @param model_params temp
-#' @param Nnodes temp
-#' @param type temp
-#' @param model_param temp
+#' @param Nnodes Number of nodes in network
+#' @param type Type of network model (accepts 'block', 'tree', 'random', 'latent') ('none' is also accepted, but the resulting object isn't really interesting; its mainly for testing the class)
+#' @param model_param Model parameters specified by set_model_param()
 #' 
 #' @return Object of class NetworkModel
 #' 
@@ -74,31 +66,35 @@ setMethod("getNnodes", signature("NetworkModel"), getNnodes.NetworkModel)
 
 setGeneric("sampleNetwork", function(NetM, Nobs = 1, ...) standardGeneric("sampleNetwork"))
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork)
 #' Generic -- Samples an observed networks from a given network model(s)
 #' 
-#' @param NetM temp
-#' @param Nobs temp
-#' @param Nsim temp
+#' Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is bad (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases: 
+#' If Nsim = 1, Nobs = 1 -> Result is a matrix
+#' If Nsim = 1, Nobs > 1 -> Result is an array (with third dimension equal to Nobs)
+#' If Nsim > 1 -> Result is a list of matrices or arrays (depends on Nobs)
 #' 
-#' @return temp
+#' @param NetM NetworkModel object
+#' @param Nobs Number of network observations to simulate
+#' @param Nsim Number of simulations
+#' 
+#' @return List or array of adjacency matrices
 #' 
 #' @export
 #' 
 sampleNetwork = function(NetM, Nobs = 1, Nsim = 1) { return(NULL) }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork.NetworkModel)
+
+
 #' Samples any number of observed networks from a given network model
 #' 
 #' Note -- this implementation requires the edge probability matrix. It's not really efficient (since it re-computes the edge probability matrix each time)
 #' 
 #' @param NetM Network Model object
 #' @param Nobs Number of observed networks to sample
-#' @param Nsim temp
+#' @param Nsim Number of simulations (number of times to do Nobs samples)
 #' 
-#' @return temp
+#' @return List or array of simulated networks
 #' 
 #' @export
 #' 
@@ -180,12 +176,11 @@ getNetType = function(NetM) { NULL }
 
 setGeneric("getEdgeProbMat", function(NetM) standardGeneric("getEdgeProbMat"))
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat)
-#' <What does this function do>
+#' Extracts the edge probability matrix for a network model
 #' 
-#' @param NetM temp
+#' @param NetM Network model object
 #' 
-#' @return temp
+#' @return Matrix -- the edge probability matrix
 #' 
 #' @export
 #' 
@@ -198,24 +193,22 @@ getEdgeProbMat = function(NetM) { return(NULL) }
 
 # Define generic null-model values so this doesn't crash ------------------
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNetType.NetworkModel)
-#' <What does this function do>
+#' Extracts the type of network model
 #' 
-#' @param NetM temp
+#' @param NetM Network Model object
 #' 
-#' @return temp
+#' @return character 'none'
 #' 
 #' @export
 #' 
 getNetType.NetworkModel = function(NetM) { "none" }
 setMethod("getNetType", signature(NetM = "NetworkModel"), getNetType.NetworkModel)
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat.NetworkModel)
-#' <What does this function do>
+#' Extracts the edge probability matrix for a network model
 #' 
-#' @param NetM temp
+#' @param NetM Network Model object
 #' 
-#' @return temp
+#' @return NULL - no edge probability matrix for generic network model object
 #' 
 #' @export
 #' 
