@@ -7,10 +7,12 @@ setClass("NetworkModelSBM", representation(assign = "numeric", probmat = "matrix
 # getN
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelSBM)
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelSBM)
 #' <What does this function do>
 #' 
-#' @param Nnodes temp
 #' @param model_params temp
+#' @param Nnodes temp
+#' @param model_param temp
 #' 
 #' @return temp
 #' 
@@ -78,7 +80,7 @@ NetworkModelSBM = function(Nnodes = 10, model_param = set_model_param()) {
     prob_matrix = model_param$block_probs
   }
   
-  netm = new("NetworkModelSBM", Nnodes = Nnodes, assign = group_assign, pmat = prob_matrix)
+  netm = new("NetworkModelSBM", Nnodes = Nnodes, assign = group_assign, probmat = prob_matrix)
   return(netm)
 }
 
@@ -92,7 +94,7 @@ NetworkModelSBM = function(Nnodes = 10, model_param = set_model_param()) {
 #' @export
 #' 
 getNetType.NetworkModelSBM = function(NetM) { "block" }
-setMethod("getNetType", signature(NetM = "NetworkModelSBM"), getNetType.NetworkModel)
+setMethod("getNetType", signature(NetM = "NetworkModelSBM"), getNetType.NetworkModelSBM)
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat.NetworkModelSBM)
 #' <What does this function do>

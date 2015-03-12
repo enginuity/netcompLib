@@ -16,11 +16,13 @@ setClass("NetworkModelRND", contains = "NetworkModel")
 
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModel)
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModel)
 #' Instantiates an object of class NetworkModel
 #' 
+#' @param model_params temp
 #' @param Nnodes temp
 #' @param type temp
-#' @param model_params temp
+#' @param model_param temp
 #' 
 #' @return Object of class NetworkModel
 #' 
