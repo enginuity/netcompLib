@@ -27,7 +27,7 @@ NetworkModel = function(Nnodes = 10, type = "none", model_params = set_model_par
   
   ## currently this does nothing but return a lame object, that satisfies the generic methods (although the generic methods would not do much?)
   if (type == "none") { return(new("NetworkModel", Nnodes = Nnodes)) }
-  if (type == "block") { NetworkModelSBM(Nnodes = Nnodes, model_params = model_params) }
+  if (type == "block") { return(NetworkModelSBM(Nnodes = Nnodes, model_params = model_params)) }
   stop("Invalid 'type' specified")
 }
 

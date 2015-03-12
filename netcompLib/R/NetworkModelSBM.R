@@ -1,5 +1,5 @@
 # Defines the SBMNetworkModel class
-setClass("NetworkModelSBM", representation(assign = "numeric", probmat = "numeric"), contains = "NetworkModel")
+setClass("NetworkModelSBM", representation(assign = "numeric", probmat = "matrix"), contains = "NetworkModel")
 
 # test = new("NetworkModelSBM", Nnodes = 3)
 # library(netcompLib)
@@ -73,13 +73,13 @@ NetworkModelSBM = function(Nnodes = 10, model_params = set_model_param()) {
 }
 
 getNetType.NetworkModelSBM = function(NetM) { "block" }
-setMethod("getNetType", signature(NetM = "NetworkModel"), getNetType.NetworkModel)
+setMethod("getNetType", signature(NetM = "NetworkModelSBM"), getNetType.NetworkModel)
 
 getEdgeProbMat.NetworkModelSBM = function(NetM) { NULL }
-setMethod("getEdgeProbMat", signature = (NetM = "NetworkModel"), getEdgeProbMat.NetworkModel)
+setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelSBM"), getEdgeProbMat.NetworkModelSBM)
 
 sampleNetwork.NetworkModelSBM = function(NetM, Nobs = 1, ...) { 
-  
+  NULL
 }
-setMethod("sampleNetwork", signature = (NetM = "NetworkModel"), sampleNetwork.NetworkModel)
+setMethod("sampleNetwork", signature = (NetM = "NetworkModelSBM"), sampleNetwork.NetworkModelSBM)
 
