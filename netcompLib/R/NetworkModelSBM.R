@@ -10,7 +10,6 @@ setClass("NetworkModelSBM", representation(assign = "numeric", probmat = "matrix
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelSBM)
 #' <What does this function do>
 #' 
-#' @param model_params temp
 #' @param Nnodes temp
 #' @param model_param temp
 #' 
@@ -121,6 +120,7 @@ setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelSBM"), getEdgeProbM
 #' 
 sampleNetwork.NetworkModelSBM = function(NetM, Nobs = 1, ...) { 
   NULL
+  
 }
 setMethod("sampleNetwork", signature = (NetM = "NetworkModelSBM"), sampleNetwork.NetworkModelSBM)
 
