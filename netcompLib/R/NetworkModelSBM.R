@@ -6,8 +6,9 @@ setClass("NetworkModelSBM", representation(assign = "numeric", probmat = "matrix
 # getNnodes(test)
 # getN
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelSBM)
 #' Generates an example of a SBM model. 
-#'  
+#' 
 #' @param Nnodes temp
 #' @param model_param temp
 #' 

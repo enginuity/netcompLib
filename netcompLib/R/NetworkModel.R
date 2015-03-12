@@ -75,10 +75,12 @@ setMethod("getNnodes", signature("NetworkModel"), getNnodes.NetworkModel)
 setGeneric("sampleNetwork", function(NetM, Nobs = 1, ...) standardGeneric("sampleNetwork"))
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork)
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork)
 #' Generic -- Samples an observed networks from a given network model(s)
 #' 
 #' @param NetM temp
 #' @param Nobs temp
+#' @param Nsim temp
 #' 
 #' @return temp
 #' 
@@ -87,12 +89,14 @@ setGeneric("sampleNetwork", function(NetM, Nobs = 1, ...) standardGeneric("sampl
 sampleNetwork = function(NetM, Nobs = 1, Nsim = 1) { return(NULL) }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork.NetworkModel)
 #' Samples any number of observed networks from a given network model
 #' 
 #' Note -- this implementation requires the edge probability matrix. It's not really efficient (since it re-computes the edge probability matrix each time)
 #' 
 #' @param NetM Network Model object
 #' @param Nobs Number of observed networks to sample
+#' @param Nsim temp
 #' 
 #' @return temp
 #' 
@@ -103,7 +107,7 @@ sampleNetwork.NetworkModel = function(NetM, Nobs = 1, Nsim = 1) {
   
   # uses variables out of scope (epmat, Nnodes)
   gen_one_network = function() {
-    res = matrix(0, nrow = Nnodes, Ncol = Nnodes) 
+    res = matrix(0, nrow = Nnodes, ncol = Nnodes) 
     for(k in 1:Nnodes) { for(j in 1:Nnodes) {
       if (k < j) {
         v = rbinom(n = 1, size = 1, prob = epmat[k,j])
