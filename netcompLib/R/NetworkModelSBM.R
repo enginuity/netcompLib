@@ -6,10 +6,8 @@ setClass("NetworkModelSBM", representation(assign = "numeric", probmat = "matrix
 # getNnodes(test)
 # getN
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelSBM)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelSBM)
-#' <What does this function do>
-#' 
+#' Generates an example of a SBM model. 
+#'  
 #' @param Nnodes temp
 #' @param model_param temp
 #' 
@@ -83,8 +81,8 @@ NetworkModelSBM = function(Nnodes = 10, model_param = set_model_param()) {
   return(netm)
 }
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNetType.NetworkModelSBM)
-#' <What does this function do>
+
+#' Returns the type of network model
 #' 
 #' @param NetM temp
 #' 
@@ -95,32 +93,23 @@ NetworkModelSBM = function(Nnodes = 10, model_param = set_model_param()) {
 getNetType.NetworkModelSBM = function(NetM) { "block" }
 setMethod("getNetType", signature(NetM = "NetworkModelSBM"), getNetType.NetworkModelSBM)
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat.NetworkModelSBM)
-#' <What does this function do>
-#' 
-#' @param NetM temp
-#' 
-#' @return temp
-#' 
-#' @export
-#' 
-getEdgeProbMat.NetworkModelSBM = function(NetM) { NULL }
-setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelSBM"), getEdgeProbMat.NetworkModelSBM)
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork.NetworkModelSBM)
-#' <What does this function do>
+#' Computes the edge probability matrix
 #' 
 #' @param NetM temp
-#' @param Nobs temp
-#' @param ... temp
 #' 
 #' @return temp
 #' 
 #' @export
 #' 
-sampleNetwork.NetworkModelSBM = function(NetM, Nobs = 1, ...) { 
-  NULL
+getEdgeProbMat.NetworkModelSBM = function(NetM) {
+  res = matrix(0, nrow = NetM@Nnodes, ncol = NetM@Nnodes) 
+  for(j in 1:(NetM@Nnodes-1)) { for(k in (j+1):NetM@Nnodes) { 
+    res[j,k] = NetM@probmat[NetM@assign[j], NetM@assign[k]]
+    res[k,j] = res[j,k]
+  }}
   
+  return(res)
 }
-setMethod("sampleNetwork", signature = (NetM = "NetworkModelSBM"), sampleNetwork.NetworkModelSBM)
+setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelSBM"), getEdgeProbMat.NetworkModelSBM)
 
