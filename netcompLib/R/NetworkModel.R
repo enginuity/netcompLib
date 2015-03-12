@@ -21,13 +21,14 @@ setClass("NetworkModelRND", contains = "NetworkModel")
 #' 
 #' @export
 #' 
-NetworkModel = function() {
+NetworkModel = function(Nnodes = 10, type = "none", model_params = set_model_param()) {
   # creates a default networkmodel object -- this is the default constructor, but probably should never be used. the specific ones for a specific model should be used. 
   # maybe want to make this eventually call the network generation methods
   
   ## currently this does nothing but return a lame object, that satisfies the generic methods (although the generic methods would not do much?)
-  
-  NetM = new("NetworkModel", Nnodes = 10)
+  if (type == "none") { return(new("NetworkModel", Nnodes = Nnodes)) }
+  if (type == "block") { NetworkModelSBM(Nnodes = Nnodes, model_params = model_params) }
+  stop("Invalid 'type' specified")
 }
 
 
@@ -37,12 +38,11 @@ NetworkModel = function() {
 ### New method to extract the number of nodes from a network
 setGeneric("getNnodes", function(NetM) standardGeneric("getNnodes"))
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNnodes)
-#' <What does this function do>
+#' Generic Function -- Extracts the number of nodes in the network model
 #' 
-#' @param NetM temp
+#' @param NetM NetworkModel object
 #' 
-#' @return temp
+#' @return Numeric -- Number of nodes in network model
 #' 
 #' @export
 #' 
@@ -134,10 +134,8 @@ sampleNetwork = function(NetM, Nobs = 1, ...) { return(NULL) }
 # Define generic null-model values so this doesn't crash ------------------
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNetType.NetworkModel)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNetType.NetworkModel)
 #' <What does this function do>
 #' 
-#' @param netM temp
 #' @param NetM temp
 #' 
 #' @return temp
