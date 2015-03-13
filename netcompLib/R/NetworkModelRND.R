@@ -1,5 +1,5 @@
 # Defines the NetworkModelRND class
-setClass("NetworkModelRND", representation(assign = "numeric", probmat = "matrix"), contains = "NetworkModel")
+setClass("NetworkModelRND", representation(counts = "numeric", prob = "numeric", ids = "list"), contains = "NetworkModel")
 
 #' Constructor for RND network model
 #' 
@@ -13,8 +13,35 @@ setClass("NetworkModelRND", representation(assign = "numeric", probmat = "matrix
 #' @export
 #' 
 NetworkModelRND = function(Nnodes = 10, model_param = set_model_param()) {
-  ## TODO: [Implement] - fill this in eventually 
-  stop("Not implemented yet")
+  rnd_Ngroups = model_param$random_ngroups
+  
+  # Compute index numbers of the lower-diagonal portion of the matrix
+  idm = matrix(1:(Nnodes^2), nrow = Nnodes)
+  idm[lower.tri(x = idm, diag = TRUE)] = 0
+  idm = as.vector(idm)
+  good_ids = idm[idm != 0]
+  
+  # Sample ids to assign into groups
+  rand_order = sample(good_ids, size = length(good_ids), replace = FALSE)
+  sizes = rep(floor(length(good_ids) / rnd_Ngroups), times = rnd_Ngroups)
+  m = length(good_ids) %% rnd_Ngroups
+  if (m > 0) {
+    sizes[1:m] = sizes[1:m] + 1
+  }
+  
+  counted = 0
+  temp = list()
+  for(k in 1:rnd_Ngroups) {
+    cur = 1 + counted
+    temp[[k]] = sort(rand_order
+                     [cur:(cur+sizes[k])])
+    counted = counted + sizes[k]
+  }
+  
+  netm = new("NetworkModelRND", Nnodes = Nnodes, counts = sizes, ids = temp, 
+             prob = runif(n = rnd_Ngroups, min = model_param$pmin, max = model_param$pmax))
+  return(netm)
+  
 }
 
 
@@ -41,9 +68,11 @@ setMethod("getNetType", signature(NetM = "NetworkModelRND"), getNetType.NetworkM
 #' @export
 #' 
 getEdgeProbMat.NetworkModelRND = function(NetM) {
-  ## TODO: [Implement]
-  
-  stop("Not implemented yet")
+  pmat = matrix(0, nrow = getNnodes(NetM), ncol = getNnodes(NetM))
+  for(j in seq_along(NetM@counts)) {
+    pmat[NetM@ids[[j]]] = NetM@prob
+  }
+  return(pmat + t(pmat))
 }
 setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelRND"), getEdgeProbMat.NetworkModelRND)
 
