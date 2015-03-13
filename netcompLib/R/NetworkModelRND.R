@@ -70,7 +70,7 @@ setMethod("getNetType", signature(NetM = "NetworkModelRND"), getNetType.NetworkM
 getEdgeProbMat.NetworkModelRND = function(NetM) {
   pmat = matrix(0, nrow = getNnodes(NetM), ncol = getNnodes(NetM))
   for(j in seq_along(NetM@counts)) {
-    pmat[NetM@ids[[j]]] = NetM@prob
+    pmat[NetM@ids[[j]]] = NetM@prob[j]
   }
   return(pmat + t(pmat))
 }

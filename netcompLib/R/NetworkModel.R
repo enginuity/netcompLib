@@ -29,7 +29,7 @@ NetworkModel = function(Nnodes = 10, type = "none", model_param = set_model_para
   if (type == "block") { return(NetworkModelSBM(Nnodes = Nnodes, model_param = model_param)) }
   if (type == "tree") { return(NetworkModelHRG(Nnodes = Nnodes, model_param = model_param)) }
   if (type == "latent") { return(NetworkModelLSM(Nnodes = Nnodes, model_param = model_param)) }
-  if (type == "random") { return(NetworkModelRND(Nnodes = Nnodes, model_param = model_param))) }
+  if (type == "random") { return(NetworkModelRND(Nnodes = Nnodes, model_param = model_param)) }
   stop("Invalid 'type' specified")
 }
 
