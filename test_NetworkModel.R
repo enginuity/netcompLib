@@ -26,6 +26,11 @@ getNnodes(test4)
 getNetType(test4)
 round(getEdgeProbMat(test4),2)
 
+test5 = NetworkModel(Nnodes = 5, type = "random", model_param = set_model_param(random_ngroups = 3))
+getNnodes(test5)
+getNetType(test5)
+round(getEdgeProbMat(test5),2)
+
 
 # test = new("NetworkModelSBM", Nnodes = 3)
 # library(netcompLib)
