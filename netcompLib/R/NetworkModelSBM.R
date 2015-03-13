@@ -144,7 +144,7 @@ extractStruct.NetworkModelSBM = function(NetM) {
   }
   # note that this storage is a little repetitive (not all of these needed to be stored, due to symmetry...)
 
-  nets = new("NetworkStructSBM", Nnodes = getNnodes(NetM), groups = ga, coutns = counts, expand = expanded)
+  nets = new("NetworkStructSBM", Nnodes = getNnodes(NetM), groups = ga, counts = counts, expand = expanded)
   return(nets)
 }
 setMethod("extractStruct", signature = (NetM = "NetworkModelSBM"), extractStruct.NetworkModelSBM)
