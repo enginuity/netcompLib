@@ -11,6 +11,7 @@ getNnodes(test2)
 getNetType(test2)
 getEdgeProbMat(test2)
 sampleNetwork(test2)
+extractStruct(test2)
 
 test2@assign
 test2@probmat
@@ -20,6 +21,7 @@ getNnodes(test3)
 getNetType(test3)
 test3
 getEdgeProbMat(test3)
+extractStruct(test3)
 
 test4 = NetworkModel(Nnodes = 10, type = "latent")
 getNnodes(test4)
@@ -30,11 +32,8 @@ test5 = NetworkModel(Nnodes = 5, type = "random", model_param = set_model_param(
 getNnodes(test5)
 getNetType(test5)
 round(getEdgeProbMat(test5),2)
+extractStruct(test5)
 
-
-# test = new("NetworkModelSBM", Nnodes = 3)
-# library(netcompLib)
-# getNnodes(test)
-# getN
-
-
+NetworkStruct(Nnodes = 15, type = "block")
+NetworkStruct(Nnodes = 15, type = "tree")
+NetworkStruct(Nnodes = 15, type = "random")
