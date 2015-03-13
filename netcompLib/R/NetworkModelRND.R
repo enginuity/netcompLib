@@ -76,3 +76,18 @@ getEdgeProbMat.NetworkModelRND = function(NetM) {
 }
 setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelRND"), getEdgeProbMat.NetworkModelRND)
 
+
+#' Extracts the Edge Structure from a Network Model
+#' 
+#' @param NetM network model obj
+#' 
+#' @return network struct obj
+#' 
+#' @export
+#' 
+extractStruct.NetworkModelRND = function(NetM) {
+  nets = new("NetworkStructRND", Nnodes = getNnodes(NetM), counts = NetM@counts, ids = NetM@ids)
+  return(nets)
+}
+setMethod("extractStruct", signature = (NetM = "NetworkModelRND"), extractStruct.NetworkModelRND)
+

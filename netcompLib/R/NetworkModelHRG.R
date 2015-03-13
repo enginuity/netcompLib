@@ -149,3 +149,29 @@ getEdgeProbMat.NetworkModelHRG = function(NetM) {
 }
 setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelHRG"), getEdgeProbMat.NetworkModelHRG)
 
+
+
+
+#' Extracts the Edge Structure from a Network Model
+#' 
+#' @param NetM network model obj
+#' 
+#' @return network struct obj
+#' 
+#' @export
+#' 
+extractStruct.NetworkModelHRG = function(NetM) {
+  tr = list(prob = NetM@prob, children = NetM@children, parents = NetM@parents, nodes = getNnodes(NetM))
+  expc = expanded_children_from_tree(tr)
+  
+  res_list[[j]] = list(
+    fixed_tree = tr, ft_expand = expc,
+    ft_counts =  )
+  
+  nets = new("NetworkStructHRG", Nnodes = getNnodes(NetM), tree_list = tr, expand = expc, 
+             counts = sapply(expc, function(x) {length(x[[1]]) * length(x[[2]]) }))
+  return(nets)
+}
+setMethod("extractStruct", signature = (NetM = "NetworkModelHRG"), extractStruct.NetworkModelHRG)
+
+
