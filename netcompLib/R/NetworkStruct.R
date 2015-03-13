@@ -75,3 +75,18 @@ getNetType.NetworkStruct = function(NetM) {
 }
 setMethod("getNetType", signature(NetM = "NetworkStruct"), getNetType.NetworkStruct)
 
+
+
+
+
+# Define new generics -----------------------------------------------------
+
+setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl) standardGeneric("computePval"))
+computePval = function(NetS, adja1, adja2, Nobs, pl) {
+  stop("Placeholder for documentation purposes")
+}
+
+computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs, pl) {
+  stop("Not implemented for this case")
+}
+setMethod("computePval", signature(NetS = "NetworkStruct"), computePval.NetworkStruct)

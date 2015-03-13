@@ -229,6 +229,7 @@ sample_fitting_models = function(mode, Nnodes, Nmodels, model_param = set_model_
     Nmodels = 1; mode = gen_model$mode
     print("Ignoring Nmodels: generating fitting form for given model") 
   }
+  ## TODO: Replaced with NetworkStructs -- 2015.03.13
   
   ## TODO: [Obselete old function] This function OBSELETES generate_fitting_models. So need to remove that function?
   res_list = list()
