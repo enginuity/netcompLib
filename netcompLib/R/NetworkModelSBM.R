@@ -126,25 +126,28 @@ setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelSBM"), getEdgeProbM
 extractStruct.NetworkModelSBM = function(NetM) {
   # group assignments
   ga = NetM@assign
-  Nclass = max(ga)
-
-  counts = rep(0, times = Nclass^2)
+  NClass = length(unique(ga))
+  
+  counts = rep(0, times = NClass + NClass * (NClass - 1) / 2)
+  correction = rep(0, times = NClass + NClass * (NClass - 1) / 2)
+  
   expanded = list()
   cur = 1
-  for(k in 1:Nclass) {
-    for(m in 1:Nclass) {
-      if (k == m) {
-        counts[cur] = sum(ga == k) * (sum(ga == k) - 1) / 2
-      } else if (k != m) {
+  for(k in 1:NClass) { for(m in 1:NClass) {
+    if (k >= m) {
+      if (k == m) { 
+        counts[cur] = sum(ga == k) * (sum(ga == k) - 1) / 2 
+        correction[cur] = 2
+      } else {
         counts[cur] = sum(ga == k) * sum(ga == m)
+        correction[cur] = 1
       }
       expanded[[cur]] = list(which(ga == k), which(ga == m))
       cur = cur + 1
     }
-  }
-  # note that this storage is a little repetitive (not all of these needed to be stored, due to symmetry...)
-
-  nets = new("NetworkStructSBM", Nnodes = getNnodes(NetM), groups = ga, counts = counts, expand = expanded)
+  }}
+  
+  nets = new("NetworkStructSBM", Nnodes = getNnodes(NetM), groups = ga, counts = counts, expand = expanded, correct = correction)
   return(nets)
 }
 setMethod("extractStruct", signature = (NetM = "NetworkModelSBM"), extractStruct.NetworkModelSBM)

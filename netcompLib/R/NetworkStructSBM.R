@@ -1,5 +1,5 @@
 # Defines the NetworkStructSBM class
-setClass("NetworkStructSBM", representation(groups = "numeric", counts = "numeric", expand = "list"), contains = "NetworkStruct")
+setClass("NetworkStructSBM", representation(groups = "numeric", counts = "numeric", expand = "list", correct = "numeric"), contains = "NetworkStruct")
 
 #' Constructor for RND network structure
 #' 

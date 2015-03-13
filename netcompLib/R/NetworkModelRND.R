@@ -20,6 +20,7 @@ NetworkModelRND = function(Nnodes = 10, model_param = set_model_param()) {
   idm[lower.tri(x = idm, diag = TRUE)] = 0
   idm = as.vector(idm)
   good_ids = idm[idm != 0]
+  if (length(good_ids) < rnd_Ngroups) { stop("Too many groups for too few edges") }
   
   # Sample ids to assign into groups
   rand_order = sample(good_ids, size = length(good_ids), replace = FALSE)
@@ -32,14 +33,13 @@ NetworkModelRND = function(Nnodes = 10, model_param = set_model_param()) {
   counted = 0
   id_list = list()
   for(k in 1:rnd_Ngroups) {
-    id_list[[k]] = sort(rand_order[(counted+1):(counted+sizes[k])])
+    id_list[[k]] = sort(rand_order[seq(from = counted+1, length.out = sizes[k])])
     counted = counted + sizes[k]
   }
   
   netm = new("NetworkModelRND", Nnodes = Nnodes, counts = sizes, ids = id_list, 
              prob = runif(n = rnd_Ngroups, min = model_param$pmin, max = model_param$pmax))
   return(netm)
-  
 }
 
 
