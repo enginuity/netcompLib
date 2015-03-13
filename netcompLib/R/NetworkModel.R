@@ -185,7 +185,9 @@ setGeneric("getNetType", function(NetM) standardGeneric("getNetType"))
 #' 
 #' @export
 #' 
-getNetType = function(NetM) { NULL }
+getNetType = function(NetM) { 
+  NULL 
+}
 
 
 
@@ -200,7 +202,9 @@ setGeneric("getEdgeProbMat", function(NetM) standardGeneric("getEdgeProbMat"))
 #' 
 #' @export
 #' 
-getEdgeProbMat = function(NetM) { return(NULL) }
+getEdgeProbMat = function(NetM) {
+  return(NULL) 
+}
 
 
 
@@ -217,7 +221,9 @@ getEdgeProbMat = function(NetM) { return(NULL) }
 #' 
 #' @export
 #' 
-getNetType.NetworkModel = function(NetM) { "none" }
+getNetType.NetworkModel = function(NetM) {
+  "none" 
+}
 setMethod("getNetType", signature(NetM = "NetworkModel"), getNetType.NetworkModel)
 
 #' Extracts the edge probability matrix for a network model
@@ -228,7 +234,9 @@ setMethod("getNetType", signature(NetM = "NetworkModel"), getNetType.NetworkMode
 #' 
 #' @export
 #' 
-getEdgeProbMat.NetworkModel = function(NetM) { NULL }
+getEdgeProbMat.NetworkModel = function(NetM) {
+  NULL 
+}
 setMethod("getEdgeProbMat", signature = (NetM = "NetworkModel"), getEdgeProbMat.NetworkModel)
 
 
