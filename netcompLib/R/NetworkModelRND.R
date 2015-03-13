@@ -30,15 +30,13 @@ NetworkModelRND = function(Nnodes = 10, model_param = set_model_param()) {
   }
   
   counted = 0
-  temp = list()
+  id_list = list()
   for(k in 1:rnd_Ngroups) {
-    cur = 1 + counted
-    temp[[k]] = sort(rand_order
-                     [cur:(cur+sizes[k])])
+    id_list[[k]] = sort(rand_order[(counted+1):(counted+sizes[k])])
     counted = counted + sizes[k]
   }
   
-  netm = new("NetworkModelRND", Nnodes = Nnodes, counts = sizes, ids = temp, 
+  netm = new("NetworkModelRND", Nnodes = Nnodes, counts = sizes, ids = id_list, 
              prob = runif(n = rnd_Ngroups, min = model_param$pmin, max = model_param$pmax))
   return(netm)
   
