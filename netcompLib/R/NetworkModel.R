@@ -102,6 +102,19 @@ sampleNetwork = function(NetM, Nobs = 1, Nsim = 1) { return(NULL) }
 sampleNetwork.NetworkModel = function(NetM, Nobs = 1, Nsim = 1) { 
   #Nsim -- if you want multiple sets of networks from the same model, generate it all now; will be given in a list if Nsim > 1. 
   
+  # TODO: Use this style of code to improve on network simulation
+#   # Written by Andrew Thomas
+#   
+#   nn <- tm$nodes
+#   
+#   clo.anc <- closest_ancestor(tm)$anc.table
+#   out <- array(0, c(nn, nn, Nobs))
+#   series <- lower_diag(nn)
+#   for (kk in 1:Nobs) {
+#     out[series+nn^2*(kk-1)] <- rbinom(nn*(nn-1)/2, 1, tm$prob[clo.anc[series]-nn])
+#     out[,,kk] <- out[,,kk]+t(out[,,kk])
+#   }
+  
   # uses variables out of scope (epmat, Nnodes)
   gen_one_network = function() {
     res = matrix(0, nrow = Nnodes, ncol = Nnodes) 

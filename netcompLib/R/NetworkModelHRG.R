@@ -135,9 +135,17 @@ setMethod("getNetType", signature(NetM = "NetworkModelHRG"), getNetType.NetworkM
 #' @export
 #' 
 getEdgeProbMat.NetworkModelHRG = function(NetM) {
-  ## TODO - fix this
+  nn = getNnodes(NetM)
+  ## TODO: Rewrite closest_ancestor, so this section of code isn't this ugly. 
   
-  return(res)
+  tm = list(prob = NetM@prob, children = NetM@children, parents = NetM@parents, nodes = nn)
+  clo.anc = closest_ancestor(tm)$anc.table
+  
+  out <- matrix(0, nn, nn)
+  series <- lower_diag(nn)
+  out[series] <- tm$prob[clo.anc[series]-nn]
+  out = out + t(out)
+  return(out)
 }
 setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelHRG"), getEdgeProbMat.NetworkModelHRG)
 
