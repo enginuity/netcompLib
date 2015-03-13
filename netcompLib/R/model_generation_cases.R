@@ -1,5 +1,7 @@
 ## Contains code to generate and simulate from each of the network models. 
 
+## TODO: [Obselete] 2015.03.12 -- all of this code has been copied into NetworkModel***.R's. 
+
 ## TODO: [Cleanup] Some variables are placeholders (that stood for previous parameters). They can safely be removed if it doesn't help the code... 
 
 # SBM ---------------------------------------------------------------------
