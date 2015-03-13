@@ -13,13 +13,9 @@ setClass("NetworkStructRND", representation(counts = "numeric", ids = "list"), c
 #' @export
 #' 
 NetworkStructRND = function(Nnodes = 10, model_param = set_model_param()) {
-  
-  stop("Not written")
-  
-  netm = new("NetworkModelRND", Nnodes = Nnodes, counts = sizes, ids = temp, 
-             prob = runif(n = rnd_Ngroups, min = model_param$pmin, max = model_param$pmax))
-  return(netm)
-  
+  # Just generate a model and then lose the probability information. 
+  NetM = NetworkModelRND(Nnodes = Nnodes, model_param = model_param)
+  return(extractStruct(NetM))
 }
 
 

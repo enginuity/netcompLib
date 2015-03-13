@@ -13,13 +13,9 @@ setClass("NetworkStructSBM", representation(groups = "numeric", counts = "numeri
 #' @export
 #' 
 NetworkStructSBM = function(Nnodes = 10, model_param = set_model_param()) {
-  
-  stop("Not written")
-  
-  netm = new("NetworkModelSBM", Nnodes = Nnodes, counts = sizes, ids = temp, 
-             prob = runif(n = rnd_Ngroups, min = model_param$pmin, max = model_param$pmax))
-  return(netm)
-  
+  # Just generate a model and then lose the probability information. 
+  NetM = NetworkModelSBM(Nnodes = Nnodes, model_param = model_param)
+  return(extractStruct(NetM))
 }
 
 
