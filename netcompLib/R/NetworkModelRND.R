@@ -13,7 +13,8 @@ setClass("NetworkModelRND", representation(assign = "numeric", probmat = "matrix
 #' @export
 #' 
 NetworkModelRND = function(Nnodes = 10, model_param = set_model_param()) {
-  ## TODO: - fill this in eventually 
+  ## TODO: [Implement] - fill this in eventually 
+  stop("Not implemented yet")
 }
 
 
@@ -40,9 +41,9 @@ setMethod("getNetType", signature(NetM = "NetworkModelRND"), getNetType.NetworkM
 #' @export
 #' 
 getEdgeProbMat.NetworkModelRND = function(NetM) {
-  ## TODO - fix this
+  ## TODO: [Implement]
   
-  return(res)
+  stop("Not implemented yet")
 }
 setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelRND"), getEdgeProbMat.NetworkModelRND)
 
