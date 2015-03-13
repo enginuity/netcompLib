@@ -208,6 +208,14 @@ getEdgeProbMat = function(NetM) {
 
 setGeneric("extractStruct", function(NetM) standardGeneric("extractStruct"))
 
+#' Extracts the Edge Structure from a Network Model
+#' 
+#' @param NetM network model obj
+#' 
+#' @return network struct obj
+#' 
+#' @export
+#' 
 extractStruct = function(NetM) {
   return(NULL) 
 }
@@ -242,4 +250,16 @@ getEdgeProbMat.NetworkModel = function(NetM) {
 }
 setMethod("getEdgeProbMat", signature = (NetM = "NetworkModel"), getEdgeProbMat.NetworkModel)
 
+#' Extracts the Edge Structure from a Network Model
+#' 
+#' @param NetM network model obj
+#' 
+#' @return network struct obj
+#' 
+#' @export
+#' 
+extractStruct.NetworkModel = function(NetM) {
+  stop("This usage case is not defined. ")
+}
+setMethod("extractStruct", signature = (NetM = "NetworkModel"), extractStruct.NetworkModel)
 
