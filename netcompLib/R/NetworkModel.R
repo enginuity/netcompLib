@@ -6,9 +6,6 @@
 
 # Defines the NetworkModel Class and its subclasses -----------------------
 setClass("NetworkModel", representation(Nnodes = "numeric"))
-setClass("NetworkModelLSM", contains = "NetworkModel")
-setClass("NetworkModelHRG", contains = "NetworkModel")
-setClass("NetworkModelRND", contains = "NetworkModel")
 
 #' Instantiates an object of class NetworkModel
 #' 
