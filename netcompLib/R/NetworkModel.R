@@ -206,6 +206,12 @@ getEdgeProbMat = function(NetM) {
 
 
 
+setGeneric("extractStruct", function(NetM) standardGeneric("extractStruct"))
+
+extractStruct = function(NetM) {
+  return(NULL) 
+}
+
 
 
 # Define generic null-model values so this doesn't crash ------------------
