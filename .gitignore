@@ -7,3 +7,4 @@ netcomp_lib.Rproj
 .Rhistory
 *~
 *.Rd
+metacode_logs/*
