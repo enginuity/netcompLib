@@ -3,12 +3,17 @@
 ## TODO: Add validity checks?
 
 # Defines the NetworkModelPair Class and its subclasses -----------------------
-setClass("NetworkModelPair", representation(m1 = "NetworkModel", m2 = "NetworkModel", is_null = "logical"), contains("NetworkModel"))
+setClass("NetworkModelPair", representation(m1 = "NetworkModel", m2 = "NetworkModel", is_null = "logical"), contains = "NetworkModel")
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelPair)
 #' Instantiates an object of class NetworkModelPair
 #' 
 #' This is done by providing both network models. If m2 is not given and is_null is FALSE, there is an error. Otherwise, m2 will be ignored if is_null is TRUE. (ie null hypothesis means both models are the same, so m1)
 #' There is also no check that m1 and m2 are on the same network size, but they should be. -- add this in...
+#' 
+#' @param m1 temp
+#' @param m2 temp
+#' @param is_null temp
 #' 
 #' @return Object of class NetworkModelPair
 #' 
