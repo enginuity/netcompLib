@@ -61,7 +61,7 @@ setMethod("getNnodes", signature("NetworkModelPair"), getNnodes.NetworkModelPair
 #' @export
 #' 
 sampleNetwork.NetworkModelPair = function(NetM, Nobs = 1, Nsim = 1) { 
-  return(list(sampleNetwork(NetM@m1), sampleNetwork(NetM@m2)))
+  return(list(sampleNetwork(NetM@m1, Nobs = Nobs, Nsim = Nsim), sampleNetwork(NetM@m2, Nobs = Nobs, Nsim = Nsim)))
 }
 setMethod("sampleNetwork", signature = (NetM = "NetworkModelPair"), sampleNetwork.NetworkModelPair)
 
