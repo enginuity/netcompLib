@@ -32,7 +32,7 @@ set_model_param = function(pmin = 0, pmax = 1, block_nclass = 3, block_avgdensit
 #' 
 #' @param cc_adj Amount of SE's away from the correlation estimate used (how conservative? 0 means no adjustment (and requires large sample for guarantees; larger values give a conservative p-value))
 #' @param thres_ignore Ignore edge groups with fewer than this many edges
-#' @param alphas Significance level of test
+#' @param alphas Size of test
 #' @param n_models Number of edge partitions to use for testing
 #' 
 #' @return A list of parameters (often asked for as pl in functions)
