@@ -6,9 +6,6 @@
 
 # Defines the NetworkStruct Class and its subclasses -----------------------
 setClass("NetworkStruct", representation(Nnodes = "numeric"))
-setClass("NetworkStructSBM", contains = "NetworkStruct")
-setClass("NetworkStructHRG", contains = "NetworkStruct")
-setClass("NetworkStructRND", contains = "NetworkStruct")
 
 #' Instantiates an object of class NetworkStruct
 #' 
@@ -82,10 +79,36 @@ setMethod("getNetType", signature(NetM = "NetworkStruct"), getNetType.NetworkStr
 # Define new generics -----------------------------------------------------
 
 setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl) standardGeneric("computePval"))
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computePval)
+#' <What does this function do>
+#' 
+#' @param NetS temp
+#' @param adja1 temp
+#' @param adja2 temp
+#' @param Nobs temp
+#' @param pl temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 computePval = function(NetS, adja1, adja2, Nobs, pl) {
   stop("Placeholder for documentation purposes")
 }
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computePval.NetworkStruct)
+#' <What does this function do>
+#' 
+#' @param NetS temp
+#' @param adja1 temp
+#' @param adja2 temp
+#' @param Nobs temp
+#' @param pl temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs, pl) {
   stop("Not implemented for this case")
 }

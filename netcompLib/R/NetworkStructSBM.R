@@ -21,6 +21,34 @@ NetworkStructSBM = function(Nnodes = 10, model_param = set_model_param()) {
 
 # Generic Function Definitions --------------------------------------------
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNetType.NetworkStructSBM)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
+getNetType.NetworkStructSBM = function(NetM) {
+  return("block")
+}
+setMethod("getNetType", signature(NetM = "NetworkStructSBM"), getNetType.NetworkStructSBM)
+
+
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computePval.NetworkStructSBM)
+#' <What does this function do>
+#' 
+#' @param NetS temp
+#' @param adja1 temp
+#' @param adja2 temp
+#' @param Nobs temp
+#' @param pl temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl) {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
