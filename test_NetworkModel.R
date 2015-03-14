@@ -59,3 +59,12 @@ Nobs = 1
 NetS = NetworkStructSBM(Nnodes = 30, model_param = set_model_param(block_nclass = 3))
 getNetType(NetS)
 
+m1 = NetworkModel(Nnodes = 50, type = "block", model_param = set_model_param(block_probs = matrix(0.45, nrow = 1, ncol = 1), block_assign = rep(1, times = 50)))
+m2 = NetworkModel(Nnodes = 50, type = "block", model_param = set_model_param(block_probs = matrix(0.5, nrow = 1, ncol = 1), block_assign = rep(1, times = 50)))
+
+computePval(NetworkStructList(Nnodes = 50, type = "tree"), sampleNetwork(m1), sampleNetwork(m2), 1, pl)
+computePval(NetworkStructList(Nnodes = 50, type = "random"), sampleNetwork(m1), sampleNetwork(m2), 1, pl)
+
+
+nmp = NetworkModelPair(m1 = NetworkModel(type = "block"), is_null = TRUE)
+sampleNetwork(NetM = nmp)
