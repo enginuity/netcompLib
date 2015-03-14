@@ -81,7 +81,9 @@ setGeneric("sampleNetwork", function(NetM, Nobs = 1, ...) standardGeneric("sampl
 #' 
 #' @export
 #' 
-sampleNetwork = function(NetM, Nobs = 1, Nsim = 1) { return(NULL) }
+sampleNetwork = function(NetM, Nobs = 1, Nsim = 1) { 
+  return(NULL) 
+}
 
 
 
