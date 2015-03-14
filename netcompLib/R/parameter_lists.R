@@ -27,13 +27,19 @@ set_model_param = function(pmin = 0, pmax = 1, block_nclass = 3, block_avgdensit
   return(list(pmin = pmin, pmax = pmax, block_nclass = block_nclass, block_avgdensity = block_avgdensity, block_assign = block_assign, block_probs = block_probs, random_ngroups = random_ngroups, tree_type = tree_type, latent_dim = latent_dim, latent_nclass = latent_nclass, latent_sdcenter = latent_sdcenter, latent_isgennorm = latent_isgennorm))
 }
 
+
+#' Creates a list of simulation parameters
+#' 
+#' @param cc_adj Amount of SE's away from the correlation estimate used (how conservative? 0 means no adjustment (and requires large sample for guarantees; larger values give a conservative p-value))
+#' @param thres_ignore Ignore edge groups with fewer than this many edges
+#' @param alphas Significance level of test
+#' @param n_models Number of edge partitions to use for testing
+#' 
+#' @return A list of parameters (often asked for as pl in functions)
+#' 
+#' @export
+#' 
 set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_models = c(1,25,50,100)) {
-  
-  ## pl is a list of parameters, and the constitutient values could be vectors if more than one is to be tested. This returns a matrix of pvalues
-  ## -- thres_ignore: Ignore all cells concern a smaller number of edges than this value. Set to 0 to use every single cell. 
-  ## -- cc_adj: The amount of SE's away from correlation estimate used.
-  ## -- alphas: The cutoffs for p-values to be used
-  ## -- -- this is set to 2 by default; setting to 0 -> simply use correlation estimate (thresholded to 0)
   return(list(cc_adj = cc_adj, thres_ignore = thres_ignore, alphas = alphas, n_models = n_models))
 }
 
