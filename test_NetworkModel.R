@@ -1,6 +1,8 @@
 # testing new functionality
 
 library(netcompLib)
+load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
+
 
 test1 = NetworkModel(Nnodes = 10)
 getNnodes(test1)
@@ -37,3 +39,23 @@ extractStruct(test5)
 NetworkStruct(Nnodes = 15, type = "block")
 NetworkStruct(Nnodes = 15, type = "tree")
 NetworkStruct(Nnodes = 15, type = "random")
+
+
+pl = list(cc_adj = c(1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
+computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+
+netsl = NetworkStructList(type = "block")
+computePval(netsl, sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+getNetType(netsl)
+
+NetM = NetworkModel(Nnodes = 30, type = "block")
+adja1 = sampleNetwork(NetM)
+adja2 = sampleNetwork(NetM)
+Nobs = 1
+
+NetS = NetworkStructSBM(Nnodes = 30, model_param = set_model_param(block_nclass = 3))
+getNetType(NetS)
+
