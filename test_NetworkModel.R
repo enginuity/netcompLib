@@ -68,3 +68,5 @@ computePval(NetworkStructList(Nnodes = 50, type = "random"), sampleNetwork(m1), 
 
 nmp = NetworkModelPair(m1 = NetworkModel(type = "block"), is_null = TRUE)
 sampleNetwork(NetM = nmp)
+
+
