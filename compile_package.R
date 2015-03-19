@@ -5,7 +5,7 @@
 ## These only need to be run, if the source code was edited. 
 
 ## Load up needed libraries
-require(codeProcessing) ## This is a package I've written to speed up my own coding efficiency
+require(codeProcessing) ## This is a package I've written to speed up my own coding efficiency to use when rewriting code / package writing
 require(stringr)
 
 ## Update documentation -- this looks for new parameters and creates documentation lines for it
