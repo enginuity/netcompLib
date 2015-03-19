@@ -1,24 +1,24 @@
 ##@S Contains code to compile the netcomp_sbm package (to be run from R)
 
 
-# Optional Steps ----------------------------------------------------------
-## These only need to be run, if the source code was edited. 
+# Update Documentation (if needed) ----------------------------------------
 
-## Load up needed libraries
-require(codeProcessing) ## This is a package I've written to speed up my own coding efficiency to use when rewriting code / package writing
-require(stringr)
-
-## Update documentation -- this looks for new parameters and creates documentation lines for it
-update_fx_documentation(FD = FilesDescription(dirlist = "netcompLib/R/"), fill_emptyparam = FALSE)
-
+## This section only needs to be run if the source code is not necessarily up to date (ie new functions were written, or if parameters were added). It will also only be run if the package actually exists. 
+if (require(codeProcessing)) {
+  ## This is a package I've written to speed up my own coding efficiency to use when rewriting code / package writing
+  
+  ## Update documentation -- this looks for new parameters and creates documentation lines for it
+  update_fx_documentation(FD = FilesDescription(dirlist = "netcompLib/R/"), fill_emptyparam = FALSE)
+}
 
 # Compile Package ---------------------------------------------------------
-## Both these steps need to be run in order to build the package properly
 
-## Generate the documentation -- THIS MUST be run before building packages (since the documentation files are not version-controlled, as the version-controlled version is in the raw source code)
-require(roxygen2)
-roxygenise("netcompLib/", clean = TRUE)
-
-## Install the package
-system("R CMD INSTALL netcompLib")
-
+if (require(roxygen2)) {
+  ## Generate the documentation -- THIS MUST be run before building packages (since the documentation files are not version-controlled, as the version-controlled version is in the raw source code)
+  roxygenise("netcompLib/", clean = TRUE)
+  
+  ## Install the package
+  system("R CMD INSTALL netcompLib")
+} else {
+  stop("Package 'roxygen2' is not installed: the netcompLib package is not compilable.")
+}
