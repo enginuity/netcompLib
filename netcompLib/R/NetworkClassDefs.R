@@ -801,7 +801,7 @@ getNetType.NetworkStructList = function(NetM) {
 #' @export
 #' 
 computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
-  res = lapply(NetS@models, function(x) { computePval(x, adja1, adja2, Nobs, pl, mode = "default") } )
+  res = lapply(NetS@models, function(x) { computePval(x, adja1, adja2, Nobs, pl, mode = mode) } )
   return(res)
 }
 
@@ -1418,14 +1418,17 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl, mode = "de
     mlealt1 = 0 * edgesum1
     mlealt2 = 0 * edgesum1
     for(pp in seq_along(NetS@expand)) {
-      mlenull[NetS@expand[[pp]][[1]], NetS@expand[[pp]][[2]]] = log(mle_pc[pp])
-      mlealt1[NetS@expand[[pp]][[1]], NetS@expand[[pp]][[2]]] = log(mle_p1[pp])
-      mlealt2[NetS@expand[[pp]][[1]], NetS@expand[[pp]][[2]]] = log(mle_p2[pp])
+      mlenull[NetS@expand[[pp]][[1]], NetS@expand[[pp]][[2]]] = (mle_pc[pp])
+      mlealt1[NetS@expand[[pp]][[1]], NetS@expand[[pp]][[2]]] = (mle_p1[pp])
+      mlealt2[NetS@expand[[pp]][[1]], NetS@expand[[pp]][[2]]] = (mle_p2[pp])
+      mlenull[NetS@expand[[pp]][[2]], NetS@expand[[pp]][[1]]] = (mle_pc[pp])
+      mlealt1[NetS@expand[[pp]][[2]], NetS@expand[[pp]][[1]]] = (mle_p1[pp])
+      mlealt2[NetS@expand[[pp]][[2]], NetS@expand[[pp]][[1]]] = (mle_p2[pp])
     }
-    llnull = edgesum1 * mlenull + (Nobs - edgesum1) * (1 - mlenull) + edgesum2 * mlenull + (Nobs - edgesum2) * (1 - mlenull)
-    llalt1 = edgesum1 * mlealt1 + (Nobs - edgesum1) * (1 - mlealt1)
-    llalt2 = edgesum2 * mlealt2 + (Nobs - edgesum2) * (1 - mlealt2)
-    diag(llnull) = 0; diag(alt1) = 0; diag(llalt2) = 0
+    llnull = edgesum1 * log(mlenull) + (Nobs - edgesum1) * log(1 - mlenull) + edgesum2 * log(mlenull) + (Nobs - edgesum2) * log(1 - mlenull)
+    llalt1 = edgesum1 * log(mlealt1) + (Nobs - edgesum1) * log(1 - mlealt1)
+    llalt2 = edgesum2 * log(mlealt2) + (Nobs - edgesum2) * log(1 - mlealt2)
+    diag(llnull) = 0; diag(llalt1) = 0; diag(llalt2) = 0
     
     res = -2 * (llnull - llalt1 - llalt2)
     ncs = apply(res, 1, sum)
@@ -1434,8 +1437,6 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl, mode = "de
   } else if (mode == "default") {
     return(pval_matrix)  
   }
-  
-  
 }
 
 
