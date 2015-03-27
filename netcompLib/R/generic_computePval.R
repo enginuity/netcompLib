@@ -261,7 +261,7 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl, mode = "de
   obs2_count = sapply(NetS@expand, function(x) { sum(edgesum2[x[[1]], x[[2]]]) }) / COR
   obsc_count = obs1_count + obs2_count
   obsp_count = sapply(NetS@expand, function(x) { sum(edgesumc[x[[1]], x[[2]]]) }) / COR
-  cell_sizes = NetS@counts * Nobs
+  cell_sizes = sapply(NetS@expand, function(x) { sum(!is.na(edgesumc[x[[1]], x[[2]]])) }) / COR
   
   ## Compute MLE Estimates
   mle_p1 = obs1_count / cell_sizes
