@@ -17,7 +17,7 @@ res = computePval(netsl, m1, m2, 1, pl = set_sim_param(n_models = c(100)), mode 
 
 par(mfrow = c(2,2))
 temp = sapply(res, function(x) x$node)
-plot(1:30, apply(temp, 1, function(x) { mean(x[is.finite(x)])}), ylab = "Mean Nodal Contribution to test statistic", xlab = "Node", main = "Network Size = 30", ylim = c(-5, 10))
+plot(1:30, apply(temp, 1, function(x) { mean(x[is.finite(x)])}), ylab = "Mean Nodal Contribution", xlab = "Node", main = "Network Size = 30", ylim = c(-5, 10))
 abline(v = c(10.5, 20.5))
 
 y = sapply(list(1:10, 11:20, 21:30), function(m) {mean(apply(temp, 1, function(x) { mean(x[is.finite(x)])})[m])})
@@ -42,7 +42,7 @@ netsl = NetworkStructList(Nnodes = 60, type = "block", Nmodels = 100)
 res = computePval(netsl, m1, m2, 1, pl = set_sim_param(n_models = c(100)), mode = "nodewise")
 
 temp = sapply(res, function(x) x$node)
-plot(1:60, apply(temp, 1, function(x) { mean(x[is.finite(x)])}), ylab = "Mean Nodal Contribution to test statistic", xlab = "Node", main = "Network Size = 60", ylim = c(-5, 10))
+plot(1:60, apply(temp, 1, function(x) { mean(x[is.finite(x)])}), ylab = "Mean Nodal Contribution", xlab = "Node", main = "Network Size = 60", ylim = c(-5, 10))
 abline(v = c(20.5, 40.5))
 y = sapply(list(1:20, 31:40, 41:60), function(m) {mean(apply(temp, 1, function(x) { mean(x[is.finite(x)])})[m])})
 segments(c(1,21,41), y, c(20, 40, 60), y, lty = 2)
