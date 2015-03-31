@@ -1,13 +1,14 @@
+##@S Generic Function that computes the edge probability matrix of a given network model
+
+## TODO: [Fully Documented] (remove this marking eventually)
 
 setGeneric("getEdgeProbMat", function(NetM) standardGeneric("getEdgeProbMat"))
-
-
 
 #' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network model object
 #' 
-#' @return Matrix -- the edge probability matrix
+#' @return Matrix: Edge Probability Matrix given by the model
 #' 
 #' @export
 #' 
@@ -20,7 +21,7 @@ getEdgeProbMat = function(NetM) {
 #' 
 #' @param NetM Network Model object
 #' 
-#' @return NULL - no edge probability matrix for generic network model object
+#' @return NULL: (there is no edge probability matrix for generic network model object)
 #' 
 #' @export
 #' 
@@ -33,7 +34,7 @@ getEdgeProbMat.NetworkModel = function(NetM) {
 #' 
 #' @param NetM Network Model object
 #' 
-#' @return NULL - no edge probability matrix for generic network model object
+#' @return List: A list of two edge probability matrices
 #' 
 #' @export
 #' 
@@ -42,11 +43,11 @@ getEdgeProbMat.NetworkModelPair = function(NetM) {
 }
 
 
-#' Computes the edge probability matrix
+#' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network Model Object
 #' 
-#' @return Edge probability matrix defined by model
+#' @return Matrix: Edge Probability Matrix given by the model
 #' 
 #' @export
 #' 
@@ -61,7 +62,7 @@ getEdgeProbMat.NetworkModelSBM = function(NetM) {
 }
 
 
-#' Computes the edge probability matrix
+#' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network Model object
 #' 
@@ -79,11 +80,11 @@ getEdgeProbMat.NetworkModelLSM = function(NetM) {
 }
 
 
-#' Computes the edge probability matrix
+#' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network Model object
 #' 
-#' @return Edge probability matrix defined by model
+#' @return Matrix: Edge Probability Matrix given by the model
 #' 
 #' @export
 #' 
@@ -104,11 +105,11 @@ getEdgeProbMat.NetworkModelHRG = function(NetM) {
 
 
 
-#' Computes the edge probability matrix
+#' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network Model object
 #' 
-#' @return Edge probability matrix defined by model
+#' @return Matrix: Edge Probability Matrix given by the model
 #' 
 #' @export
 #' 
@@ -120,9 +121,6 @@ getEdgeProbMat.NetworkModelRND = function(NetM) {
   return(pmat + t(pmat))
 }
 setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelRND"), getEdgeProbMat.NetworkModelRND)
-
-
-
 
 
 
