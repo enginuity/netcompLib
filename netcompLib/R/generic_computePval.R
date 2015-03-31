@@ -257,10 +257,10 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl, mode = "de
   
   ## Do counting
   COR = NetS@correct # correction factor for block models
-  obs1_count = sapply(NetS@expand, function(x) { sum(edgesum1[x[[1]], x[[2]]]) }) / COR
-  obs2_count = sapply(NetS@expand, function(x) { sum(edgesum2[x[[1]], x[[2]]]) }) / COR
+  obs1_count = sapply(NetS@expand, function(x) { sum(edgesum1[x[[1]], x[[2]]], na.rm = TRUE) }) / COR
+  obs2_count = sapply(NetS@expand, function(x) { sum(edgesum2[x[[1]], x[[2]]], na.rm = TRUE) }) / COR
   obsc_count = obs1_count + obs2_count
-  obsp_count = sapply(NetS@expand, function(x) { sum(edgesumc[x[[1]], x[[2]]]) }) / COR
+  obsp_count = sapply(NetS@expand, function(x) { sum(edgesumc[x[[1]], x[[2]]], na.rm = TRUE) }) / COR
   cell_sizes = sapply(NetS@expand, function(x) { sum(!is.na(edgesumc[x[[1]], x[[2]]])) }) / COR
   
   ## Compute MLE Estimates
