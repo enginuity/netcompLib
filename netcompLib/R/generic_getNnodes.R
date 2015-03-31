@@ -1,7 +1,10 @@
+##@S Function to extract the number of nodes in the network
+
+## TODO: [Fully Documented] (remove this marking eventually)
 
 setGeneric("getNnodes", function(NetM) standardGeneric("getNnodes"))
 
-#' Generic Function -- Extracts the number of nodes in the network model
+#' Extracts the number of nodes in a network model
 #' 
 #' @param NetM NetworkModel object
 #' 
@@ -11,11 +14,12 @@ setGeneric("getNnodes", function(NetM) standardGeneric("getNnodes"))
 #' 
 getNnodes = function(NetM) { NULL }
 
-#' Gets the number of nodes in the network model
+
+#' Extracts the number of nodes in a network model
 #' 
-#' @param NetM Object of class NetworkModel
+#' @param NetM NetworkModel object
 #' 
-#' @return Number of nodes
+#' @return Numeric -- Number of nodes in network model
 #' 
 #' @export
 #' 
@@ -25,11 +29,11 @@ getNnodes.NetworkModel = function(NetM) {
 }
 
 
-#' Gets the number of nodes in the network model
+#' Extracts the number of nodes in a network model
 #' 
-#' @param NetM Object of class NetworkStruct
+#' @param NetM NetworkStruct object
 #' 
-#' @return Number of nodes
+#' @return Numeric -- Number of nodes in network model
 #' 
 #' @export
 #' 
@@ -39,11 +43,12 @@ getNnodes.NetworkStruct = function(NetM) {
 }
 
 
-#' Gets the number of nodes in the network model
+
+#' Extracts the number of nodes in a network model
 #' 
-#' @param NetM Object of class NetworkModelPair
+#' @param NetM NetworkModel object
 #' 
-#' @return Number of nodes
+#' @return Numeric -- Number of nodes in network model
 #' 
 #' @export
 #' 

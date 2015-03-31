@@ -1,7 +1,10 @@
+##@S Function to extract the type of network model
+
+## TODO: [Fully Documented] (remove this marking eventually)
 
 setGeneric("getNetType", function(NetM) standardGeneric("getNetType"))
 
-#' Generic Function -- Extracts the type of network model
+#' Extract the type of network model
 #' 
 #' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
@@ -15,11 +18,15 @@ getNetType = function(NetM) {
   NULL 
 }
 
-#' Extracts the type of network model
+
+
+#' Extract the type of network model
 #' 
-#' @param NetM Network Model object
+#' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @return character 'none'
+#' @param NetM Object of class NetworkModel (or inherits this type)
+#' 
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 
@@ -28,11 +35,13 @@ getNetType.NetworkModel = function(NetM) {
 }
 
 
-#' Extracts the type of network model
+#' Extract the type of network model
 #' 
-#' @param NetM Network Model object
+#' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @return character 'none'
+#' @param NetM Object of class NetworkModel (or inherits this type)
+#' 
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 
@@ -42,11 +51,13 @@ getNetType.NetworkStruct = function(NetM) {
 
 
 
-#' Extracts the type of network model
+#' Extract the type of network model
 #' 
-#' @param NetM Network Model object
+#' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @return character 'none'
+#' @param NetM Object of class NetworkModel (or inherits this type)
+#' 
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 
@@ -55,28 +66,26 @@ getNetType.NetworkModelPair = function(NetM) {
 }
 
 
-#' Returns the type of network model
+#' Extract the type of network model
 #' 
-#' Specifically for NetworkModelSBM objects, this returns "block"
+#' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @param NetM Network Model Object
+#' @param NetM Object of class NetworkModel (or inherits this type)
 #' 
-#' @return character 'block'
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 
 getNetType.NetworkModelSBM = function(NetM) { "block" }
 
 
-# Defines the NetworkModelLSM class
-
-#' Returns the type of network model
+#' Extract the type of network model
 #' 
-#' Specifically for NetworkModelLSM objects, this returns "latent"
+#' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @param NetM Network Model Object
+#' @param NetM Object of class NetworkModel (or inherits this type)
 #' 
-#' @return character 'latent'
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 
@@ -85,9 +94,11 @@ getNetType.NetworkModelLSM = function(NetM) { "latent" }
 
 #' Extract the type of network model
 #' 
-#' @param NetM Object of class NetworkStructList
+#' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @return character vector of types
+#' @param NetM Object of class NetworkModel (or inherits this type)
+#' 
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 
@@ -96,13 +107,13 @@ getNetType.NetworkStructList = function(NetM) {
 }
 
 
-#' Returns the type of network model
+#' Extract the type of network model
 #' 
-#' Specifically for NetworkModelHRG objects, this returns "tree"
+#' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @param NetM Network Model Object
+#' @param NetM Object of class NetworkModel (or inherits this type)
 #' 
-#' @return character 'tree'
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 
@@ -110,13 +121,13 @@ getNetType.NetworkModelHRG = function(NetM) { "tree" }
 
 
 
-#' Returns the type of network model
+#' Extract the type of network model
 #' 
-#' Specifically for NetworkModelRND objects, this returns "random"
+#' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @param NetM Network Model Object
+#' @param NetM Object of class NetworkModel (or inherits this type)
 #' 
-#' @return character 'random'
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 
@@ -124,12 +135,13 @@ getNetType.NetworkModelRND = function(NetM) { "random" }
 
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNetType.NetworkStructRND)
-#' <What does this function do>
+#' Extract the type of network model
 #' 
-#' @param NetM temp
+#' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @return temp
+#' @param NetM Object of class NetworkModel (or inherits this type)
+#' 
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 
@@ -137,14 +149,15 @@ getNetType.NetworkStructRND = function(NetM) {
   return("random")
 }
 
-# Generic Function Definitions --------------------------------------------
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNetType.NetworkStructHRG)
-#' <What does this function do>
+
+#' Extract the type of network model
 #' 
-#' @param NetM temp
+#' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @return temp
+#' @param NetM Object of class NetworkModel (or inherits this type)
+#' 
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 
@@ -153,12 +166,13 @@ getNetType.NetworkStructHRG = function(NetM) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getNetType.NetworkStructSBM)
-#' <What does this function do>
+#' Extract the type of network model
 #' 
-#' @param NetM temp
+#' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @return temp
+#' @param NetM Object of class NetworkModel (or inherits this type)
+#' 
+#' @return Character -- type of network model
 #' 
 #' @export
 #' 

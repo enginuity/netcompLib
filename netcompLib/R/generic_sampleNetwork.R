@@ -1,7 +1,10 @@
+##@S Function to sample a network from a specific model
+
+## TODO: [Fully Documented] (remove this marking eventually)
 
 setGeneric("sampleNetwork", function(NetM, Nobs = 1, ...) standardGeneric("sampleNetwork"))
 
-#' Generic -- Samples an observed networks from a given network model(s)
+#' Sample a network from a network model
 #' 
 #' Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is bad (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases: 
 #' If Nsim = 1, Nobs = 1 -> Result is a matrix
@@ -21,17 +24,18 @@ sampleNetwork = function(NetM, Nobs = 1, Nsim = 1) {
 }
 
 
-
-
-#' Samples any number of observed networks from a given network model
+#' Sample a network from a network model
 #' 
-#' Note -- this implementation requires the edge probability matrix. It's not really efficient (since it re-computes the edge probability matrix each time)
+#' Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is bad (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases: 
+#' If Nsim = 1, Nobs = 1 -> Result is a matrix
+#' If Nsim = 1, Nobs > 1 -> Result is an array (with third dimension equal to Nobs)
+#' If Nsim > 1 -> Result is a list of matrices or arrays (depends on Nobs)
 #' 
-#' @param NetM Network Model object
-#' @param Nobs Number of observed networks to sample
-#' @param Nsim Number of simulations (number of times to do Nobs samples)
+#' @param NetM NetworkModel object
+#' @param Nobs Number of network observations to simulate
+#' @param Nsim Number of simulations
 #' 
-#' @return List or array of simulated networks
+#' @return List or array of adjacency matrices
 #' 
 #' @export
 #' 
@@ -91,23 +95,25 @@ sampleNetwork.NetworkModel = function(NetM, Nobs = 1, Nsim = 1) {
 }
 
 
-#' Samples any number of observed networks from a given network model
+
+#' Sample a network from a network model
 #' 
-#' Note -- this implementation requires the edge probability matrix. It's not really efficient (since it re-computes the edge probability matrix each time)
+#' Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is bad (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases: 
+#' If Nsim = 1, Nobs = 1 -> Result is a matrix
+#' If Nsim = 1, Nobs > 1 -> Result is an array (with third dimension equal to Nobs)
+#' If Nsim > 1 -> Result is a list of matrices or arrays (depends on Nobs)
 #' 
-#' @param NetM Network Model object
-#' @param Nobs Number of observed networks to sample
-#' @param Nsim Number of simulations (number of times to do Nobs samples)
+#' @param NetM NetworkModel object
+#' @param Nobs Number of network observations to simulate
+#' @param Nsim Number of simulations
 #' 
-#' @return List of two lists/arrays of network models. 
+#' @return List or array of adjacency matrices
 #' 
 #' @export
 #' 
 sampleNetwork.NetworkModelPair = function(NetM, Nobs = 1, Nsim = 1) { 
   return(list(sampleNetwork(NetM@m1, Nobs = Nobs, Nsim = Nsim), sampleNetwork(NetM@m2, Nobs = Nobs, Nsim = Nsim)))
 }
-
-
 
 
 

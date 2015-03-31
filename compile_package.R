@@ -1,7 +1,7 @@
 ##@S Contains code to compile the netcomp_sbm package (to be run from R)
 
 
-# Update Documentation (if needed) ----------------------------------------
+# Update Documentation (if needed/possible) -------------------------------
 
 ## This section only needs to be run if the source code is not necessarily up to date (ie new functions were written, or if parameters were added). It will also only be run if the package actually exists. 
 if (require(codeProcessing)) {
@@ -26,5 +26,3 @@ if (require(roxygen2)) {
 
 
 ## TODO: Create function in codeProcessing that reorders generics & makes templates and such. 
-
-

@@ -1,16 +1,14 @@
+##@S Function to create a NetworkStruct object from a NetworkModel object
+
+## TODO: [Fully Documented] (remove this marking eventually)
 
 setGeneric("extractStruct", function(NetM) standardGeneric("extractStruct"))
 
-
-
-
-
-
-#' Extracts the Edge Structure from a Network Model
+#' Extracts the Edge Partition from a Network Model
 #' 
-#' @param NetM network model obj
+#' @param NetM NetworkModel object
 #' 
-#' @return network struct obj
+#' @return NetworkStruct object that corresponds with the input model
 #' 
 #' @export
 #' 
@@ -19,12 +17,11 @@ extractStruct = function(NetM) {
 }
 
 
-
-#' Extracts the Edge Structure from a Network Model
+#' Extracts the Edge Partition from a Network Model
 #' 
-#' @param NetM network model obj
+#' @param NetM NetworkModel object
 #' 
-#' @return network struct obj
+#' @return NetworkStruct object that corresponds with the input model
 #' 
 #' @export
 #' 
@@ -33,11 +30,11 @@ extractStruct.NetworkModel = function(NetM) {
 }
 
 
-#' Extracts the Edge Structure from a Network Model
+#' Extracts the Edge Partition from a Network Model
 #' 
-#' @param NetM network model obj
+#' @param NetM NetworkModel object
 #' 
-#' @return network struct obj
+#' @return NetworkStruct object that corresponds with the input model
 #' 
 #' @export
 #' 
@@ -48,17 +45,14 @@ extractStruct.NetworkModelPair = function(NetM) {
 }
 
 
-
-
-#' Extracts the Edge Structure from a Network Model
+#' Extracts the Edge Partition from a Network Model
 #' 
-#' @param NetM network model obj
+#' @param NetM NetworkModel object
 #' 
-#' @return network struct obj
+#' @return NetworkStruct object that corresponds with the input model
 #' 
 #' @export
-#' 
-extractStruct.NetworkModelSBM = function(NetM) {
+#' extractStruct.NetworkModelSBM = function(NetM) {
   # group assignments
   ga = NetM@assign
   NClass = length(unique(ga))
@@ -87,14 +81,11 @@ extractStruct.NetworkModelSBM = function(NetM) {
 }
 
 
-
-
-
-#' Extracts the Edge Structure from a Network Model
+#' Extracts the Edge Partition from a Network Model
 #' 
-#' @param NetM network model obj
+#' @param NetM NetworkModel object
 #' 
-#' @return network struct obj
+#' @return NetworkStruct object that corresponds with the input model
 #' 
 #' @export
 #' 
@@ -108,12 +99,11 @@ extractStruct.NetworkModelHRG = function(NetM) {
 }
 
 
-
-#' Extracts the Edge Structure from a Network Model
+#' Extracts the Edge Partition from a Network Model
 #' 
-#' @param NetM network model obj
+#' @param NetM NetworkModel object
 #' 
-#' @return network struct obj
+#' @return NetworkStruct object that corresponds with the input model
 #' 
 #' @export
 #' 
@@ -121,8 +111,6 @@ extractStruct.NetworkModelRND = function(NetM) {
   nets = new("NetworkStructRND", Nnodes = getNnodes(NetM), counts = NetM@counts, ids = NetM@ids)
   return(nets)
 }
-setMethod("extractStruct", signature = (NetM = "NetworkModelRND"), extractStruct.NetworkModelRND)
-
 
 
 # setMethod ---------------------------------------------------------------
@@ -130,3 +118,4 @@ setMethod("extractStruct", signature = (NetM = "NetworkModel"), extractStruct.Ne
 setMethod("extractStruct", signature = (NetM = "NetworkModelHRG"), extractStruct.NetworkModelHRG)
 setMethod("extractStruct", signature = (NetM = "NetworkModelPair"), extractStruct.NetworkModelPair)
 setMethod("extractStruct", signature = (NetM = "NetworkModelSBM"), extractStruct.NetworkModelSBM)
+setMethod("extractStruct", signature = (NetM = "NetworkModelRND"), extractStruct.NetworkModelRND)
