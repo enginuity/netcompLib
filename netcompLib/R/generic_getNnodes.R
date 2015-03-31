@@ -2,59 +2,59 @@
 
 ## TODO: [Fully Documented] (remove this marking eventually)
 
-setGeneric("getNnodes", function(NetM) standardGeneric("getNnodes"))
+setGeneric("getNnodes", function(Net) standardGeneric("getNnodes"))
 
 #' Extracts the number of nodes in a network model
 #' 
-#' @param NetM NetworkModel object
+#' @param Net NetworkModel object
 #' 
 #' @return Numeric -- Number of nodes in network model
 #' 
 #' @export
 #' 
-getNnodes = function(NetM) { NULL }
+getNnodes = function(Net) { NULL }
 
 
 #' Extracts the number of nodes in a network model
 #' 
-#' @param NetM NetworkModel object
+#' @param Net NetworkModel object
 #' 
 #' @return Numeric -- Number of nodes in network model
 #' 
 #' @export
 #' 
-getNnodes.NetworkModel = function(NetM) {
-  # NetM should be object of type NetworkModel
-  return(NetM@Nnodes)
+getNnodes.NetworkModel = function(Net) {
+  # Net should be object of type NetworkModel
+  return(Net@Nnodes)
 }
 
 
 #' Extracts the number of nodes in a network model
 #' 
-#' @param NetM NetworkStruct object
+#' @param Net NetworkStruct object
 #' 
 #' @return Numeric -- Number of nodes in network model
 #' 
 #' @export
 #' 
-getNnodes.NetworkStruct = function(NetM) {
-  # NetM should be object of type NetworkStruct
-  return(NetM@Nnodes)
+getNnodes.NetworkStruct = function(Net) {
+  # Net should be object of type NetworkStruct
+  return(Net@Nnodes)
 }
 
 
 
 #' Extracts the number of nodes in a network model
 #' 
-#' @param NetM NetworkModel object
+#' @param Net NetworkModel object
 #' 
 #' @return Numeric -- Number of nodes in network model
 #' 
 #' @export
 #' 
-getNnodes.NetworkModelPair = function(NetM) {
-  # NetM should be object of type NetworkModelPair
-  return(NetM@Nnodes)
+getNnodes.NetworkModelPair = function(Net) {
+  # Net should be object of type NetworkModelPair
+  return(Net@Nnodes)
 }
 
 
