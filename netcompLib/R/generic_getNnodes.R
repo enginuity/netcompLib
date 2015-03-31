@@ -6,7 +6,7 @@ setGeneric("getNnodes", function(Net) standardGeneric("getNnodes"))
 
 #' Extracts the number of nodes in a network model
 #' 
-#' @param Net NetworkModel object
+#' @param Net NetworkModel or NetworkStruct object
 #' 
 #' @return Numeric -- Number of nodes in network model
 #' 
@@ -17,7 +17,7 @@ getNnodes = function(Net) { NULL }
 
 #' Extracts the number of nodes in a network model
 #' 
-#' @param Net NetworkModel object
+#' @param Net NetworkModel or NetworkStruct object
 #' 
 #' @return Numeric -- Number of nodes in network model
 #' 
@@ -31,7 +31,7 @@ getNnodes.NetworkModel = function(Net) {
 
 #' Extracts the number of nodes in a network model
 #' 
-#' @param Net NetworkStruct object
+#' @param Net NetworkModel or NetworkStruct object
 #' 
 #' @return Numeric -- Number of nodes in network model
 #' 
@@ -46,7 +46,7 @@ getNnodes.NetworkStruct = function(Net) {
 
 #' Extracts the number of nodes in a network model
 #' 
-#' @param Net NetworkModel object
+#' @param Net NetworkModel or NetworkStruct object
 #' 
 #' @return Numeric -- Number of nodes in network model
 #' 
