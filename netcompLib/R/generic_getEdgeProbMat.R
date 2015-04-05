@@ -2,17 +2,18 @@
 
 ## TODO: [Fully Documented] (remove this marking eventually)
 
-setGeneric("getEdgeProbMat", function(NetM) standardGeneric("getEdgeProbMat"))
+setGeneric("getEdgeProbMat", function(NetM, mode) standardGeneric("getEdgeProbMat"))
 
 #' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network model object
+#' @param mode Either "prob" or "group": if "prob", this function returns an edge probability matrix. Else, it returns a matrix where each cell gets a group id number
 #' 
 #' @return Matrix: Edge Probability Matrix given by the model
 #' 
 #' @export
 #' 
-getEdgeProbMat = function(NetM) {
+getEdgeProbMat = function(NetM, mode = "prob") {
   return(NULL) 
 }
 
@@ -25,7 +26,7 @@ getEdgeProbMat = function(NetM) {
 #' 
 #' @export
 #' 
-getEdgeProbMat.NetworkModel = function(NetM) {
+getEdgeProbMat.NetworkModel = function(NetM, mode) {
   NULL 
 }
 
@@ -38,8 +39,8 @@ getEdgeProbMat.NetworkModel = function(NetM) {
 #' 
 #' @export
 #' 
-getEdgeProbMat.NetworkModelPair = function(NetM) {
-  return(list(getEdgeProbMat(NetM@m1),getEdgeProbMat(NetM@m2)))
+getEdgeProbMat.NetworkModelPair = function(NetM, mode) {
+  return(list(getEdgeProbMat(NetM@m1, mode),getEdgeProbMat(NetM@m2, mode)))
 }
 
 
@@ -51,10 +52,14 @@ getEdgeProbMat.NetworkModelPair = function(NetM) {
 #' 
 #' @export
 #' 
-getEdgeProbMat.NetworkModelSBM = function(NetM) {
+getEdgeProbMat.NetworkModelSBM = function(NetM, mode) {
   res = matrix(0, nrow = NetM@Nnodes, ncol = NetM@Nnodes) 
   for(j in 1:(NetM@Nnodes-1)) { for(k in (j+1):NetM@Nnodes) { 
-    res[j,k] = NetM@probmat[NetM@assign[j], NetM@assign[k]]
+    if (mode == "prob") {
+      res[j,k] = NetM@probmat[NetM@assign[j], NetM@assign[k]]
+    } else if (mode == "group") {
+      res[j,k] = NetM@assign[j] + NetM@assign[k] * NetM@Nnodes
+    }
     res[k,j] = res[j,k]
   }}
   
@@ -70,7 +75,8 @@ getEdgeProbMat.NetworkModelSBM = function(NetM) {
 #' 
 #' @export
 #' 
-getEdgeProbMat.NetworkModelLSM = function(NetM) {
+getEdgeProbMat.NetworkModelLSM = function(NetM, mode) {
+  if (mode != "prob") { stop("Invalid mode (for LSM)") }
   Nnodes = getNnodes(NetM)
   odds = exp(NetM@alpha - dist(NetM@locs))
   prob_mat = matrix(0, nrow = Nnodes, ncol = Nnodes)
@@ -88,7 +94,7 @@ getEdgeProbMat.NetworkModelLSM = function(NetM) {
 #' 
 #' @export
 #' 
-getEdgeProbMat.NetworkModelHRG = function(NetM) {
+getEdgeProbMat.NetworkModelHRG = function(NetM, mode) {
   nn = getNnodes(NetM)
   ## TODO: Rewrite closest_ancestor, so this section of code isn't this ugly. 
   
@@ -97,7 +103,11 @@ getEdgeProbMat.NetworkModelHRG = function(NetM) {
   
   out <- matrix(0, nn, nn)
   series <- lower_diag(nn)
-  out[series] <- tm$prob[clo.anc[series]-nn]
+  if (mode == "prob") {
+    out[series] <- tm$prob[clo.anc[series]-nn]
+  } else if (mode == "group") {
+    out[series] <- clo.anc[series]
+  }  
   out = out + t(out)
   return(out)
 }
@@ -113,10 +123,14 @@ getEdgeProbMat.NetworkModelHRG = function(NetM) {
 #' 
 #' @export
 #' 
-getEdgeProbMat.NetworkModelRND = function(NetM) {
+getEdgeProbMat.NetworkModelRND = function(NetM, mode) {
   pmat = matrix(0, nrow = getNnodes(NetM), ncol = getNnodes(NetM))
   for(j in seq_along(NetM@counts)) {
-    pmat[NetM@ids[[j]]] = NetM@prob[j]
+    if (mode == "prob") {
+      pmat[NetM@ids[[j]]] = NetM@prob[j]
+    } else if (mode == "group") {
+      pmat[NetM@ids[[j]]] = j
+    }
   }
   return(pmat + t(pmat))
 }
