@@ -1,4 +1,4 @@
-##@S Contains code to compile the netcomp_sbm package (to be run from R)
+##@S Contains code to compile the netcompLib package (to be run from R)
 
 
 # Update Documentation (if needed/possible) -------------------------------
