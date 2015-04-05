@@ -45,6 +45,7 @@ extractStruct.NetworkModelPair = function(NetM) {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (extractStruct.NetworkModelSBM)
 #' Extracts the Edge Partition from a Network Model
 #' 
 #' @param NetM NetworkModel object
@@ -52,6 +53,7 @@ extractStruct.NetworkModelPair = function(NetM) {
 #' @return NetworkStruct object that corresponds with the input model
 #' 
 #' @export
+#' 
 extractStruct.NetworkModelSBM = function(NetM) {
   # group assignments
   ga = NetM@assign
