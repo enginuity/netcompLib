@@ -2,10 +2,32 @@
 
 setGeneric("computeLik", function(NetM, adja, loglik) standardGeneric("computeLik"))
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeLik)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' @param adja temp
+#' @param loglik temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 computeLik = function(NetM, adja, loglik = TRUE) {
   stop("Placeholder for generic function -- this call is meaningless for a generic NetworkModel")
 }
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeLik.NetworkModel)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' @param adja temp
+#' @param loglik temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 computeLik.NetworkModel = function(NetM, adja, loglik = TRUE) {
   if (length(dim(adja)) == 2) {
     adjm = adja; Nobs = 1

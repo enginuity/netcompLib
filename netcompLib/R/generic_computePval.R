@@ -14,13 +14,13 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode) standardG
 #' @param adja2 Adjacency matrix/array
 #' @param Nobs Number of network observations per class (default = 1)
 #' @param pl A list of parameters, set by set_sim_param
-#' @param mode How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node
+#' @param mode How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node; 'chisq' gives the chi-square test statistic
 #' 
 #' @return A matrix (or a list of matrices) of p-values (depending on the testing parameters)
 #' 
 #' @export
 #' 
-computePval = function(NetS, adja1, adja2, Nobs, pl, mode) {
+computePval = function(NetS, adja1, adja2, Nobs, pl, mode = 'default') {
   stop("Placeholder for documentation purposes")
 }
 
@@ -319,6 +319,8 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl, mode = "de
     return(list(pvals = pval_matrix, nodecontrib = ncs))
   } else if (mode == "default") {
     return(pval_matrix)  
+  } else if (mode == "chisq") {
+    return(sum(cellwise_TS))
   }
 }
 

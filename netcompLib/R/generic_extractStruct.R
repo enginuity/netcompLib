@@ -52,7 +52,7 @@ extractStruct.NetworkModelPair = function(NetM) {
 #' @return NetworkStruct object that corresponds with the input model
 #' 
 #' @export
-#' extractStruct.NetworkModelSBM = function(NetM) {
+extractStruct.NetworkModelSBM = function(NetM) {
   # group assignments
   ga = NetM@assign
   NClass = length(unique(ga))
