@@ -1,6 +1,6 @@
 ##@S Function to create a NetworkModel object from a NetworkStruct object
 
-setGeneric("fitModel", function(NetS, adja) standardGeneric("extractStruct"))
+setGeneric("fitModel", function(NetS, adja) standardGeneric("fitModel"))
 
 fitModel = function(NetS, adja) {
   # if adja is null ==> fill in random uniform probabilities. 
@@ -16,7 +16,7 @@ fitModel.NetworkStructList = function(NetS, adja) {
 }
 
 fitModel.NetworkStructSBM = function(NetS, adja) {
-  res = NetworkModel(Nnodes = getNnodes(NetS), type = "block", model_param = set_model_param(block_assign = NetS@groups)
+  res = NetworkModel(Nnodes = getNnodes(NetS), type = "block", model_param = set_model_param(block_assign = NetS@groups))
   if (is.null(adja)) {
   } else {
     ## TODO: Fill in code for estimating probabilities. 
