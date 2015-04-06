@@ -116,8 +116,8 @@ extractStruct.NetworkModelRND = function(NetM) {
 
 
 # setMethod ---------------------------------------------------------------
-setMethod("extractStruct", signature = (NetM = "NetworkModel"), extractStruct.NetworkModel)
-setMethod("extractStruct", signature = (NetM = "NetworkModelHRG"), extractStruct.NetworkModelHRG)
-setMethod("extractStruct", signature = (NetM = "NetworkModelPair"), extractStruct.NetworkModelPair)
-setMethod("extractStruct", signature = (NetM = "NetworkModelSBM"), extractStruct.NetworkModelSBM)
-setMethod("extractStruct", signature = (NetM = "NetworkModelRND"), extractStruct.NetworkModelRND)
+setMethod("extractStruct", signature(NetM = "NetworkModel"), extractStruct.NetworkModel)
+setMethod("extractStruct", signature(NetM = "NetworkModelHRG"), extractStruct.NetworkModelHRG)
+setMethod("extractStruct", signature(NetM = "NetworkModelPair"), extractStruct.NetworkModelPair)
+setMethod("extractStruct", signature(NetM = "NetworkModelSBM"), extractStruct.NetworkModelSBM)
+setMethod("extractStruct", signature(NetM = "NetworkModelRND"), extractStruct.NetworkModelRND)

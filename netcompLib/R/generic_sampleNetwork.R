@@ -119,6 +119,6 @@ sampleNetwork.NetworkModelPair = function(NetM, Nobs = 1, Nsim = 1) {
 
 # setMethod ---------------------------------------------------------------
 
-setMethod("sampleNetwork", signature = (NetM = "NetworkModel"), sampleNetwork.NetworkModel)
-setMethod("sampleNetwork", signature = (NetM = "NetworkModelPair"), sampleNetwork.NetworkModelPair)
+setMethod("sampleNetwork", signature(NetM = "NetworkModel"), sampleNetwork.NetworkModel)
+setMethod("sampleNetwork", signature(NetM = "NetworkModelPair"), sampleNetwork.NetworkModelPair)
 

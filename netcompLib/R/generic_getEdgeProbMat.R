@@ -1,3 +1,4 @@
+
 ##@S Generic Function that computes the edge probability matrix of a given network model
 
 ## TODO: [Fully Documented] (remove this marking eventually)
@@ -18,9 +19,11 @@ getEdgeProbMat = function(NetM, mode = "prob") {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat.NetworkModel)
 #' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network Model object
+#' @param mode temp
 #' 
 #' @return NULL: (there is no edge probability matrix for generic network model object)
 #' 
@@ -31,9 +34,11 @@ getEdgeProbMat.NetworkModel = function(NetM, mode) {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat.NetworkModelPair)
 #' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network Model object
+#' @param mode temp
 #' 
 #' @return List: A list of two edge probability matrices
 #' 
@@ -44,9 +49,11 @@ getEdgeProbMat.NetworkModelPair = function(NetM, mode) {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat.NetworkModelSBM)
 #' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network Model Object
+#' @param mode temp
 #' 
 #' @return Matrix: Edge Probability Matrix given by the model
 #' 
@@ -67,9 +74,11 @@ getEdgeProbMat.NetworkModelSBM = function(NetM, mode) {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat.NetworkModelLSM)
 #' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network Model object
+#' @param mode temp
 #' 
 #' @return Edge probability matrix defined by model
 #' 
@@ -86,9 +95,11 @@ getEdgeProbMat.NetworkModelLSM = function(NetM, mode) {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat.NetworkModelHRG)
 #' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network Model object
+#' @param mode temp
 #' 
 #' @return Matrix: Edge Probability Matrix given by the model
 #' 
@@ -115,9 +126,11 @@ getEdgeProbMat.NetworkModelHRG = function(NetM, mode) {
 
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (getEdgeProbMat.NetworkModelRND)
 #' Extracts the edge probability matrix for a network model
 #' 
 #' @param NetM Network Model object
+#' @param mode temp
 #' 
 #' @return Matrix: Edge Probability Matrix given by the model
 #' 
@@ -134,14 +147,16 @@ getEdgeProbMat.NetworkModelRND = function(NetM, mode) {
   }
   return(pmat + t(pmat))
 }
-setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelRND"), getEdgeProbMat.NetworkModelRND)
+
 
 
 
 # setMethod ---------------------------------------------------------------
 
-setMethod("getEdgeProbMat", signature = (NetM = "NetworkModel"), getEdgeProbMat.NetworkModel)
-setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelHRG"), getEdgeProbMat.NetworkModelHRG)
-setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelLSM"), getEdgeProbMat.NetworkModelLSM)
-setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelPair"), getEdgeProbMat.NetworkModelPair)
-setMethod("getEdgeProbMat", signature = (NetM = "NetworkModelSBM"), getEdgeProbMat.NetworkModelSBM)
+setMethod("getEdgeProbMat", signature(NetM = "NetworkModel"), getEdgeProbMat.NetworkModel)
+setMethod("getEdgeProbMat", signature(NetM = "NetworkModelHRG"), getEdgeProbMat.NetworkModelHRG)
+setMethod("getEdgeProbMat", signature(NetM = "NetworkModelLSM"), getEdgeProbMat.NetworkModelLSM)
+setMethod("getEdgeProbMat", signature(NetM = "NetworkModelPair"), getEdgeProbMat.NetworkModelPair)
+setMethod("getEdgeProbMat", signature(NetM = "NetworkModelSBM"), getEdgeProbMat.NetworkModelSBM)
+setMethod("getEdgeProbMat", signature(NetM = "NetworkModelRND"), getEdgeProbMat.NetworkModelRND)
+
