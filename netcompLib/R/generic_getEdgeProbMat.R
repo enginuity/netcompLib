@@ -65,7 +65,7 @@ getEdgeProbMat.NetworkModelSBM = function(NetM, mode) {
     if (mode == "prob") {
       res[j,k] = NetM@probmat[NetM@assign[j], NetM@assign[k]]
     } else if (mode == "group") {
-      res[j,k] = NetM@assign[j] + NetM@assign[k] * NetM@Nnodes
+      res[j,k] = max(NetM@assign[j] + NetM@assign[k] * NetM@Nnodes, NetM@assign[k] + NetM@assign[j] * NetM@Nnodes)
     }
     res[k,j] = res[j,k]
   }}
