@@ -2,10 +2,12 @@
 ##@S These are NOT generic functions, but they DO use NetM/NetS's as arguments. 
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeDfAdj)
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeDfAdj)
 #' Function to compute the theoretical df adjustment
 #' 
 #' @param NetM temp
 #' @param NetS temp
+#' @param hidden_nodes temp
 #' 
 #' @return temp
 #' 
