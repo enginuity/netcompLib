@@ -11,11 +11,12 @@
 #' 
 #' @export
 #' 
-computeDfAdj = function(NetM, NetS) {
+computeDfAdj = function(NetM, NetS, hidden_nodes = NULL) {
+  # hidden_nodes should be a logical matrix, with TRUE identifying nodes that are hidden. 
   if (FALSE) {
     ## Test code
-    NetM = NetworkModel(Nnodes = 50, type = "block")
-    NetS = NetworkStructSBM(Nnodes = 50)
+    NetM = NetworkModel(Nnodes = 20, type = "block", model_param = set_model_param(block_assign = rep(c(1,2), each = 10), block_probs = matrix(c(.3, .3, .3, .7), nrow = 2)))
+    NetS = NetworkStructSBM(Nnodes = 20, model_param = set_model_param(block_assign = rep(c(1,2), times = 10)))
   }
   
   if (getNnodes(NetM) != getNnodes(NetS)) { stop("Number of nodes is not consistent between input NetM and NetS") }
@@ -24,16 +25,17 @@ computeDfAdj = function(NetM, NetS) {
   fit_nodeprobs = getEdgeProbMat(NetM, mode = "prob")
   test_nodeids[lower.tri(test_nodeids, diag = TRUE)] = 0
   
+  if (!is.null(hidden_nodes)) { test_nodeids[hidden_nodes] = 0 }
+  
   ids = unique(as.vector(test_nodeids))
   ids = ids[ids > 0]
   
   cors = 0 * seq_along(ids)
   for(j in seq_along(ids)) {
-    matches = test_nodeids == ids[j]
+    matches = (test_nodeids == ids[j])
     probs = fit_nodeprobs[matches]
     avprob = mean(probs)
-    count = length(probs)
-    cors[j] = (1/count * sum(probs^2) - avprob^2)  /  (avprob - avprob^2)
+    cors[j] = (mean(probs^2) - avprob^2)  /  (avprob - avprob^2)
   }
   return(1 - cors)
 }
