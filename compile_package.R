@@ -23,6 +23,11 @@ if (require(roxygen2)) {
   stop("Package 'roxygen2' is not installed: the netcompLib package is not compilable.")
 }
 
+if (FALSE) {
+  ## Code to load the library...
+  library(netcompLib)
+}
+
 
 
 ## TODO: Create function in codeProcessing that reorders generics & makes templates and such. 
