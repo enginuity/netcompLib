@@ -5,16 +5,17 @@
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeDfAdj)
 #' Function to compute the theoretical df adjustment
 #' 
-#' @param NetM temp
-#' @param NetS temp
-#' @param hidden_nodes temp
+#' @param NetM Given NetworkModel object
+#' @param NetS Given NetworkStruct object
+#' @param hidden_nodes ewefwf
 #' 
 #' @return temp
 #' 
 #' @export
 #' 
 computeDfAdj = function(NetM, NetS, hidden_nodes = NULL) {
-  # hidden_nodes should be a logical matrix, with TRUE identifying nodes that are hidden. 
+  # hidden_nodes should be a logical matrix, with TRUE identifying edges that are hidden.
+  ## TODO: [Dumb Variable Name] -- rename hidden_nodes with hidden_edges !?!??!?!
   if (FALSE) {
     ## Test code
     NetM = NetworkModel(Nnodes = 20, type = "block", model_param = set_model_param(block_assign = rep(c(1,2), each = 10), block_probs = matrix(c(.3, .3, .3, .7), nrow = 2)))
