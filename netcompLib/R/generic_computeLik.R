@@ -1,28 +1,32 @@
 ##@S Generic function that performs the hypothesis test (computes the p-value for the likelihood ratio test)
 
-setGeneric("computeLik", function(NetM, adja, loglik) standardGeneric("computeLik"))
+setGeneric("computeLik", function(NetM, adja, loglik, na.rm) standardGeneric("computeLik"))
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeLik)
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeLik)
 #' <What does this function do>
 #' 
 #' @param NetM temp
 #' @param adja temp
 #' @param loglik temp
+#' @param na.rm temp
 #' 
 #' @return temp
 #' 
 #' @export
 #' 
-computeLik = function(NetM, adja, loglik = TRUE) {
+computeLik = function(NetM, adja, loglik = TRUE, na.rm = TRUE) {
   stop("Placeholder for generic function -- this call is meaningless for a generic NetworkModel")
 }
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeLik.NetworkModel)
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeLik.NetworkModel)
 #' <What does this function do>
 #' 
 #' @param NetM temp
 #' @param adja temp
 #' @param loglik temp
+#' @param na.rm temp
 #' 
 #' @return temp
 #' 
