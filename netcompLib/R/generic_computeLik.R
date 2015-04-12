@@ -44,7 +44,7 @@ computeLik.NetworkModel = function(NetM, adja, loglik = TRUE, na.rm = TRUE) {
   
   eps = getEdgeProbMat(NetM)
   resm = adjm * log(eps) + (Nobs - adjm) * log(1 - eps)
-  res = sum(adjm[upper.tri(x = resm, diag = FALSE)], na.rm = na.rm)
+  res = sum(resm[upper.tri(x = resm, diag = FALSE)], na.rm = na.rm)
     
   if (loglik) {
     return(res) 
