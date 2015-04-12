@@ -28,7 +28,8 @@ computeLik = function(NetM, adja, loglik = TRUE) {
 #' 
 #' @export
 #' 
-computeLik.NetworkModel = function(NetM, adja, loglik = TRUE) {
+computeLik.NetworkModel = function(NetM, adja, loglik = TRUE, na.rm = TRUE) {
+  ## TODO: [Improvement] Can handle fully-missing edges, but cannot handle partially-missing edges. 
   if (length(dim(adja)) == 2) {
     adjm = adja; Nobs = 1
   } else if (length(dim(adja)) == 3) {
@@ -39,7 +40,7 @@ computeLik.NetworkModel = function(NetM, adja, loglik = TRUE) {
   
   eps = getEdgeProbMat(NetM)
   resm = adjm * log(eps) + (Nobs - adjm) * log(1 - eps)
-  res = sum(adjm[upper.tri(x = resm, diag = FALSE)])
+  res = sum(adjm[upper.tri(x = resm, diag = FALSE)], na.rm = na.rm)
     
   if (loglik) {
     return(res) 
