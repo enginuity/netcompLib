@@ -4,6 +4,7 @@
 
 setGeneric("sampleNetwork", function(NetM, Nobs = 1, ...) standardGeneric("sampleNetwork"))
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork)
 #' Sample a network from a network model
 #' 
 #' Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is bad (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases: 
@@ -11,9 +12,10 @@ setGeneric("sampleNetwork", function(NetM, Nobs = 1, ...) standardGeneric("sampl
 #' If Nsim = 1, Nobs > 1 -> Result is an array (with third dimension equal to Nobs)
 #' If Nsim > 1 -> Result is a list of matrices or arrays (depends on Nobs)
 #' 
+#' @param Nsim Number of simulations
 #' @param NetM NetworkModel object
 #' @param Nobs Number of network observations to simulate
-#' @param Nsim Number of simulations
+#' @param ... temp
 #' 
 #' @return List or array of adjacency matrices
 #' 
