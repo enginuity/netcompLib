@@ -2,7 +2,7 @@
 
 ## TODO: [Fully Documented] (remove this marking eventually)
 
-setGeneric("sampleNetwork", function(NetM, Nobs = 1, ...) standardGeneric("sampleNetwork"))
+setGeneric("sampleNetwork", function(NetM, Nobs = 1, Nsim = 1) standardGeneric("sampleNetwork"))
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork)
 #' Sample a network from a network model
@@ -12,10 +12,9 @@ setGeneric("sampleNetwork", function(NetM, Nobs = 1, ...) standardGeneric("sampl
 #' If Nsim = 1, Nobs > 1 -> Result is an array (with third dimension equal to Nobs)
 #' If Nsim > 1 -> Result is a list of matrices or arrays (depends on Nobs)
 #' 
-#' @param Nsim Number of simulations
 #' @param NetM NetworkModel object
 #' @param Nobs Number of network observations to simulate
-#' @param ... temp
+#' @param Nsim Number of simulations
 #' 
 #' @return List or array of adjacency matrices
 #' 
