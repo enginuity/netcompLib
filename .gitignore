@@ -9,3 +9,4 @@ netcomp_lib.Rproj
 *.Rd
 metacode_logs/*
 netcomp_logfile/*
+netcompLib/NAMESPACE
