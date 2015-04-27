@@ -127,7 +127,8 @@ sim_test = function(Nnodes, Nsim, gen_null = TRUE,
 #' @export
 #' 
 sim_test_v2 = function(Nnodes, Nsim, Nobs = 1, gen_null = TRUE, 
-                       gen_mode, gen_models = NULL, fit_mode, fit_models = NULL,
+                       gen_mode, gen_models = NULL, gen_models_params = set_model_param(), 
+                       fit_mode, fit_models = NULL, fit_models_params = set_model_param(),  
                        param_list, complete = FALSE, pval_adj_fx, adjmats = NULL, return_chisq = FALSE, 
                        verbose = TRUE) {
   
@@ -146,10 +147,10 @@ sim_test_v2 = function(Nnodes, Nsim, Nobs = 1, gen_null = TRUE,
   if (verbose) {cat("Simulation log \n", file = logfile, append = TRUE)}
   
   ## Generate 'generating models'
-  if (is.null(gen_models)) { gen_models = sample_generating_models(Nnodes = Nnodes, mode = gen_mode, is_null = gen_null) }
+  if (is.null(gen_models)) { gen_models = sample_generating_models(Nnodes = Nnodes, mode = gen_mode, is_null = gen_null, model_param = gen_models_params) }
   
   ## Generate 'fitting models'
-  if (is.null(fit_models)) { fit_models = sample_fitting_models(mode = fit_mode, Nnodes = Nnodes, Nmodels = Nfit) }
+  if (is.null(fit_models)) { fit_models = sample_fitting_models(mode = fit_mode, Nnodes = Nnodes, Nmodels = Nfit, model_param = fit_models_params) }
 
   partial_indices = lapply(param_list$n_models, function(x) { 1:x })
   
