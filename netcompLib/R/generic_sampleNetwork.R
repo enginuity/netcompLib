@@ -25,21 +25,6 @@ sampleNetwork = function(NetM, Nobs = 1, Nsim = 1) {
 }
 
 
-#' Sample a network from a network model
-#' 
-#' Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is bad (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases: 
-#' If Nsim = 1, Nobs = 1 -> Result is a matrix
-#' If Nsim = 1, Nobs > 1 -> Result is an array (with third dimension equal to Nobs)
-#' If Nsim > 1 -> Result is a list of matrices or arrays (depends on Nobs)
-#' 
-#' @param NetM NetworkModel object
-#' @param Nobs Number of network observations to simulate
-#' @param Nsim Number of simulations
-#' 
-#' @return List or array of adjacency matrices
-#' 
-#' @export
-#' 
 sampleNetwork.NetworkModel = function(NetM, Nobs = 1, Nsim = 1) { 
   #Nsim -- if you want multiple sets of networks from the same model, generate it all now; will be given in a list if Nsim > 1. 
   
@@ -96,22 +81,6 @@ sampleNetwork.NetworkModel = function(NetM, Nobs = 1, Nsim = 1) {
 }
 
 
-
-#' Sample a network from a network model
-#' 
-#' Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is bad (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases: 
-#' If Nsim = 1, Nobs = 1 -> Result is a matrix
-#' If Nsim = 1, Nobs > 1 -> Result is an array (with third dimension equal to Nobs)
-#' If Nsim > 1 -> Result is a list of matrices or arrays (depends on Nobs)
-#' 
-#' @param NetM NetworkModel object
-#' @param Nobs Number of network observations to simulate
-#' @param Nsim Number of simulations
-#' 
-#' @return List or array of adjacency matrices
-#' 
-#' @export
-#' 
 sampleNetwork.NetworkModelPair = function(NetM, Nobs = 1, Nsim = 1) { 
   return(list(sampleNetwork(NetM@m1, Nobs = Nobs, Nsim = Nsim), sampleNetwork(NetM@m2, Nobs = Nobs, Nsim = Nsim)))
 }

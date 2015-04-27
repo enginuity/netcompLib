@@ -17,27 +17,11 @@ extractStruct = function(NetM) {
 }
 
 
-#' Extracts the Edge Partition from a Network Model
-#' 
-#' @param NetM NetworkModel object
-#' 
-#' @return NetworkStruct object that corresponds with the input model
-#' 
-#' @export
-#' 
 extractStruct.NetworkModel = function(NetM) {
   stop("This usage case is not defined. ")
 }
 
 
-#' Extracts the Edge Partition from a Network Model
-#' 
-#' @param NetM NetworkModel object
-#' 
-#' @return NetworkStruct object that corresponds with the input model
-#' 
-#' @export
-#' 
 extractStruct.NetworkModelPair = function(NetM) {
   netsl = new("NetworkStructList", Nnodes = getNnodes(NetM), 
               models = list(extractStruct(NetM@m1), extractStruct(NetM@m2)))
@@ -45,15 +29,6 @@ extractStruct.NetworkModelPair = function(NetM) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (extractStruct.NetworkModelSBM)
-#' Extracts the Edge Partition from a Network Model
-#' 
-#' @param NetM NetworkModel object
-#' 
-#' @return NetworkStruct object that corresponds with the input model
-#' 
-#' @export
-#' 
 extractStruct.NetworkModelSBM = function(NetM) {
   # group assignments
   ga = NetM@assign
@@ -83,14 +58,6 @@ extractStruct.NetworkModelSBM = function(NetM) {
 }
 
 
-#' Extracts the Edge Partition from a Network Model
-#' 
-#' @param NetM NetworkModel object
-#' 
-#' @return NetworkStruct object that corresponds with the input model
-#' 
-#' @export
-#' 
 extractStruct.NetworkModelHRG = function(NetM) {
   tr = list(prob = NetM@prob, children = NetM@children, parents = NetM@parents, nodes = getNnodes(NetM))
   expc = expanded_children_from_tree(tr)
@@ -101,14 +68,6 @@ extractStruct.NetworkModelHRG = function(NetM) {
 }
 
 
-#' Extracts the Edge Partition from a Network Model
-#' 
-#' @param NetM NetworkModel object
-#' 
-#' @return NetworkStruct object that corresponds with the input model
-#' 
-#' @export
-#' 
 extractStruct.NetworkModelRND = function(NetM) {
   nets = new("NetworkStructRND", Nnodes = getNnodes(NetM), counts = NetM@counts, ids = NetM@ids)
   return(nets)
