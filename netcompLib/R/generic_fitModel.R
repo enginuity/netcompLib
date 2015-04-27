@@ -21,46 +21,16 @@ fitModel = function(NetS, adja) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fitModel.NetworkStruct)
-#' <What does this function do>
-#' 
-#' @param NetS temp
-#' @param adja temp
-#' 
-#' @return temp
-#' 
-#' @export
-#' 
 fitModel.NetworkStruct = function(NetS, adja) { 
   stop("No implmentation for template NetworkStruct")
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fitModel.NetworkStructList)
-#' <What does this function do>
-#' 
-#' @param NetS temp
-#' @param adja temp
-#' 
-#' @return temp
-#' 
-#' @export
-#' 
 fitModel.NetworkStructList = function(NetS, adja) {
   return(lapply(NetS@models, function(x) { fitModel(x, adja) } ))
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fitModel.NetworkStructSBM)
-#' <What does this function do>
-#' 
-#' @param NetS temp
-#' @param adja temp
-#' 
-#' @return temp
-#' 
-#' @export
-#' 
 fitModel.NetworkStructSBM = function(NetS, adja) {
   res = NetworkModel(Nnodes = getNnodes(NetS), type = "block", model_param = set_model_param(block_assign = NetS@groups))
   if (is.null(adja)) {
@@ -72,16 +42,6 @@ fitModel.NetworkStructSBM = function(NetS, adja) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fitModel.NetworkStructRND)
-#' <What does this function do>
-#' 
-#' @param NetS temp
-#' @param adja temp
-#' 
-#' @return temp
-#' 
-#' @export
-#' 
 fitModel.NetworkStructRND = function(NetS, adja) {
   if (is.null(adja)) {
     stop("Not implemented")
@@ -93,16 +53,6 @@ fitModel.NetworkStructRND = function(NetS, adja) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fitModel.NetworkStructHRG)
-#' <What does this function do>
-#' 
-#' @param NetS temp
-#' @param adja temp
-#' 
-#' @return temp
-#' 
-#' @export
-#' 
 fitModel.NetworkStructHRG = function(NetS, adja) {
   if (is.null(adja)) {
     stop("Not implemented")
@@ -114,12 +64,9 @@ fitModel.NetworkStructHRG = function(NetS, adja) {
 }
 
 
-
 # setMethod ---------------------------------------------------------------
-
 setMethod("fitModel", signature(NetS = "NetworkStruct"), fitModel.NetworkStruct)
 setMethod("fitModel", signature(NetS = "NetworkStructList"), fitModel.NetworkStructList)
 setMethod("fitModel", signature(NetS = "NetworkStructSBM"), fitModel.NetworkStructSBM)
 setMethod("fitModel", signature(NetS = "NetworkStructRND"), fitModel.NetworkStructRND)
 setMethod("fitModel", signature(NetS = "NetworkStructHRG"), fitModel.NetworkStructHRG)
-

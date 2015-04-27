@@ -25,65 +25,17 @@ computePval = function(NetS, adja1, adja2, Nobs, pl, mode = 'default') {
 }
 
 
-# Define new generics -----------------------------------------------------
-
-#' Computes p-value for likelihood ratio test
-#' 
-#' This function takes the input network structure (or a list of network structures), and computes the likelihood ratio test for the two input adjacency matrices (or arrays). 
-#' 
-#' @param NetS Input NetworkStruct object
-#' @param adja1 Adjacency matrix/array
-#' @param adja2 Adjacency matrix/array
-#' @param Nobs Number of network observations per class (default = 1)
-#' @param pl A list of parameters, set by set_sim_param
-#' @param mode How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node
-#' 
-#' @return A matrix (or a list of matrices) of p-values (depending on the testing parameters)
-#' 
-#' @export
-#' 
 computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
   stop("Not implemented for this case")
 }
 
 
-
-#' Computes p-value for likelihood ratio test
-#' 
-#' This function takes the input network structure (or a list of network structures), and computes the likelihood ratio test for the two input adjacency matrices (or arrays). 
-#' 
-#' @param NetS Input NetworkStruct object
-#' @param adja1 Adjacency matrix/array
-#' @param adja2 Adjacency matrix/array
-#' @param Nobs Number of network observations per class (default = 1)
-#' @param pl A list of parameters, set by set_sim_param
-#' @param mode How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node
-#' 
-#' @return A list of matrices of p-values (depending on the testing parameters)
-#' 
-#' @export
-#' 
 computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
   res = lapply(NetS@models, function(x) { computePval(x, adja1, adja2, Nobs, pl, mode = mode) } )
   return(res)
 }
 
 
-#' Computes p-value for likelihood ratio test
-#' 
-#' This function takes the input network structure (or a list of network structures), and computes the likelihood ratio test for the two input adjacency matrices (or arrays). 
-#' 
-#' @param NetS Input NetworkStruct object
-#' @param adja1 Adjacency matrix/array
-#' @param adja2 Adjacency matrix/array
-#' @param Nobs Number of network observations per class (default = 1)
-#' @param pl A list of parameters, set by set_sim_param
-#' @param mode How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node
-#' 
-#' @return A matrix (or a list of matrices) of p-values (depending on the testing parameters)
-#' 
-#' @export
-#' 
 computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
@@ -145,21 +97,6 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs, pl, mode = "de
 }
 
 
-#' Computes p-value for likelihood ratio test
-#' 
-#' This function takes the input network structure (or a list of network structures), and computes the likelihood ratio test for the two input adjacency matrices (or arrays). 
-#' 
-#' @param NetS Input NetworkStruct object
-#' @param adja1 Adjacency matrix/array
-#' @param adja2 Adjacency matrix/array
-#' @param Nobs Number of network observations per class (default = 1)
-#' @param pl A list of parameters, set by set_sim_param
-#' @param mode How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node
-#' 
-#' @return A matrix (or a list of matrices) of p-values (depending on the testing parameters)
-#' 
-#' @export
-#' 
 computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
@@ -221,21 +158,6 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs, pl, mode = "de
 }
 
 
-#' Computes p-value for likelihood ratio test
-#' 
-#' This function takes the input network structure (or a list of network structures), and computes the likelihood ratio test for the two input adjacency matrices (or arrays). 
-#' 
-#' @param NetS Input NetworkStruct object
-#' @param adja1 Adjacency matrix/array
-#' @param adja2 Adjacency matrix/array
-#' @param Nobs Number of network observations per class (default = 1)
-#' @param pl A list of parameters, set by set_sim_param
-#' @param mode How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node
-#' 
-#' @return A matrix (or a list of matrices) of p-values (depending on the testing parameters)
-#' 
-#' @export
-#' 
 computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
@@ -323,9 +245,6 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl, mode = "de
     return(sum(cellwise_TS))
   }
 }
-
-
-
 
 
 # setMethod ---------------------------------------------------------------
