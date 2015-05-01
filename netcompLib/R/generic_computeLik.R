@@ -2,15 +2,14 @@
 
 setGeneric("computeLik", function(NetM, adja, loglik, na.rm) standardGeneric("computeLik"))
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeLik)
-#' <What does this function do>
+#' Compute Likelihood of Network given a model
 #' 
-#' @param NetM temp
-#' @param adja temp
-#' @param loglik temp
-#' @param na.rm temp
+#' @param NetM Network Model 
+#' @param adja Adjacency matrix/array
+#' @param loglik if true -- give log-likelihood instead of likelihood
+#' @param na.rm if true -- ignores NAs in the adjacency matrix
 #' 
-#' @return temp
+#' @return likelihood (or log-likelihood)
 #' 
 #' @export
 #' 
