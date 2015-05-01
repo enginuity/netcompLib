@@ -106,3 +106,32 @@ compute_KLdist = function(tree1, tree2) {
 }
 
 
+
+compute_KLdist_epmat = function(p1 = NULL, p2 = NULL, plist = NULL) {
+  ## computes the KL distance if p1, p2 are edge prob matrices (or if plist is a list of two edge probability matrices)
+  if (is.null(p1)) {
+    p1 = plist[[1]]
+    p2 = plist[[2]]
+  }
+  diag(p1) <- 0.5
+  diag(p2) <- 0.5
+  
+  q1 = 1 - p1
+  q2 = 1 - p2
+  
+  res = log(q1) - log(q2) + p1 * (log( (p1 / q1) / (p2 / q2 ) ) )
+  diag(res) <- 0
+  return(sum(res))
+}
+
+
+compute_sym_KLd = function(p1, p2) {
+  ## computes the symmetric kl distance
+  
+  k1 = compute_KLdist_epmat(p1, p2)
+  k2 = compute_KLdist_epmat(p2, p1)
+  return(0.5 * (k1 + k2))
+}
+
+
+
