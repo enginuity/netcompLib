@@ -1,7 +1,4 @@
-
 ##@S Generic Function that computes the edge probability matrix of a given network model
-
-## TODO: [Fully Documented] (remove this marking eventually)
 
 setGeneric("getEdgeProbMat", function(NetM, mode) standardGeneric("getEdgeProbMat"))
 

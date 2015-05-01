@@ -1,8 +1,5 @@
 ##@S Function to extract the type of network model
 
-## TODO: [Fully Documented] (remove this marking eventually)
-## TODO: [Fix Documentation] Documentation for parameter 'Net', 'NetM', 'NetS' should be updated (and made consistent throughout the entire project)
-
 setGeneric("getNetType", function(Net) standardGeneric("getNetType"))
 
 #' Extract the type of network model

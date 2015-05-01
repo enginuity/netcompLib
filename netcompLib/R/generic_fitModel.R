@@ -2,20 +2,19 @@
 
 setGeneric("fitModel", function(NetS, adja) standardGeneric("fitModel"))
 
-## TODO: Figure out why roxygen documentation doesn't seem to work ?!?!?! it behaves differently for whatever reason. there's something strange with this file ???
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fitModel)
 #' Estimates the best-fit model for given structure
 #' 
+#' Note: if adja is NULL, will fill in random probabilities drawn from an uniform distribution
+#' 
 #' @param NetS NetworkStruct object
-#' @param adja temp
+#' @param adja adjacency array/ matrix
 #' 
 #' @return NetworkModel object containing best-fit model per structure. 
 #' 
 #' @export
 #' 
 fitModel = function(NetS, adja) {
-  # if adja is null then fill in random uniform probabilities. 
   stop("No implementation in template")
   return(NULL)
 }

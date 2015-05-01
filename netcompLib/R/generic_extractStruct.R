@@ -1,7 +1,5 @@
 ##@S Function to create a NetworkStruct object from a NetworkModel object
 
-## TODO: [Fully Documented] (remove this marking eventually)
-
 setGeneric("extractStruct", function(NetM) standardGeneric("extractStruct"))
 
 #' Extracts the Edge Partition from a Network Model

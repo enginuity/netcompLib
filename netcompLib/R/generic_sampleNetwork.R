@@ -1,10 +1,8 @@
 ##@S Function to sample a network from a specific model
 
-## TODO: [Fully Documented] (remove this marking eventually)
-
 setGeneric("sampleNetwork", function(NetM, Nobs = 1, Nsim = 1) standardGeneric("sampleNetwork"))
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sampleNetwork)
+
 #' Sample a network from a network model
 #' 
 #' Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is bad (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases: 
