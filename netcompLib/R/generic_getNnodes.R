@@ -1,7 +1,5 @@
 ##@S Function to extract the number of nodes in the network
 
-## TODO: [Fully Documented] (remove this marking eventually)
-
 setGeneric("getNnodes", function(Net) standardGeneric("getNnodes"))
 
 #' Extracts the number of nodes in a network model
@@ -34,7 +32,6 @@ getNnodes.NetworkModelPair = function(Net) {
 
 
 # setMethod ---------------------------------------------------------------
-
 setMethod("getNnodes", signature("NetworkModel"), getNnodes.NetworkModel)
 setMethod("getNnodes", signature("NetworkModelPair"), getNnodes.NetworkModelPair)
 setMethod("getNnodes", signature("NetworkStruct"), getNnodes.NetworkStruct)

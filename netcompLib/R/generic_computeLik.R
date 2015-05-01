@@ -19,7 +19,6 @@ computeLik = function(NetM, adja, loglik = TRUE, na.rm = TRUE) {
 
 
 computeLik.NetworkModel = function(NetM, adja, loglik = TRUE, na.rm = TRUE) {
-  ## TODO: [Improvement] Can handle fully-missing edges, but cannot handle partially-missing edges. 
   if (length(dim(adja)) == 2) {
     adjm = adja; Nobs = 1
   } else if (length(dim(adja)) == 3) {

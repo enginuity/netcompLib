@@ -1,6 +1,5 @@
 ##@S Generic function that performs the hypothesis test (computes the p-value for the likelihood ratio test)
 
-## TODO: [Fully Documented] (remove this marking eventually)
 ## TODO: [Implement] The 'mode' parameter only works for SBMs right now. 
 
 setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode) standardGeneric("computePval"))
