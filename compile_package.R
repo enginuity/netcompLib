@@ -8,7 +8,7 @@ if (require(codeProcessing)) {
   ## This is a package I've written to speed up my own coding efficiency to use when rewriting code / package writing
   
   ## Update documentation -- this looks for new parameters and creates documentation lines for it
-  update_fx_documentation(FD = FilesDescription(dirlist = "netcompLib/R/"), test_run = FALSE, regexp_nodocu = "[.]")
+  update_fx_documentation(FD = FilesDescription(dirlist = "netcompLib/R/"), test_run = FALSE, regexp_nodocu = "[.]") -> temp_out
 }
 
 # Compile Package ---------------------------------------------------------
