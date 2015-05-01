@@ -1,5 +1,5 @@
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (plot_probmatrix)
+
 #' Plots a heatmap of a probability matrix
 #' 
 #' @param pm Probability matrix
@@ -7,7 +7,7 @@
 #' @param is_dm T/F: If TRUE, input matrix is on a [-1,1] scale (as a difference of probability matrices)
 #' @param only_legend T/F: If TRUE: ONLY plot the legend
 #' @param colors Colors to use in the heat map (as a vector of hex values)
-#' @param ... temp
+#' @param ... Other variables to be passed to 'plot'
 #' 
 #' @return Nothing; produces a plot (standard R plot functions)
 #' 
