@@ -1,7 +1,6 @@
 ## Collection of functions to set parameters... 
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (set_model_param)
 #' Create a list of model parameters
 #' 
 #' This function sets up the model parameters to be passed into model generation functions (eg. sets the max number of blocks in a SBM). There are default parameters that are used if this function is called with no arguments. 
@@ -10,8 +9,8 @@
 #' @param pmax Maximal possible edge probability
 #' @param block_nclass Number of blocks in block model
 #' @param block_avgdensity Set average density in block model (ignored if NULL)
-#' @param block_assign temp
-#' @param block_probs temp
+#' @param block_assign vector of block assignments
+#' @param block_probs matrix of block probabilities
 #' @param random_ngroups Number of groups for completely random edge partition
 #' @param tree_type Randomization on structure of tree: can be "left", "random", or "original"
 #' @param latent_dim Dimension of latent space in latent space models
