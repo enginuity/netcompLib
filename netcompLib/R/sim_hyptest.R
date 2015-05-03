@@ -16,26 +16,22 @@
 sim_hyptest = function(gen_NetMPair, fit_NetSList, adjm_list = NULL, 
                        Nobs = 1, Nsim = 100, param_list = set_sim_param(), 
                        pval_adj_fx = list(mult_bonferroni, mult_pearson, mult_highcrit), verbose = TRUE) {
-  
+  ## TODO: add to documentation
   ## adjm_list -- if null, ignore. if non-null, we can ignore gen_NetMPair (since the adjacency matrix list is already passed in)
   
+  ## Test case
   if(FALSE) {
-    library(netcompLib)
-    library(abind)
+    library(netcompLib); library(abind)
     load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
     
     gen_NetMPair = NetworkModelPair(NetworkModelSBM(Nnodes = 30), NetworkModelSBM(Nnodes = 30), is_null = FALSE)
     fit_NetSList = NetworkStructList(Nnodes = 30, Nmodels = 100, type = "block")
     Nobs = 1; Nsim = 100; verbose = TRUE;
     param_list = set_sim_param(cc_adj = c(0,1,2), thres_ignore = c(5, 10), n_models = c(1, 25, 50, 100))
-    pval_adj_fx = list(mult_bonferroni, mult_pearson, mult_highcrit)
   }
-  # Does simulation for a given pair of NetM, NetS
-  Nfit = max(param_list$n_models)
-  dir.create("netcomp_logfile", showWarnings = FALSE)
-  logfile = paste("netcomp_logfile/SIMNULL_", gsub("[^0-9]", "", Sys.time()), "_log.txt", sep = "")  
-  if (verbose) {cat("Simulation log \n", file = logfile, append = TRUE)}
   
+  # Check that enough models were generated
+  Nfit = max(param_list$n_models)
   if (Nfit > length(fit_NetSList@models)) { stop("Not enough fitted models generated") }
   partial_indices = lapply(param_list$n_models, function(x) { 1:x })
   
@@ -63,4 +59,5 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList, adjm_list = NULL,
   }
   return(result_list)
 }
+
 
