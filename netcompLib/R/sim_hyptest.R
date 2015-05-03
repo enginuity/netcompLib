@@ -1,8 +1,10 @@
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sim_hyptest)
 #' Do simulations for the hypothesis testing, using the new code. 
 #' 
 #' @param gen_NetMPair NetworkModelPair object
 #' @param fit_NetSList NetworkStructList object
+#' @param adjm_list temp
 #' @param Nobs Number network observations (default = 1)
 #' @param Nsim Number of simulations to do
 #' @param param_list Parameter list for testing procedure
@@ -62,6 +64,21 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList, adjm_list = NULL,
 
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sim_critvals)
+#' <What does this function do>
+#' 
+#' @param NetMPair temp
+#' @param Nsim temp
+#' @param Nobs temp
+#' @param fit_models_type temp
+#' @param fit_models_params temp
+#' @param param_list temp
+#' @param pval_adj_fx temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_type, fit_models_params = set_model_param(), param_list = set_sim_param(), pval_adj_fx = list(mult_pearson, mult_highcrit)) { 
   ## netMPair = generating model pair, can be null hypothesis
   # fit_models_type = 'block', 'tree', 'random' -- should add this parameter to set_model_param?
