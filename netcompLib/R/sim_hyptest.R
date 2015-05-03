@@ -49,7 +49,7 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList, Nobs = 1, Nsim = 100, param_l
     pval_reslist[[j]] = abind(pval_results, along = 3)
     
     for(f in seq_along(pval_adj_fx)) {
-      result_list[[f]][[j]] = array(0, dim = c(length(param_list$cc_adj), length(param_list$thres_ignore), length(param_list$n_models), length(param_list$alphas)))
+      result_list[[f]][[j]] = array(0, dim = c(length(param_list$cc_adj), length(param_list$thres_ignore), length(param_list$n_models), length(param_list$alphas)), dimnames = list(cc_adj = param_list$cc_adj, thres_ignore = param_list$thres_ignore, n_models = param_list$n_models, alphas = param_list$alphas))
       for (k in seq_along(param_list$n_models)) {
         for (a in seq_along(param_list$alphas)) {
           result_list[[f]][[j]][,,k,a] = apply(pval_reslist[[j]][,,partial_indices[[k]], drop = FALSE], c(1,2),pval_adj_fx[[f]])
