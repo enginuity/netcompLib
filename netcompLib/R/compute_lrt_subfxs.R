@@ -1,16 +1,14 @@
 ## Revision of LRT computations. Hopefully is faster! Is list-ified for new parametrization of models. 
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fast_compute_pval_v2)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fast_compute_pval_v2)
 #' Runs test for a set of fixed trees. Returns matrix of p-values based on parameter settings. 
 #' 
 #' @param adja1 Adjacency array 1
 #' @param adja2 Adjacency array 2
-#' @param Nobs temp
+#' @param Nobs Number of network observations
 #' @param pl Parameter list
 #' @param fit_models Fixed models list for testing
-#' @param return_chisq temp
+#' @param return_chisq T/F -- return chi-square statistic instead of p-value
 #' 
 #' @return Matrix of p-values (based on parameter list)
 #' 
@@ -106,19 +104,16 @@ fast_compute_pval_v2 = function(adja1, adja2, Nobs, pl, fit_models, return_chisq
 }
 
 
-
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (slow_compute_pval)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (slow_compute_pval)
 #' Runs test for a set of fixed trees. Returns matrix of p-values based on parameter settings. 
 #' 
 #' This function is linked with fast_compute_pval_v2 -- this function just breaks the faster version into sub-functions for ease of testing. 
 #' 
 #' @param adja1 Adjacency array 1
 #' @param adja2 Adjacency array 2
-#' @param Nobs temp
+#' @param Nobs number of netowrk observations
 #' @param pl Parameter list
 #' @param fit_models Fixed models list for testing
-#' @param return_chisq temp
+#' @param return_chisq t/f -- return chi-square statistic
 #' 
 #' @return Matrix of p-values (based on parameter list)
 #' 
@@ -149,13 +144,11 @@ slow_compute_pval = function(adja1, adja2, Nobs, pl, fit_models, return_chisq = 
 }
 
 
-  
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (slow_compute_general_cellwise_mles)
 #' Compute cell-wise MLEs and return all of the components needed
 #' 
 #' @param adja1 Adjacency array 1
 #' @param adja2 Adjacency array 2
-#' @param Nobs temp
+#' @param Nobs number of network observations
 #' @param fit_models Fixed models list for testing
 #' 
 #' @return List of many results
@@ -248,15 +241,13 @@ slow_compute_cellwise_logliks = function(obs1_count_list, obs2_count_list, obsc_
 }
 
 
-
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (slow_compute_adjust_pvals)
 #' Compute adjusted p-values
 #' 
 #' @param pl Parameter list
 #' @param cell_corrs List of cell-wise correlation estimates
 #' @param cell_sizes_list List of cell-sizes
 #' @param cellwise_TS List of cell-wise test statistics (-2 loglikelihoodratio)
-#' @param return_chisq temp
+#' @param return_chisq T/f -- return chi-square statistic vs. pvalue
 #' 
 #' @return Matrix of p-values
 #' 
