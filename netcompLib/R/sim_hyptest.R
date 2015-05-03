@@ -13,7 +13,12 @@
 #' 
 #' @export
 #' 
-sim_hyptest = function(gen_NetMPair, fit_NetSList, Nobs = 1, Nsim = 100, param_list, pval_adj_fx = list(mult_bonferroni, mult_pearson, mult_highcrit), verbose = TRUE) {
+sim_hyptest = function(gen_NetMPair, fit_NetSList, adjm_list = NULL, 
+                       Nobs = 1, Nsim = 100, param_list = set_sim_param(), 
+                       pval_adj_fx = list(mult_bonferroni, mult_pearson, mult_highcrit), verbose = TRUE) {
+  
+  ## adjm_list -- if null, ignore. if non-null, we can ignore gen_NetMPair (since the adjacency matrix list is already passed in)
+  
   if(FALSE) {
     library(netcompLib)
     library(abind)
@@ -38,9 +43,8 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList, Nobs = 1, Nsim = 100, param_l
   result_list = list(); for(f in seq_along(pval_adj_fx)) { result_list[[f]] = list() } 
   pval_reslist = list()  
   
-  ## Generate adjacency matrices
-  adjm_list = sampleNetwork(gen_NetMPair, Nsim = Nsim) # This is two lists of adjacency arrays. 
-  # TODO: allow inputting an adjm_list instead of having to generate a random one
+  ## Generate two lists of adjacency arrays
+  if (is.null(adjm_list)) { adjm_list = sampleNetwork(gen_NetMPair, Nsim = Nsim) }
   
   ## Do simulations
   for(j in 1:Nsim) {  
