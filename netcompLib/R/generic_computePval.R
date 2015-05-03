@@ -1,7 +1,5 @@
 ##@S Generic function that performs the hypothesis test (computes the p-value for the likelihood ratio test)
 
-## TODO: [Implement] The 'mode' parameter only works for SBMs right now. 
-
 setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode) standardGeneric("computePval"))
 
 #' Computes p-value for likelihood ratio test
@@ -92,7 +90,33 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs, pl, mode = "de
     pval_matrix[,i] = pchisq(csq, dfs, lower.tail = FALSE)
   }
   
-  return(pval_matrix)  
+  ## Compute edgewise LL's if desired
+  if (mode == "nodewise") {
+    ## TODO: Make this faster if necessary. 
+    ncs = rep(0, times = nrow(edgesum1))
+    mlenull = 0 * edgesum1
+    mlealt1 = 0 * edgesum1
+    mlealt2 = 0 * edgesum1
+    for(pp in seq_along(NetS@ids)) {
+      mlenull[NetS@ids[[pp]]] = (mle_pc[pp])
+      mlealt1[NetS@ids[[pp]]] = (mle_p1[pp])
+      mlealt2[NetS@ids[[pp]]] = (mle_p2[pp])
+    }
+    mlenull = mlenull + t(mlenull); mlealt1 = mlealt1 + t(mlealt1); mlealt2 = mlealt2 + t(mlealt2)
+    llnull = edgesum1 * log(mlenull) + (Nobs - edgesum1) * log(1 - mlenull) + edgesum2 * log(mlenull) + (Nobs - edgesum2) * log(1 - mlenull)
+    llalt1 = edgesum1 * log(mlealt1) + (Nobs - edgesum1) * log(1 - mlealt1)
+    llalt2 = edgesum2 * log(mlealt2) + (Nobs - edgesum2) * log(1 - mlealt2)
+    diag(llnull) = 0; diag(llalt1) = 0; diag(llalt2) = 0
+    
+    res = -2 * (llnull - llalt1 - llalt2)
+    ncs = apply(res, 1, sum)
+    
+    return(list(pvals = pval_matrix, nodecontrib = ncs))
+  } else if (mode == "default") {
+    return(pval_matrix)  
+  } else if (mode == "chisq") {
+    return(sum(cellwise_TS))
+  }
 }
 
 
@@ -152,8 +176,36 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs, pl, mode = "de
     dfs = apply(df_adjs[to_keep,,drop = FALSE], 2, sum)
     pval_matrix[,i] = pchisq(csq, dfs, lower.tail = FALSE)
   }
-  
-  return(pval_matrix)  
+
+  ## Compute edgewise LL's if desired
+  if (mode == "nodewise") {
+    ## TODO: Make this faster if necessary. 
+    ncs = rep(0, times = nrow(edgesum1))
+    mlenull = 0 * edgesum1
+    mlealt1 = 0 * edgesum1
+    mlealt2 = 0 * edgesum1
+    for(pp in seq_along(NetS@expand)) {
+      mlenull[NetS@expand[[pp]][[1]], NetS@expand[[pp]][[2]]] = (mle_pc[pp])
+      mlealt1[NetS@expand[[pp]][[1]], NetS@expand[[pp]][[2]]] = (mle_p1[pp])
+      mlealt2[NetS@expand[[pp]][[1]], NetS@expand[[pp]][[2]]] = (mle_p2[pp])
+      mlenull[NetS@expand[[pp]][[2]], NetS@expand[[pp]][[1]]] = (mle_pc[pp])
+      mlealt1[NetS@expand[[pp]][[2]], NetS@expand[[pp]][[1]]] = (mle_p1[pp])
+      mlealt2[NetS@expand[[pp]][[2]], NetS@expand[[pp]][[1]]] = (mle_p2[pp])
+    }
+    llnull = edgesum1 * log(mlenull) + (Nobs - edgesum1) * log(1 - mlenull) + edgesum2 * log(mlenull) + (Nobs - edgesum2) * log(1 - mlenull)
+    llalt1 = edgesum1 * log(mlealt1) + (Nobs - edgesum1) * log(1 - mlealt1)
+    llalt2 = edgesum2 * log(mlealt2) + (Nobs - edgesum2) * log(1 - mlealt2)
+    diag(llnull) = 0; diag(llalt1) = 0; diag(llalt2) = 0
+    
+    res = -2 * (llnull - llalt1 - llalt2)
+    ncs = apply(res, 1, sum)
+    
+    return(list(pvals = pval_matrix, nodecontrib = ncs))
+  } else if (mode == "default") {
+    return(pval_matrix)  
+  } else if (mode == "chisq") {
+    return(sum(cellwise_TS))
+  }
 }
 
 
