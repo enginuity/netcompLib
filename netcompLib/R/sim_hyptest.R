@@ -63,25 +63,21 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList, adjm_list = NULL,
 }
 
 
-
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sim_critvals)
-#' <What does this function do>
+#' Simulates critical values for each type of multiple testing adjustment
 #' 
-#' @param NetMPair temp
-#' @param Nsim temp
-#' @param Nobs temp
-#' @param fit_models_type temp
-#' @param fit_models_params temp
-#' @param param_list temp
-#' @param pval_adj_fx temp
+#' @param NetMPair pair of network models
+#' @param Nsim number of simulations
+#' @param Nobs number of network observations
+#' @param fit_models_type type of model for fitting purpposes -- 'block', 'tree', or 'random'
+#' @param fit_models_params parameter settings
+#' @param param_list list of parameters for testing
+#' @param pval_adj_fx functions for p-value adjustment
 #' 
-#' @return temp
+#' @return list of arrays of critical values
 #' 
 #' @export
 #' 
 sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_type, fit_models_params = set_model_param(), param_list = set_sim_param(), pval_adj_fx = list(mult_pearson, mult_highcrit)) { 
-  ## netMPair = generating model pair, can be null hypothesis
-  # fit_models_type = 'block', 'tree', 'random' -- should add this parameter to set_model_param?
   
   sim_vals = sim_hyptest(
     gen_NetMPair = NetMPair, fit_NetSList = NetworkStructList(
@@ -92,8 +88,44 @@ sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_type, fit_mod
   
   res_list = list()
   for(j in seq_along(pval_adj_fx)) {
+    res_list[[j]] = array(data = NA, dim = )
+    
+    
     res_list[[j]] = sapply(seq_along(param_list$n_models), function(y) { quantile(x = sapply(sim_vals[[2]], function(x) {x[1,1,y,1]}), probs = 0.95) })
+    ## TODO: probs shouldn't always be 0.95; this should depend on alpha.
+    ## TODO: thus, need to get critical values for not only this specific combination of param_list
   }
   return(res_list)
+}
+
+setup_array = function(pl) {
+  ## creates an array that names things properly
+  if (!is.list(pl)) { stop("Input is not a list") }
+  
+  lengths = sapply(pl, length)
+  namelist = list()
+  for (j in seq_along(pl)) {
+    namelist[[names(pl)[j]]] = pl[[j]]
+  }
+  
+  res = array(NA, dim = lengths, dimnames = namelist)
+  return(res)
+}
+
+sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_momdels) { 
+  ## rl should be a the output of sim_hyptest
+  ## is similar to extract_result_list (but not sure to remove extract_result_list yet)
+  ## extracts results of a certain type
+  
+  i1 = which(pl$cc_adj == cc_adj)
+  i2 = which(pl$thres_ignore == thres_ignore)
+  i3 = which(pl$n_models == n_models)
+  i4 = which(pl$alphas == alphas)
+  
+  res = matrix(-1, nrow = length(rl[[1]]), ncol = length(rl))
+  for(j in seq_along(rl)) {
+    res[,j] = sapply(rl[[j]], function(x) { x[i1, i2, i3, i4]} )
+  }
+  return(res)
 }
 
