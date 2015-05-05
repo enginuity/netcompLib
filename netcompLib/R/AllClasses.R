@@ -28,11 +28,12 @@ setClass("NetworkStructList", representation(models = "list"), contains = "Netwo
 #' 
 #' @export
 #' 
-NetworkModel = function(Nnodes = 10, type = "none", model_param = set_model_param()) {
+NetworkModel = function(Nnodes = NULL, type = NULL, model_param = set_model_param()) {
   # creates a default networkmodel object -- this is the default constructor, but probably should never be used. the specific ones for a specific model should be used. 
   # maybe want to make this eventually call the network generation methods
   
   ## currently this does nothing but return a lame object, that satisfies the generic methods (although the generic methods would not do much?)
+  if (is.null(type)) { type = model_param$type }
   if (type == "none") { return(new("NetworkModel", Nnodes = Nnodes)) }
   if (type == "block") { return(NetworkModelSBM(Nnodes = Nnodes, model_param = model_param)) }
   if (type == "tree") { return(NetworkModelHRG(Nnodes = Nnodes, model_param = model_param)) }
@@ -40,8 +41,6 @@ NetworkModel = function(Nnodes = 10, type = "none", model_param = set_model_para
   if (type == "random") { return(NetworkModelRND(Nnodes = Nnodes, model_param = model_param)) }
   stop("Invalid 'type' specified")
 }
-
-
 
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelPair)
@@ -59,6 +58,7 @@ NetworkModel = function(Nnodes = 10, type = "none", model_param = set_model_para
 #' @export
 #' 
 NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE) {
+  ## TODO: Make m1/m2 more extensible (=> can input param list)
   if (is_null) {
     netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m1, is_null = TRUE)
   } else {
@@ -81,7 +81,8 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE) {
 #' 
 #' @export
 #' 
-NetworkModelSBM = function(Nnodes = 10, model_param = set_model_param()) {
+NetworkModelSBM = function(Nnodes = NULL, model_param = set_model_param()) {
+  if (is.null(Nnodes)) { Nnodes = model_param$Nnodes }
   
   ## Helper function for adjusting block model probabilities  
   adjust_blockprobs = function(mod, avgden = 0.4, plimit = c(0.05, 0.95)) {
@@ -160,7 +161,8 @@ NetworkModelSBM = function(Nnodes = 10, model_param = set_model_param()) {
 #' 
 #' @export
 #' 
-NetworkModelLSM = function(Nnodes = 10, model_param = set_model_param()) {
+NetworkModelLSM = function(Nnodes = NULL, model_param = set_model_param()) {
+  if (is.null(Nnodes)) { Nnodes = model_param$Nnodes }
   
   K = model_param$latent_nclass
   D = model_param$latent_dim
@@ -203,7 +205,9 @@ NetworkModelLSM = function(Nnodes = 10, model_param = set_model_param()) {
 #' 
 #' @export
 #' 
-NetworkModelRND = function(Nnodes = 10, model_param = set_model_param()) {
+NetworkModelRND = function(Nnodes = NULL, model_param = set_model_param()) {
+  if (is.null(Nnodes)) { Nnodes = model_param$Nnodes }
+  
   rnd_Ngroups = model_param$random_ngroups
   
   # Compute index numbers of the lower-diagonal portion of the matrix
@@ -249,10 +253,11 @@ NetworkModelRND = function(Nnodes = 10, model_param = set_model_param()) {
 #' 
 #' @export
 #' 
-NetworkStruct = function(Nnodes = 10, type = "none", model_param = set_model_param()) {
+NetworkStruct = function(Nnodes = NULL, type = NULL, model_param = set_model_param()) {
   # creates a default NetworkStruct object -- this is the default constructor, but probably should never be used. the specific ones for a specific model should be used. 
   # maybe want to make this eventually call the network generation methods
   
+  if (is.null(type)) { type = model_param$type }
   ## currently this does nothing but return a lame object, that satisfies the generic methods (although the generic methods would not do much?)
   if (type == "none") { return(new("NetworkStruct", Nnodes = Nnodes)) }
   if (type == "block") { return(NetworkStructSBM(Nnodes = Nnodes, model_param = model_param)) }
@@ -278,8 +283,10 @@ NetworkStruct = function(Nnodes = 10, type = "none", model_param = set_model_par
 #' 
 #' @export
 #' 
-NetworkStructList = function(Nnodes = 10, Nmodels = 10, type = "none", model_param = set_model_param()) {
+NetworkStructList = function(Nnodes = NULL, Nmodels = 10, type = NULL, model_param = set_model_param()) {
   # TODO: [Improvement] 'type' can be a vector, and call it vectorized => resulting network list has multiple types
+  if (is.null(Nnodes)) { Nnodes = model_param$Nnodes }
+  
   res = replicate(n = Nmodels, expr = NetworkStruct(Nnodes = Nnodes, type = type, model_param = model_param))
   netsl = new("NetworkStructList", Nnodes = Nnodes, models = res)
   return(netsl)
@@ -297,7 +304,9 @@ NetworkStructList = function(Nnodes = 10, Nmodels = 10, type = "none", model_par
 #' 
 #' @export
 #' 
-NetworkModelHRG = function(Nnodes = 10, model_param = set_model_param()) {
+NetworkModelHRG = function(Nnodes = NULL, model_param = set_model_param()) {
+  if (is.null(Nnodes)) { Nnodes = model_param$Nnodes }
+  
   ## TODO: - fill this in eventually 
   
   # helper function that generates a fixed structure tree (as close to binary tree as possible)
@@ -408,7 +417,9 @@ NetworkModelHRG = function(Nnodes = 10, model_param = set_model_param()) {
 #' 
 #' @export
 #' 
-NetworkStructRND = function(Nnodes = 10, model_param = set_model_param()) {
+NetworkStructRND = function(Nnodes = NULL, model_param = set_model_param()) {
+  if (is.null(Nnodes)) { Nnodes = model_param$Nnodes }
+  
   # Just generate a model and then lose the probability information. 
   NetM = NetworkModelRND(Nnodes = Nnodes, model_param = model_param)
   return(extractStruct(NetM))
@@ -426,7 +437,9 @@ NetworkStructRND = function(Nnodes = 10, model_param = set_model_param()) {
 #' 
 #' @export
 #' 
-NetworkStructHRG = function(Nnodes = 10, model_param = set_model_param()) {
+NetworkStructHRG = function(Nnodes = NULL, model_param = set_model_param()) {
+  if (is.null(Nnodes)) { Nnodes = model_param$Nnodes }
+  
   # Just generate a model and then lose the probability information. 
   NetM = NetworkModelHRG(Nnodes = Nnodes, model_param = model_param)
   return(extractStruct(NetM))
