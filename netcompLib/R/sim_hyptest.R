@@ -95,7 +95,7 @@ sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_type, fit_mod
                     cases$thres_ignore[k] == param_list$thres_ignore,
                     cases$alphas[k] == param_list$alphas, 
                     cases$n_models[k] == param_list$n_models] = quantile(
-        sim_subsetresults(sim_vals[[j]], param_list, 
+        sim_subsetresults(sim_vals[j], param_list, 
                           cases$cc_adj[k], cases$thres_ignore[k], cases$alphas[k], cases$n_models[k]), 
         probs = 1 - cases$alphas[k])
     }
@@ -103,6 +103,15 @@ sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_type, fit_mod
   return(res_list)
 }
 
+
+#' Create a named array matching a list
+#' 
+#' @param pl parameter list for which array is desired
+#' 
+#' @return NA-filled named array
+#' 
+#' @export
+#' 
 setup_array = function(pl) {
   ## creates an array that names things properly
   if (!is.list(pl)) { stop("Input is not a list") }
@@ -117,6 +126,20 @@ setup_array = function(pl) {
   return(res)
 }
 
+
+#' Extracts results matching a subset of parameters
+#' 
+#' @param rl result list
+#' @param pl parameter list
+#' @param cc_adj Amount of SE's away from the correlation estimate used (how conservative? 0 means no adjustment (and requires large sample for guarantees; larger values give a conservative p-value))
+#' @param thres_ignore Ignore edge groups with fewer than this many edges
+#' @param alphas Size of test
+#' @param n_models Number of edge partitions to use for testing
+#' 
+#' @return a matrix of results of a certain type
+#' 
+#' @export
+#' 
 sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) { 
   ## rl should be a the output of sim_hyptest
   ## is similar to extract_result_list (but not sure to remove extract_result_list yet)
