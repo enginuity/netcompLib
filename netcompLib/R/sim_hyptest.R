@@ -84,13 +84,13 @@ sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_type, fit_mod
       Nnodes = getNnodes(NetMPair), Nmodels = max(param_list$n_models), 
       type = fit_models_type, model_param = fit_models_params), 
     Nobs = Nobs, Nsim = Nsim, param_list = param_list, 
-    pval_adj_fx = pval_adj_fx, verbose = verbose)
+    pval_adj_fx = pval_adj_fx)
   
   res_list = list()
   cases = expand.grid(param_list)
   for(j in seq_along(pval_adj_fx)) {
     res_list[[j]] = setup_array(param_list)
-    for(k in cases) {
+    for(k in seq_len(nrow(cases))) {
       res_list[[j]][cases$cc_adj[k] == param_list$cc_adj, 
                     cases$thres_ignore[k] == param_list$thres_ignore,
                     cases$alphas[k] == param_list$alphas, 
