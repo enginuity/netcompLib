@@ -64,6 +64,7 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sim_critvals)
 #' Simulates critical values for each type of multiple testing adjustment
 #' 
 #' @param NetMPair pair of network models
@@ -73,13 +74,13 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
 #' @param fit_models_params parameter settings
 #' @param param_list list of parameters for testing
 #' @param pval_adj_fx functions for p-value adjustment
+#' @param verbose verbose level: if > 2, output stuff. 
 #' 
 #' @return list of arrays of critical values
 #' 
 #' @export
 #' 
 sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_type, fit_models_params = set_model_param(), param_list = set_sim_param(), pval_adj_fx = list(mult_pearson, mult_highcrit), verbose = 0) { 
-  ## TODO: add to docu -- if verbose > 2 -> output stuff in this. 
   
   if (verbose > 2) { print("** Calling sim_hyptest **")}
   sim_vals = sim_hyptest(
