@@ -61,7 +61,7 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
     }
   }
   return(result_list)
-
+}
 
 
 #' Simulates critical values for each type of multiple testing adjustment
@@ -97,9 +97,9 @@ sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_params = set_
                     cases$thres_ignore[k] == param_list$thres_ignore,
                     cases$alphas[k] == param_list$alphas, 
                     cases$n_models[k] == param_list$n_models] = quantile(
-        sim_subsetresults(sim_vals[j], param_list, 
-                          cases$cc_adj[k], cases$thres_ignore[k], cases$alphas[k], cases$n_models[k]), 
-        probs = 1 - cases$alphas[k])
+                      sim_subsetresults(sim_vals[j], param_list, 
+                                        cases$cc_adj[k], cases$thres_ignore[k], cases$alphas[k], cases$n_models[k]), 
+                      probs = 1 - cases$alphas[k])
     }
   }
   return(res_list)
@@ -157,4 +157,5 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) {
   }
   return(res)
 }
+
 
