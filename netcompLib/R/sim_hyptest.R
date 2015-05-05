@@ -10,7 +10,7 @@
 #' @param Nsim Number of simulations to do
 #' @param param_list Parameter list for testing procedure
 #' @param pval_adj_fx List of p-value adjustment functions
-#' @param verbose T/F: output?
+#' @param verbose level: 0 -- no output. > 3 -- full output
 #' 
 #' @return List of results
 #' 
@@ -18,7 +18,8 @@
 #' 
 sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_model_param(), adjm_list = NULL, 
                        Nobs = 1, Nsim = 100, param_list = set_sim_param(), 
-                       pval_adj_fx = list(mult_bonferroni, mult_pearson, mult_highcrit), verbose = TRUE) {
+                       pval_adj_fx = list(mult_bonferroni, mult_pearson, mult_highcrit), verbose = 0) {
+  
   
   ## Test case
   if(FALSE) {
@@ -46,7 +47,7 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
   
   ## Do simulations
   for(j in 1:Nsim) {  
-    if (verbose) { cat("."); if (j %% floor(Nsim/10) == 0) { print(paste("Simulation number:", j)) } }
+    if (verbose > 3) { cat("."); if (j %% floor(Nsim/10) == 0) { print(paste("Simulation number:", j)) } }
     pval_results = computePval(fit_NetSList, adja1 = adjm_list[[1]][[j]], adja2 = adjm_list[[2]][[j]], pl = param_list, Nobs = 1)
     pval_reslist[[j]] = abind(pval_results, along = 3)
     
@@ -77,15 +78,18 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
 #' 
 #' @export
 #' 
-sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_type, fit_models_params = set_model_param(), param_list = set_sim_param(), pval_adj_fx = list(mult_pearson, mult_highcrit)) { 
+sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_type, fit_models_params = set_model_param(), param_list = set_sim_param(), pval_adj_fx = list(mult_pearson, mult_highcrit), verbose = 0) { 
+  ## TODO: add to docu -- if verbose > 2 -> output stuff in this. 
   
+  if (verbose > 2) { print("** Calling sim_hyptest **")}
   sim_vals = sim_hyptest(
     gen_NetMPair = NetMPair, fit_NetSList = NetworkStructList(
       Nnodes = getNnodes(NetMPair), Nmodels = max(param_list$n_models), 
       type = fit_models_type, model_param = fit_models_params), 
     Nobs = Nobs, Nsim = Nsim, param_list = param_list, 
-    pval_adj_fx = pval_adj_fx)
+    pval_adj_fx = pval_adj_fx, verbose = verbose)
   
+  if (verbose > 2) { print("** Aggregating results **")}
   res_list = list()
   cases = expand.grid(param_list)
   for(j in seq_along(pval_adj_fx)) {
