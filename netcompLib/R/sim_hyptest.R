@@ -61,16 +61,14 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
     }
   }
   return(result_list)
-}
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sim_critvals)
+
 #' Simulates critical values for each type of multiple testing adjustment
 #' 
 #' @param NetMPair pair of network models
 #' @param Nsim number of simulations
 #' @param Nobs number of network observations
-#' @param fit_models_type type of model for fitting purpposes -- 'block', 'tree', or 'random'
 #' @param fit_models_params parameter settings
 #' @param param_list list of parameters for testing
 #' @param pval_adj_fx functions for p-value adjustment
