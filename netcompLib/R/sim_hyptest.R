@@ -83,7 +83,7 @@ sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_params = set_
   if (verbose > 2) { print("** Calling sim_hyptest **")}
   sim_vals = sim_hyptest(
     gen_NetMPair = NetMPair, 
-    fit_NetSList = NetworkStructList(model_param = fit_models_params(), Nmodels = max(param_list$n_models)),
+    fit_NetSList = NetworkStructList(model_param = fit_models_params, Nmodels = max(param_list$n_models)),
     Nobs = Nobs, Nsim = Nsim, param_list = param_list, 
     pval_adj_fx = pval_adj_fx, verbose = verbose)
   
