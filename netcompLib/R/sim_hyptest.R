@@ -80,13 +80,12 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
 #' 
 #' @export
 #' 
-sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_type, fit_models_params = set_model_param(), param_list = set_sim_param(), pval_adj_fx = list(mult_pearson, mult_highcrit), verbose = 0) { 
+sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_params = set_model_param(), param_list = set_sim_param(), pval_adj_fx = list(mult_pearson, mult_highcrit), verbose = 0) { 
   
   if (verbose > 2) { print("** Calling sim_hyptest **")}
   sim_vals = sim_hyptest(
-    gen_NetMPair = NetMPair, fit_NetSList = NetworkStructList(
-      Nnodes = getNnodes(NetMPair), Nmodels = max(param_list$n_models), 
-      type = fit_models_type, model_param = fit_models_params), 
+    gen_NetMPair = NetMPair, 
+    fit_NetSList = NetworkStructList(model_param = fit_models_params(), Nmodels = max(param_list$n_models)),
     Nobs = Nobs, Nsim = Nsim, param_list = param_list, 
     pval_adj_fx = pval_adj_fx, verbose = verbose)
   
