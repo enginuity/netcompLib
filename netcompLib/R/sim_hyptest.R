@@ -129,8 +129,8 @@ setup_array = function(pl) {
 
 #' Extracts results matching a subset of parameters
 #' 
-#' @param rl result list
-#' @param pl parameter list
+#' @param rl result list -- should be the output of sim_hyptest (or something similar)
+#' @param pl parameter list -- as given by set_sim_param()
 #' @param cc_adj Amount of SE's away from the correlation estimate used (how conservative? 0 means no adjustment (and requires large sample for guarantees; larger values give a conservative p-value))
 #' @param thres_ignore Ignore edge groups with fewer than this many edges
 #' @param alphas Size of test
@@ -141,7 +141,6 @@ setup_array = function(pl) {
 #' @export
 #' 
 sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) { 
-  ## rl should be a the output of sim_hyptest
   ## is similar to extract_result_list (but not sure to remove extract_result_list yet)
   ## extracts results of a certain type
   
