@@ -5,6 +5,8 @@
 #' 
 #' This function sets up the model parameters to be passed into model generation functions (eg. sets the max number of blocks in a SBM). There are default parameters that are used if this function is called with no arguments. 
 #' 
+#' @param Nnodes Number of nodes in the network model
+#' @param type Type of network model: can be 'none', 'block', 'tree', 'latent', or 'random'
 #' @param pmin Minimal possible edge probability
 #' @param pmax Maximal possible edge probability
 #' @param block_nclass Number of blocks in block model
@@ -23,8 +25,7 @@
 #' @export
 #' 
 set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, block_nclass = 3, block_avgdensity = NULL, block_assign = NULL, block_probs = NULL, random_ngroups = 10, tree_type = "random", latent_dim = 3, latent_nclass = 3, latent_sdcenter = 5, latent_isgennorm = TRUE) {
-  ## TODO: [Documentation] Update
-  #Nnodes = number nodes; type = 'block', 'tree', 'latent', 'random', 'none'
+  
   return(list(Nnodes = Nnodes, type = type, pmin = pmin, pmax = pmax, block_nclass = block_nclass, block_avgdensity = block_avgdensity, block_assign = block_assign, block_probs = block_probs, random_ngroups = random_ngroups, tree_type = tree_type, latent_dim = latent_dim, latent_nclass = latent_nclass, latent_sdcenter = latent_sdcenter, latent_isgennorm = latent_isgennorm))
 }
 
@@ -41,6 +42,7 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, bloc
 #' @export
 #' 
 set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_models = c(1,25,50,100)) {
+
   return(list(cc_adj = cc_adj, thres_ignore = thres_ignore, alphas = alphas, n_models = n_models))
 }
 
