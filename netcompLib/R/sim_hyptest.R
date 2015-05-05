@@ -1,10 +1,11 @@
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sim_hyptest)
+
 #' Do simulations for the hypothesis testing, using the new code. 
 #' 
 #' @param gen_NetMPair NetworkModelPair object
-#' @param fit_NetSList NetworkStructList object
-#' @param adjm_list temp
+#' @param fit_NetSList NetworkStructList object (default = NULL)
+#' @param fitm_params set_model_params() -- use this to specify the type of fitting model
+#' @param adjm_list Can input a list of adjacency matrices. If done, then the generating model pair is ignored. 
 #' @param Nobs Number network observations (default = 1)
 #' @param Nsim Number of simulations to do
 #' @param param_list Parameter list for testing procedure
@@ -15,11 +16,9 @@
 #' 
 #' @export
 #' 
-sim_hyptest = function(gen_NetMPair, fit_NetSList, adjm_list = NULL, 
+sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_model_param(), adjm_list = NULL, 
                        Nobs = 1, Nsim = 100, param_list = set_sim_param(), 
                        pval_adj_fx = list(mult_bonferroni, mult_pearson, mult_highcrit), verbose = TRUE) {
-  ## TODO: add to documentation
-  ## adjm_list -- if null, ignore. if non-null, we can ignore gen_NetMPair (since the adjacency matrix list is already passed in)
   
   ## Test case
   if(FALSE) {
@@ -34,6 +33,7 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList, adjm_list = NULL,
   
   # Check that enough models were generated
   Nfit = max(param_list$n_models)
+  if (is.null(fit_NetSList)) { fit_NetSList = NetworkStructList(Nmodels = Nfit, model_param = fitm_params) }
   if (Nfit > length(fit_NetSList@models)) { stop("Not enough fitted models generated") }
   partial_indices = lapply(param_list$n_models, function(x) { 1:x })
   
