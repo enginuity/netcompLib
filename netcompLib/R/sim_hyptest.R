@@ -87,13 +87,18 @@ sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_models_type, fit_mod
     pval_adj_fx = pval_adj_fx, verbose = verbose)
   
   res_list = list()
+  cases = expand.grid(param_list)
   for(j in seq_along(pval_adj_fx)) {
-    res_list[[j]] = array(data = NA, dim = )
-    
-    
-    res_list[[j]] = sapply(seq_along(param_list$n_models), function(y) { quantile(x = sapply(sim_vals[[2]], function(x) {x[1,1,y,1]}), probs = 0.95) })
-    ## TODO: probs shouldn't always be 0.95; this should depend on alpha.
-    ## TODO: thus, need to get critical values for not only this specific combination of param_list
+    res_list[[j]] = setup_array(param_list)
+    for(k in cases) {
+      res_list[[j]][cases$cc_adj[k] == param_list$cc_adj, 
+                    cases$thres_ignore[k] == param_list$thres_ignore,
+                    cases$alphas[k] == param_list$alphas, 
+                    cases$n_models[k] == param_list$n_models] = quantile(
+        sim_subsetresults(sim_vals[[j]], param_list, 
+                          cases$cc_adj[k], cases$thres_ignore[k], cases$alphas[k], cases$n_models[k]), 
+        probs = 1 - cases$alphas[k])
+    }
   }
   return(res_list)
 }
@@ -112,7 +117,7 @@ setup_array = function(pl) {
   return(res)
 }
 
-sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_momdels) { 
+sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) { 
   ## rl should be a the output of sim_hyptest
   ## is similar to extract_result_list (but not sure to remove extract_result_list yet)
   ## extracts results of a certain type
