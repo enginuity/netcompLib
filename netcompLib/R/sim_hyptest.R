@@ -147,8 +147,8 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) {
   
   i1 = which(pl$cc_adj == cc_adj)
   i2 = which(pl$thres_ignore == thres_ignore)
-  i3 = which(pl$n_models == n_models)
-  i4 = which(pl$alphas == alphas)
+  i3 = which(pl$alphas == alphas)
+  i4 = which(pl$n_models == n_models)
   
   res = matrix(-1, nrow = length(rl[[1]]), ncol = length(rl))
   for(j in seq_along(rl)) {
