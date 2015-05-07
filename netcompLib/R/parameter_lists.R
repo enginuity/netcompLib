@@ -48,5 +48,13 @@ set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05
 
 
 
+set_pval_fx = function(fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson")) {
+  # a list of function names
+  reslist = list()
+  for (j in seq_along(fx_names)) {
+    reslist[[fx_names[j]]] = eval(parse(text = fx_names[j]))
+  }
+  return(reslist)
+}
 
   
