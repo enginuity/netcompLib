@@ -163,3 +163,9 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) {
 }
 
 
+
+frac = function(x) {
+  return(sum(x) / length(x))
+}
+
+
