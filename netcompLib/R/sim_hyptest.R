@@ -162,3 +162,77 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) {
   return(res)
 }
 
+
+sim_power_rpart = function(GL, NL, FL, Nsim = 500, Nsim_crit = 100, Nobs = 1, verbose = 0, pl, pval_adj_fx = set_pval_fx()) {
+  ## then, will also need a function that helps generate the lists of models? maybe? 
+  ## for simulations -- given a list of generating models, a list of null-hypothesis models (to generate crit values from), and a corresspnding list of fitting models: 
+  
+  ## for each pair, simulate the critical values
+  ## then -- do simulation
+  
+  ## input list of generating models is GL, null-hyp -> NL, fitting models -> FL
+  if (FALSE) {
+    GL = list(NetworkModelPair(m1 = NetworkModelSBM(Nnodes = 30), is_null = TRUE), 
+              NetworkModelPair(m1 = NetworkModelSBM(Nnodes = 30), is_null = TRUE))
+    NL = GL
+    FL = list(set_model_param(Nnodes = 30), set_model_param(Nnodes = 30))
+    Nsim = 200
+    Nsim_crit = 200
+    Nobs = 1
+    verbose = 5
+    pl = set_sim_param()
+    pval_adj_fx = set_pval_fx()
+  }
+  
+  
+  #pl = param list for simulations
+  if (length(GL) != length(NL) || length(NL) != length(FL)) { stop("The model lists are not compatible") }  
+  power_list = list()
+  cases = expand.grid(pl)
+  
+  ## Do simulations: 
+  for (S in seq_along(GL)) {
+    
+    ## If FL contains networkstructlists, then use those for everything. otherwise, generate a new one each time...
+    if (is(FL[[S]], "NetworkStructList")) { 
+      if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Simulating Critical Values) =====\n", sep = "") }
+      critvals = sim_critvals(NetMPair = NL[[S]], Nsim = Nsim_crit, Nobs = Nobs, fit_NetSList = FL[[S]], param_list = pl, pval_adj_fx = pval_adj_fx, verbose = verbose)
+      
+      if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Simulating Power) =====\n", sep = "") }
+      sim_res = sim_hyptest(gen_NetMPair = GL[[S]], fit_NetSList = FL[[S]], Nobs = Nobs, Nsim = Nsim, param_list = pl, pval_adj_fx = pval_adj_fx, verbose = verbose)
+    } else {
+      if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Simulating Critical Values) =====\n", sep = "") }
+      critvals = sim_critvals(NetMPair = NL[[S]], Nsim = Nsim_crit, Nobs = Nobs, fit_models_params = FL[[S]], param_list = pl, pval_adj_fx = pval_adj_fx, verbose = verbose)
+      
+      if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Simulating Power) =====\n", sep = "") }
+      sim_res = sim_hyptest(gen_NetMPair = GL[[S]], fitm_params = FL[[S]], Nobs = Nobs, Nsim = Nsim, param_list = pl, pval_adj_fx = pval_adj_fx, verbose = verbose)
+    }
+    
+    ## Use critical values to reject if necessary
+    if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Computing Power) =====\n", sep = "") }
+    power_list[[S]] = list()
+    
+    
+    for(j in seq_along(pval_adj_fx)) {
+      power_list[[S]][[j]] = setup_array(pl)
+      for(k in seq_len(nrow(cases))) {
+        i1 = which(cases$cc_adj[k] == pl$cc_adj); i2 = cases$thres_ignore[k] == pl$thres_ignore
+        i3 = cases$alphas[k] == pl$alphas; i4 = cases$n_models[k] == pl$n_models
+        
+        test_stats = sim_subsetresults(sim_res, pl, cases$cc_adj[k], cases$thres_ignore[k], cases$alphas[k], cases$n_models[k])
+        
+        if (names(pval_adj_fx)[j] == "mult_bonferroni") {
+          power_list[[S]][[j]][i1, i2, i3, i4] = mean(test_stats[,j] < 0.05 / cases$n_models[k])
+        } else {
+          power_list[[S]][[j]][i1, i2, i3, i4] = mean(test_stats[,j] > critvals[[j]][i1, i2, i3, i4])
+        }
+      }
+    }    
+  }
+  
+  
+  return(power_list)
+}
+
+
+
