@@ -163,7 +163,24 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) {
 }
 
 
-sim_power_rpart = function(GL, NL, FL, Nsim = 500, Nsim_crit = 100, Nobs = 1, verbose = 0, pl, pval_adj_fx = set_pval_fx()) {
+
+#' Simulates the power for different pairs of generating models
+#' 
+#' @param GL List of generating models (NetModPairs)
+#' @param NL List of null-hypothesis models (NetModPairs)
+#' @param FL List of fitting model parameters
+#' @param Nsim Number of simulations
+#' @param Nsim_crit Number of simulations for critical values
+#' @param Nobs Number of network observations
+#' @param verbose Integer -- how verbose?
+#' @param pl simulation parameters
+#' @param pval_adj_fx pvalue-adjustment functions
+#' 
+#' @return List of power-simulation results
+#' 
+#' @export
+#' 
+sim_power_rpart = function(GL, NL, FL, Nsim = 500, Nsim_crit = 500, Nobs = 1, verbose = 0, pl, pval_adj_fx = set_pval_fx()) {
   ## then, will also need a function that helps generate the lists of models? maybe? 
   ## for simulations -- given a list of generating models, a list of null-hypothesis models (to generate crit values from), and a corresspnding list of fitting models: 
   
