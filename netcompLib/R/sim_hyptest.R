@@ -166,12 +166,12 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) {
 
 #' Simulates the power for different pairs of generating models
 #' 
-#' @param GL List of generating models (NetModPairs)
-#' @param NL List of null-hypothesis models (NetModPairs)
-#' @param FL List of fitting model parameters
-#' @param Nsim Number of simulations
-#' @param Nsim_crit Number of simulations for critical values
-#' @param Nobs Number of network observations
+#' @param GL [List] -- List of generating models (NetModPairs)
+#' @param NL [List] -- List of null-hypothesis models (NetModPairs)
+#' @param FL [List] -- List of fitting model parameters
+#' @param Nsim [int; Default = 500] -- Number of simulations
+#' @param Nsim_crit [int; Default = 500] -- Number of simulations for critical values
+#' @param Nobs [int; Default = 1] -- Number of network observations
 #' @param verbose Integer -- how verbose?
 #' @param pl simulation parameters
 #' @param pval_adj_fx pvalue-adjustment functions
@@ -250,6 +250,4 @@ sim_power_rpart = function(GL, NL, FL, Nsim = 500, Nsim_crit = 500, Nobs = 1, ve
   
   return(power_list)
 }
-
-
 
