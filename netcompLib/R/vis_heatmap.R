@@ -2,14 +2,14 @@
 
 #' Plots a heatmap of a probability matrix
 #' 
-#' @param pm Probability matrix
-#' @param add_legend T/F: If TRUE: add a legend plot
-#' @param is_dm T/F: If TRUE, input matrix is on a [-1,1] scale (as a difference of probability matrices)
-#' @param only_legend T/F: If TRUE: ONLY plot the legend
-#' @param colors Colors to use in the heat map (as a vector of hex values)
+#' @param pm [Matrix-double] :: Probability matrix
+#' @param add_legend [logical, T] :: If TRUE, adds a legend plot
+#' @param is_dm [logical, F] :: If TRUE, input matrix is on a [-1,1] scale (as a difference of probability matrices)
+#' @param only_legend [logical, F] :: If TRUE: ONLY plot the legend
+#' @param colors [vector-character] :: Colors to use in the heat map (as a vector of hex values)
 #' @param ... Other variables to be passed to 'plot'
 #' 
-#' @return Nothing; produces a plot (standard R plot functions)
+#' @return [nothing] :: Produces a plot (standard R plot functions)
 #' 
 #' @export
 #' 
