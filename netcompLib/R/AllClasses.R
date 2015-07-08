@@ -20,11 +20,11 @@ setClass("NetworkStructList", representation(models = "list"), contains = "Netwo
 
 #' Instantiates an object of class NetworkModel
 #' 
-#' @param Nnodes Number of nodes in network
-#' @param type Type of network model (accepts 'block', 'tree', 'random', 'latent') ('none' is also accepted, but the resulting object isn't really interesting; its mainly for testing the class)
-#' @param model_param Model parameters specified by set_model_param()
+#' @param Nnodes [int, NULL] :: Number of nodes in network
+#' @param type [char, NULL] :: Type of network model (accepts 'block', 'tree', 'random', 'latent') ('none' is also accepted, but the resulting object isn't really interesting; its mainly for testing the class)
+#' @param model_param [List, set_model_param()] :: Model parameters specified by set_model_param()
 #' 
-#' @return Object of class NetworkModel
+#' @return [NetworkModel] :: A representation of a model generated as specified
 #' 
 #' @export
 #' 
