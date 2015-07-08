@@ -2,7 +2,9 @@
 
 #' Plots a heatmap of a probability matrix
 #' 
-#' @param pm [Matrix-double] :: Probability matrix
+#' Generates a heatmap of a probability matrix. This allows the probabilities to also be a difference between two probability matrices, and allows custom input of color scheme. 
+#' 
+#' @param pm [matrix-double] :: Probability matrix
 #' @param add_legend [logical, T] :: If TRUE, adds a legend plot
 #' @param is_dm [logical, F] :: If TRUE, input matrix is on a [-1,1] scale (as a difference of probability matrices)
 #' @param only_legend [logical, F] :: If TRUE: ONLY plot the legend
