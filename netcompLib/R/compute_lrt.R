@@ -337,22 +337,3 @@ compute_samp_corrs = function(pc, p1, p2) {
   return(res)
 }
 
-
-
-#' Compute the cell-correlation given cell probabilities
-#' 
-#' @param pc Probability of both 1s
-#' @param p1 Probability of 1s in adjmatrix 1
-#' @param p2 Probability of 1s in adjmatrix 2
-#' 
-#' @return Correlation estimate
-#' 
-#' @export
-#' 
-compute_correlation_fromprobs = function(pc, p1, p2) {
-  # pc, p1, p2 are all vectors; applies this vectorized
-  numer = pc - (p1 * p2)
-  denom = sqrt(p1 * (1 - p1) * p2 * (1 - p2))
-  return(numer/denom)
-}
-
