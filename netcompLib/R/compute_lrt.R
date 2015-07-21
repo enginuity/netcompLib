@@ -159,31 +159,3 @@ mle_loglik = function(tree, obsadjs, cellwise = FALSE, exp_child = NULL) {
   }
 }
 
-
-
-# Functions relating to cell-wise correlation adjustment ------------------
-
-#' Compute true correlation adjustment (df adjustment)
-#' 
-#' @param btree base tree
-#' @param ftree fixed tree
-#' 
-#' @return correlation adjustment (cell-wise)
-#' 
-#' @export
-#' 
-true_cor = function(btree, ftree) {
-  ep = edge_probs(btree)
-  N = btree$nodes
-  est_struct = closest_ancestor(ftree)$anc.table - N
-  diag(est_struct) <- 0
-  
-  cors = rep(0, times = N-1)
-  for(j in 1:(N-1)) {
-    ps = ep[est_struct == j]
-    mp = mean(ps)
-    cors[j] = (mean(ps^2) - mp^2) / (mp - mp^2)
-  }
-  return(cors)
-}
-
