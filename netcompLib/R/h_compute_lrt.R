@@ -1,3 +1,24 @@
+
+#' Compute the loglikelihood from probabilities and counts
+#' 
+#' @param x observed count
+#' @param n Size of edge groups (cells)
+#' @param p Estimated cell probabilities (is just x / n)
+#' 
+#' @return Log likelihood
+#' 
+#' @export
+#' 
+compute_loglik_fromPC = function(x, n, p) {
+  ## x is the observed count; n is total count, p is x / n
+  ## this function returns vectorized output
+  res = x * log(p) + (n - x) * log(1 - p)
+  res[is.nan(res)] = 0
+  return(res)
+}
+
+
+
 #' Different version of computing the df adjustment
 #' 
 #' @param n cell sizes
@@ -9,6 +30,8 @@
 #' @export
 #' 
 compute_df_adjustment2 = function(n, cell_corr, cc_adj = 2) {
+  ## TODO: [Rename] Fix the name of this function. 
+  
   ## Assumes null is true:                                       
   
   ## Cell-correlation adjustment #####################

@@ -356,22 +356,3 @@ compute_correlation_fromprobs = function(pc, p1, p2) {
   return(numer/denom)
 }
 
-
-#' Compute the loglikelihood from probabilities and counts
-#' 
-#' @param x observed count
-#' @param n Size of edge groups (cells)
-#' @param p Estimated cell probabilities (is just x / n)
-#' 
-#' @return Log likelihood
-#' 
-#' @export
-#' 
-compute_loglik_fromPC = function(x, n, p) {
-  ## x is the observed count; n is total count, p is x / n
-  ## this function returns vectorized output
-  res = x * log(p) + (n - x) * log(1 - p)
-  res[is.nan(res)] = 0
-  return(res)
-}
-
