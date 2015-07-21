@@ -44,6 +44,36 @@ computeDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 
 
 
-computeDist = function(x, y = NULL) {
+#' Computes a distance between two network models
+#' 
+#' @param x [\code{\link{NetworkModel}}] :: First network model
+#' @param y [\code{\link{NetworkModel}}] :: Second network model
+#' @param type [char; ALLOWED = c("KL", "KLsym")] :: What distance measure to use? \cr
+#' \itemize{
+#'   \item KL -- KL distance 
+#'   \item KLsym -- symmetric KL distance (average of KL distances in both ways)
+#' }
+#' 
+#' @return [double] :: distance value
+#' 
+#' @export
+#' 
+computeDist = function(x, y, type = "KLsym") {
+  p1 = getEdgeProbMat(x); p2 = getEdgeProbMat(y)
   
+  h_kldist = function(p1, p2) {
+    diag(p1) <- 0.5; diag(p2) <- 0.5
+    q1 = 1 - p1; q2 = 1 - p2
+    res = log(q1) - log(q2) + p1 * (log( (p1 / q1) / (p2 / q2 ) ) )
+    diag(res) <- 0
+    return(sum(res))
+  }
+  
+  if (type == "KL") { 
+    return(h_kldist(p1, p2))
+  } else if (type == "KLsym") {
+    return( (h_kldist(p1,p2)+h_kl_dist(p2,p1)) / 2)
+  }
+  stop("Invalid type of distance measure inputted")
+  return(NULL)
 }
