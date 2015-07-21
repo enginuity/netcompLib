@@ -27,6 +27,7 @@ sim_test = function(Nnodes, Nsim, gen_null = TRUE,
                     gen_mode, gen_models = NULL, fit_mode, fit_models = NULL,
                     param_list, complete = FALSE, pval_adj_fx, adjmats = NULL) {
   ## TODO: [Obselete] Remove all calls to this function? (update with calls to sim_test_v2)
+  ## TODO: THIS FUNCTION IS NOW BROKEN/OBSELETE. 7/21/2015
   ## TODO: CHANGED PARAMETERIZATION. FIX THIS. 
   
   if (FALSE) {
@@ -72,6 +73,7 @@ sim_test = function(Nnodes, Nsim, gen_null = TRUE,
     
     pval_results <- lapply(1:Nfit, function(x) { 
       fast_compute_pval(adj1 = adjm_list[[j]][,,1], adj2 = adjm_list[[j]][,,2], 
+#|----##Function obseleted. These simulations should use newer code (computePval/sim_hyptest) instead... --Tue Jul 21 11:45:15 2015--
                         mode = fit_mode, pl = param_list, fl = fit_models$model_list[[x]]) })
     pval_results = abind(pval_results, along = 3)
     pval_reslist[[j]] = pval_results
