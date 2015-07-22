@@ -1,9 +1,9 @@
 ## Collection of functions to set parameters... 
 
 
-#' Create a list of model parameters
+#' Set network model parameters
 #' 
-#' This function sets up the model parameters to be passed into model generation functions (eg. sets the max number of blocks in a SBM). There are default parameters that are used if this function is called with no arguments. 
+#' This function sets up the (list of) model parameters to be passed into model generation functions (eg. sets the max number of blocks in a SBM). There are default parameters that are used if this function is called with no arguments. 
 #' 
 #' @param Nnodes Number of nodes in the network model
 #' @param type Type of network model: can be 'none', 'block', 'tree', 'latent', or 'random'
@@ -20,7 +20,7 @@
 #' @param latent_sdcenter SD on centers of latent space model
 #' @param latent_isgennorm If TRUE: Uses normal distribution for latent locations. Otherwise, uses uniform distribution. 
 #' 
-#' @return Return list of parameters
+#' @return [list] :: A list of parameters
 #' 
 #' @export
 #' 
@@ -30,14 +30,16 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, bloc
 }
 
 
-#' Creates a list of simulation parameters
+#' Set up simulation parameters
 #' 
-#' @param cc_adj Amount of SE's away from the correlation estimate used (how conservative? 0 means no adjustment (and requires large sample for guarantees; larger values give a conservative p-value))
-#' @param thres_ignore Ignore edge groups with fewer than this many edges
-#' @param alphas Size of test
-#' @param n_models Number of edge partitions to use for testing
+#' This function creates a list of simulation parameters that are desired. 
 #' 
-#' @return A list of parameters (often asked for as pl in functions)
+#' @param cc_adj [vector-double] :: Amount of SE's away from the correlation estimate used (how conservative? 0 means no adjustment (and requires large sample for guarantees; larger values give a conservative p-value))
+#' @param thres_ignore [vector-int] :: Ignore edge groups with fewer than this many edges
+#' @param alphas [vector-double] :: Size(s) of the hypothesis test (probability of reject given true null)
+#' @param n_models [vector-int] :: Number(s) of edge partitions to use for testing
+#' 
+#' @return [list] :: A list of parameters
 #' 
 #' @export
 #' 
@@ -50,9 +52,9 @@ set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05
 
 #' Generate a list of p-value computation functions
 #' 
-#' @param fx_names A list of function names
+#' @param fx_names [vector-char] :: Function names (these MUST correspond to existing functions, or else errors will occur eventually)
 #' 
-#' @return A list with the functions stored inside
+#' @return [list] :: A named list, where the names are the input function names, and the entries are the actual functions stored inside. 
 #' 
 #' @export
 #' 
