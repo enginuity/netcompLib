@@ -1,33 +1,4 @@
-
 ## Helper functions
-
-
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (compute_samp_corrs)
-#' <What does this function do>
-#' 
-#' @param pc temp
-#' @param p1 temp
-#' @param p2 temp
-#' 
-#' @return temp
-#' 
-#' @export
-#' 
-compute_samp_corrs = function(pc, p1, p2) {
-  ## TODO: [Obselete?] -- only used in fast_compute_pval2 and its friends
-  ## Update of 'compute_correlation_fromprobs', for lists instead of simple vectors.
-  ## If input are not lists, convert into a list. 
-  if (any(c(!is.list(pc), !is.list(p1), !is.list(p2)))) {
-    pc = list(pc); p1 = list(p1); p2 = list(p2)
-  }
-  res = lapply(seq_along(pc), function(i) {
-    num = pc[[i]] - (p1[[i]] * p2[[i]])
-    den = sqrt(p1[[i]] * (1 - p1[[i]]) * p2[[i]] * (1 - p2[[i]]))
-    return(num/den)
-  })
-  return(res)
-}
-
 
 
 #' Compute the loglikelihood from probabilities and counts
