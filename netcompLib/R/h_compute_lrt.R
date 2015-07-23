@@ -3,11 +3,11 @@
 
 #' Compute the loglikelihood from probabilities and counts
 #' 
-#' @param x observed count
-#' @param n Size of edge groups (cells)
-#' @param p Estimated cell probabilities (is just x / n)
+#' @param x [vector-int] :: observed counts in each edge group
+#' @param n [vector-int] :: Corresponding size of edge groups (cells)
+#' @param p [vector-double] :: Corresponding estimated cell probabilities (is just x / n)
 #' 
-#' @return Log likelihood
+#' @return [vector-double] :: Vectorized version of log-likelihood (per edge group)
 #' 
 #' @export
 #' 
@@ -21,13 +21,15 @@ compute_loglik_fromPC = function(x, n, p) {
 
 
 
-#' Different version of computing the df adjustment
+#' Compute the df adjustment
 #' 
-#' @param n cell sizes
-#' @param cell_corr temp
-#' @param cc_adj Number of SE's away for conservativeness in cell_correlation estimate
+#' Degree of freedom adjustment for the likelihood ratio test due to mis-specified model, and also due to small-sample issues
 #' 
-#' @return Df adjustment
+#' @param n [vector-int] :: Edge group sizes
+#' @param cell_corr [vector-double] :: Estimated within-edge-group correlations
+#' @param cc_adj [double] :: Number of SE's away for conservativeness in cell_correlation estimate
+#' 
+#' @return [vector-double] :: Vector of df adjustments (per-edgegroup)
 #' 
 #' @export
 #' 
