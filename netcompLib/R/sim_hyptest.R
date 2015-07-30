@@ -2,9 +2,9 @@
 ## TODO: Check if this function is old... why does pval_adj_fx work that way? 
 #' Do simulations for the hypothesis testing, using the new code. 
 #' 
-#' @param gen_NetMPair [NetworkModelPair] :: object
-#' @param fit_NetSList [NetworkStructList] ::  object (default = NULL)
-#' @param fitm_params [] :: set_model_params() -- use this to specify the type of fitting model
+#' @param gen_NetMPair [\code{\link{NetworkModelPair}}] :: Generating pair of models
+#' @param fit_NetSList [\code{\link{NetworkStructList}}] :: List of fixed fitting structures (can be NULL -> randomly generate given parameters)
+#' @param fitm_params [list] :: Output of \code{\link{set_model_params}}, specify the type of fitting model
 #' @param adjm_list [] :: Can input a list of adjacency matrices. If done, then the generating model pair is ignored. 
 #' @param Nobs [int, 1] :: Number network observations (default = 1)
 #' @param Nsim [int, 100] :: Number of simulations to do
@@ -162,12 +162,12 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) {
   return(res)
 }
 
-## TODO [Documentation]: Figure out how to write links in the roxygen2 code (so that helpfiles can link to each other?)
+
 #' Simulates the power for different pairs of generating models
 #' 
-#' @param GL [List] :: List of generating models (NetModPairs)
-#' @param NL [List] :: List of null-hypothesis models (NetModPairs)
-#' @param FL [List] :: List of fitting model parameters
+#' @param GL [list] :: List of generating models (NetModPairs)
+#' @param NL [list] :: List of null-hypothesis models (NetModPairs)
+#' @param FL [list] :: List of fitting model parameters
 #' @param Nsim [int, 500] :: Number of simulations
 #' @param Nsim_crit [int, 500] :: Number of simulations for critical values
 #' @param Nobs [int, 1] :: Number of network observations
