@@ -1,77 +1,76 @@
 
 #' Compute depths of each node
 #' 
-#' @param parents Parents vector 
+#' @param parents [vector-int] :: Valued from 0 to length; these indicate which index the parent node is at
 #' 
-#' @return Vector of depths for each node
+#' @return [vector-int] :: Depth of each node
 #' 
 #' @export
 #' 
 depth_from_parents = function(parents) {
-  # Written by Andrew Thomas
+  nn = (length(parents)+1)/2
   
-  nn <- (length(parents)+1)/2
-  history <- function(kk) {
-    out <- kk
-    while (parents[kk] > 0) {kk <- parents[kk]; out <- c(kk,out)}
-    return(out)
+  depths = rep(NA, times = nn)
+  cur_depth = 0
+  cur_nodes = 0
+  
+  while(any(is.na(depths))) {
+    cur_depth = cur_depth + 1
+    cur_nodes = which(parents %in% cur_nodes)
+    depths[cur_nodes] = cur_depth
   }
-  history.all <- lapply(1:length(parents), history)
-  sapply(history.all, length)
+  return(depths)
 }
 
 
 
 #' Obtains the lower diagonal area of a square matrix
 #' 
-#' @param nn Number of rows in square matrix
+#' @param nn [int] :: Number of rows in square matrix
 #' 
-#' @return Indices for lower-diagonal area
+#' @return [vector-int] :: Indices for lower-diagonal area
 #' 
 #' @export
 #' 
 lower_diag = function(nn) {
-  # Written by Andrew Thomas
-  
-  inter <- 0:(nn^2-1)
-  which(inter %% nn > floor(inter/nn))
+  inter = 0:(nn^2-1)
+  return(which(inter %% nn > floor(inter/nn)))
 }
 
 
 #' Generate tree object from parent vector
 #' 
-#' @param parents Parent vector
+#' @param parents [vector-int] :: Indices of parents
 #' 
-#' @return CMN tree object
+#' @return [list] :: A tree in list format (left child index, right child index)
 #' 
 #' @export
 #' 
 tree_from_parents = function(parents) {
   #Assume internal nodes are greater than leaves.
-  
-  # Written by Andrew Thomas
-  
-  #parents=c(6,6,7,7,0,5,5)
-  total.nn <- length(parents)
-  nn <- (total.nn+1)/2
+  # parents=c(6,6,7,7,0,5,5)
+  total_nn = length(parents)
+  nn = (total_nn+1)/2
   if (any(parents %in% 1:nn)) stop("Improper tree form.")
-  children <- list(); for (kk in 1:(nn-1)) children[[kk]] <- numeric(0)
-  for (kk in 1:total.nn) if (parents[kk]>nn) children[[parents[kk]-nn]] <- c(children[[parents[kk]-nn]], kk)
+  children = list()
+  for (kk in 1:(nn-1)) children[[kk]] = numeric(0)
+  for (kk in 1:total_nn) {
+    if (parents[kk]>nn) children[[parents[kk]-nn]] = c(children[[parents[kk]-nn]], kk)
+  }
   return(children)
 }
 
 
 #' Extract expanded children for a tree
 #' 
-#' @param tree CMN tree object
+#' @param tree [list] :: CMN tree object
 #' 
-#' @return List of terminal leaves for each child
+#' @return [list] :: A tree in list format (left child index, right child index)
 #' 
 #' @export
 #' 
 expanded_children_from_tree = function(tree) {
-  # Written by Andrew Thomas
-  
+  ## TODO: Modify this for different tree format?
   
   expanded.children <- lapply(tree$children, as.list)
   #put them in order.
@@ -88,9 +87,8 @@ expanded_children_from_tree = function(tree) {
       expanded.children[[pick]][[kk]] <- keeper
     }
   }
-  
-  return(expanded.children)
-  
+
+  return(expanded.children)  
 }
 
 
@@ -131,29 +129,19 @@ anc_table_from_expanded_children = function(expanded.children, nn, nodes.to.upda
 
 #' Compute ancestor_table from a tree
 #' 
-#' @param tree CMN tree model object
+#' @param tree [list] :: CMN tree model object
 #' 
-#' @return List of expanded_children & ancestor_table
+#' @return [list] :: expanded_children & ancestor_table
 #' 
 #' @export
 #' 
 closest_ancestor = function(tree) {
-  # Written by Andrew Thomas
+  nn = tree$nodes
+  int_nodes = length(tree$prob)
+  tot_nodes  nn + int_nodes
   
-  #tree=tree.prop
-  #iterate it.
+  expanded_children = expanded_children_from_tree(tree)
+  anc_table = anc_table_from_expanded_children(expanded_children, nn)
   
-  nn <- tree$nodes
-  int.nodes <- length(tree$prob)
-  tot.nodes <- nn+int.nodes
-  
-  
-  expanded.children <- expanded_children_from_tree (tree)
-  
-  anc.table <- anc_table_from_expanded_children(expanded.children, nn)
-  
-  out <- list(expanded.children=expanded.children,
-              anc.table=anc.table)
-  return(out)
-  
+  return(list(expanded_children=expanded_children, anc_table=anc_table))
 }
