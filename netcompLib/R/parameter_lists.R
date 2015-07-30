@@ -7,13 +7,13 @@
 #' This function sets up the (list of) model parameters to be passed into model generation functions (eg. sets the max number of blocks in a SBM). There are default parameters that are used if this function is called with no arguments. 
 #' 
 #' @param Nnodes [int] :: Number of nodes in the network model
-#' @param type [char; ALLOWED = c("none", "block", "tree", "latent", "random")] Type of network model: can be 'none', 'block', 'tree', 'latent', or 'random'
+#' @param type [char; ALLOWED = c("none", "block", "tree", "latent", "random")] :: type of network model
 #' \itemize{
 #'  \item none -- Probably not useful; can be used to construct relatively empty model class for whatever purpose... 
 #'  \item block -- Stochastic Block Model
-#'  \item Tree -- Hierarchical Random Graph
-#'  \item Latent -- Latent Space Model. Note that this type of model CANNOT generate random edge partitions since edge groups will be size 1 each (almost surely)
-#'  \item Random -- A model where each edge belongs to one of a number of classes, and the edge probability depends solely on this assignment. Should really only be used to generate random edge partitions. 
+#'  \item tree -- Hierarchical Random Graph
+#'  \item latent -- Latent Space Model. Note that this type of model CANNOT generate random edge partitions since edge groups will be size 1 each (almost surely)
+#'  \item random -- A model where each edge belongs to one of a number of classes, and the edge probability depends solely on this assignment. Should really only be used to generate random edge partitions. 
 #' }
 #' @param pmin [double] :: Minimal possible edge probability
 #' @param pmax [double] :: Maximal possible edge probability
