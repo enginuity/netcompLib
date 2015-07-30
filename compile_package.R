@@ -28,6 +28,3 @@ if (FALSE) {
   library(netcompLib)
 }
 
-
-
-## TODO: Create function in codeProcessing that reorders generics & makes templates and such. 
