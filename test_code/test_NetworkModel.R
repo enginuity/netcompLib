@@ -42,8 +42,11 @@ round(getEdgeProbMat(test5),2)
 extractStruct(test5)
 
 NetworkStruct(Nnodes = 15, type = "block")
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:31 2015--
 NetworkStruct(Nnodes = 15, type = "tree")
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:31 2015--
 NetworkStruct(Nnodes = 15, type = "random")
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:31 2015--
 
 
 pl = list(cc_adj = c(1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
@@ -53,6 +56,7 @@ computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1,
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
 
 netsl = NetworkStructList(type = "block")
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
 computePval(netsl, sampleNetwork(test2), sampleNetwork(test2), 1, pl)
 getNetType(netsl)
 
@@ -63,6 +67,7 @@ adja2 = sampleNetwork(NetM)
 Nobs = 1
 
 NetS = NetworkStructSBM(Nnodes = 30, model_param = set_model_param(block_nclass = 3))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
 getNetType(NetS)
 
 m1 = NetworkModel(Nnodes = 50, type = "block", model_param = set_model_param(block_probs = matrix(0.45, nrow = 1, ncol = 1), block_assign = rep(1, times = 50)))
@@ -71,10 +76,13 @@ m2 = NetworkModel(Nnodes = 50, type = "block", model_param = set_model_param(blo
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 
 computePval(NetworkStructList(Nnodes = 50, type = "tree"), sampleNetwork(m1), sampleNetwork(m2), 1, pl)
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
 computePval(NetworkStructList(Nnodes = 50, type = "random"), sampleNetwork(m1), sampleNetwork(m2), 1, pl)
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
 
 
 nmp = NetworkModelPair(m1 = NetworkModel(type = "block"), is_null = TRUE)
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:28 2015--
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 sampleNetwork(NetM = nmp)
 
