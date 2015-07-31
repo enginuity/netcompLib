@@ -121,17 +121,14 @@ NetworkModelSBM = function(model_params = set_model_param()) {
 #' 
 #' This will generate a network model with random class assignments and class probabilities (unless otherwise specified)
 #' 
-#' @param Nnodes Number of nodes in the network model
-#' @param model_params A list of model parameters -- see set_model_param()
+#' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
 #' 
-#' @return NetworkModelHRG object
+#' @return [NetworkModelHRG] :: A representation of the generated model
 #' 
 #' @export
 #' 
-NetworkModelHRG = function(Nnodes = NULL, model_params = set_model_param()) {
-  if (is.null(Nnodes)) { Nnodes = model_params$Nnodes }
-  
-  ## TODO: - fill this in eventually 
+NetworkModelHRG = function(model_params = set_model_param()) {
+  Nnodes = model_params$Nnodes
   
   # helper function that generates a fixed structure tree (as close to binary tree as possible)
   starter_tree = function(Nnodes = 10) {
@@ -231,21 +228,18 @@ NetworkModelHRG = function(Nnodes = NULL, model_params = set_model_param()) {
 }
 
 
-
-
 #' Constructor for LSM network model
 #' 
 #' This will generate a network model with random class assignments and class probabilities (unless otherwise specified)
 #' 
-#' @param Nnodes Number of nodes in the network model
-#' @param model_params A list of model parameters -- see set_model_param()
+#' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
 #' 
-#' @return NetworkModelLSM object
+#' @return [NetworkModelLSM] :: A representation of the generated model
 #' 
 #' @export
 #' 
-NetworkModelLSM = function(Nnodes = NULL, model_params = set_model_param()) {
-  if (is.null(Nnodes)) { Nnodes = model_params$Nnodes }
+NetworkModelLSM = function(model_params = set_model_param()) {
+  Nnodes = model_params$Nnodes
   
   K = model_params$latent_nclass
   D = model_params$latent_dim
@@ -281,15 +275,14 @@ NetworkModelLSM = function(Nnodes = NULL, model_params = set_model_param()) {
 #' 
 #' This will generate a network model with random class assignments and class probabilities (unless otherwise specified)
 #' 
-#' @param Nnodes Number of nodes in the network model
-#' @param model_params A list of model parameters -- see set_model_param()
+#' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
 #' 
-#' @return NetworkModelRND object
+#' @return [NetworkModelRND] :: A representation of the generated model
 #' 
 #' @export
 #' 
-NetworkModelRND = function(Nnodes = NULL, model_params = set_model_param()) {
-  if (is.null(Nnodes)) { Nnodes = model_params$Nnodes }
+NetworkModelRND = function(model_params = set_model_param()) {
+  Nnodes = model_params$Nnodes
   
   rnd_Ngroups = model_params$random_ngroups
   
@@ -321,24 +314,23 @@ NetworkModelRND = function(Nnodes = NULL, model_params = set_model_param()) {
 }
 
 
-
-
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelPair)
 #' Instantiates an object of class NetworkModelPair
 #' 
 #' This is done by providing both network models. If m2 is not given and is_null is FALSE, there is an error. Otherwise, m2 will be ignored if is_null is TRUE. (ie null hypothesis means both models are the same, so m1)
 #' There is also no check that m1 and m2 are on the same network size, but they should be. -- add this in...
 #' 
-#' @param m1 temp
-#' @param m2 temp
-#' @param is_null temp
+#' @param m1 [\code{\link{NetworkModel}} OR list] :: This can either be a model object, or a list containing model parameters
+#' @param m2 [\code{\link{NetworkModel}} OR list] :: This can either be a model object, or a list containing model parameters
+#' @param is_null [logical] :: If TRUE, m2 is ignored (since the null hypothesis means that both models are identical)
 #' 
-#' @return Object of class NetworkModelPair
+#' @return [NetworkModelPair] :: An object containing information about two network models. 
 #' 
 #' @export
 #' 
 NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE) {
-  ## TODO: Make m1/m2 more extensible (=> can input param list)
+  if (!("NetworkModel" %in% class(m1))) { m1 = NetworkModel(m1) }
+  if (!("NetworkModel" %in% class(m2)) & !is.null(m2)) { m2 = NetworkModel(m2) }
+  
   if (is_null) {
     netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m1, is_null = TRUE)
   } else {
