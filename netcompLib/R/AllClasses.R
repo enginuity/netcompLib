@@ -27,13 +27,12 @@ setClass("NetworkStructList", representation(models = "list"), contains = "Netwo
 #' @export
 #' 
 NetworkModel = function(model_params = set_model_param()) {
-  ## TODO: [Important!!!] For this function, and all sub functions -- remove Nnodes as a parameter (pass everything in through model_param.)
-  type = model_param$type
+  type = model_params$type
   if (type == "none") { return(new("NetworkModel")) }
-  if (type == "block") { return(NetworkModelSBM(Nnodes = Nnodes, model_param = model_param)) }
-  if (type == "tree") { return(NetworkModelHRG(Nnodes = Nnodes, model_param = model_param)) }
-  if (type == "latent") { return(NetworkModelLSM(Nnodes = Nnodes, model_param = model_param)) }
-  if (type == "random") { return(NetworkModelRND(Nnodes = Nnodes, model_param = model_param)) }
+  if (type == "block") { return(NetworkModelSBM(model_params)) }
+  if (type == "tree") { return(NetworkModelHRG(model_params)) }
+  if (type == "latent") { return(NetworkModelLSM(model_params)) }
+  if (type == "random") { return(NetworkModelRND(model_params)) }
   stop("Invalid 'type' specified")
 }
 
