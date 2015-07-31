@@ -20,13 +20,13 @@ setClass("NetworkStructList", representation(models = "list"), contains = "Netwo
 
 #' Instantiates an object of class NetworkModel
 #' 
-#' @param model_param [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
+#' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
 #' 
 #' @return [NetworkModel] :: A representation of a model generated as specified
 #' 
 #' @export
 #' 
-NetworkModel = function(model_param = set_model_param()) {
+NetworkModel = function(model_params = set_model_param()) {
   ## TODO: [Important!!!] For this function, and all sub functions -- remove Nnodes as a parameter (pass everything in through model_param.)
   type = model_param$type
   if (type == "none") { return(new("NetworkModel")) }

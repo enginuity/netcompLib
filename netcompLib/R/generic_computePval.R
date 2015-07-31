@@ -36,6 +36,7 @@ computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs, pl, mode = "d
 computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
     adja1 = sampleNetwork(NetM)
     adja2 = sampleNetwork(NetM)
     Nobs = 1
@@ -123,6 +124,7 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs, pl, mode = "de
 computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
     adja1 = sampleNetwork(NetM)
     adja2 = sampleNetwork(NetM)
     Nobs = 1
@@ -212,6 +214,7 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs, pl, mode = "de
 computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
     adja1 = sampleNetwork(NetM)
     adja2 = sampleNetwork(NetM)
     Nobs = 1

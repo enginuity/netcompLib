@@ -5,7 +5,9 @@ load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcor
 
 
 n1 = NetworkModel(Nnodes = 30, type = "block", model_param = set_model_param(block_assign = rep(c(1,2,3), each = 10), block_probs = matrix(c(.4, .1, .6, .1, .7, .4, .6, .4, .5), nrow = 3)))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 n2 = NetworkModel(Nnodes = 30, type = "block", model_param = set_model_param(block_assign = rep(c(1,2,3), each = 10), block_probs = matrix(c(.4, .1, .6, .1, .3, .2, .6, .2, .5), nrow = 3)))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 
 m1 = sampleNetwork(n1, Nobs = 1)
 m2 = sampleNetwork(n2, Nobs = 1)
@@ -31,7 +33,9 @@ segments(c(1,11,21), y, c(10, 20, 30), y, lty = 2)
 
 
 n1 = NetworkModel(Nnodes = 60, type = "block", model_param = set_model_param(block_assign = rep(c(1,2,3), each = 20), block_probs = matrix(c(.4, .1, .6, .1, .7, .4, .6, .4, .5), nrow = 3)))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 n2 = NetworkModel(Nnodes = 60, type = "block", model_param = set_model_param(block_assign = rep(c(1,2,3), each = 20), block_probs = matrix(c(.4, .1, .6, .1, .3, .2, .6, .2, .5), nrow = 3)))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 
 m1 = sampleNetwork(n1, Nobs = 1)
 m2 = sampleNetwork(n2, Nobs = 1)

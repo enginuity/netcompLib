@@ -17,7 +17,7 @@
 computeDfAdj = function(NetM, NetS, hidden_edges = NULL) {
   if (FALSE) {
     ## Test code
-    NetM = NetworkModel(Nnodes = 20, type = "block", model_param = set_model_param(block_assign = rep(c(1,2), each = 10), block_probs = matrix(c(.3, .3, .3, .7), nrow = 2)))
+    NetM = NetworkModel(set_model_param(Nnodes = 20, type = "block", block_assign = rep(c(1,2), each = 10), block_probs = matrix(c(.3, .3, .3, .7), nrow = 2)))
     NetS = NetworkStructSBM(Nnodes = 20, model_param = set_model_param(block_assign = rep(c(1,2), times = 10)))
   }
   

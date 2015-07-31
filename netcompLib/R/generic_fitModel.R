@@ -32,6 +32,7 @@ fitModel.NetworkStructList = function(NetS, adja) {
 
 fitModel.NetworkStructSBM = function(NetS, adja) {
   res = NetworkModel(Nnodes = getNnodes(NetS), type = "block", model_param = set_model_param(block_assign = NetS@groups))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
   if (is.null(adja)) {
   } else {
     ## TODO: Fill in code for estimating probabilities. 

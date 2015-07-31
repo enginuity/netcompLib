@@ -5,10 +5,12 @@ load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcor
 
 
 test1 = NetworkModel(Nnodes = 10)
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 getNnodes(test1)
 getNetType(test1)
 
 test2 = NetworkModel(Nnodes = 10, type = "block", model_param = set_model_param(block_assign = rep(c(1,2), each = 5), block_probs = matrix(c(0.1, 0.7, 0.7, 0.5), nrow = 2)))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 getNnodes(test2)
 getNetType(test2)
 getEdgeProbMat(test2)
@@ -19,6 +21,7 @@ test2@assign
 test2@probmat
 
 test3 = NetworkModel(Nnodes = 10, type = "tree")
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 getNnodes(test3)
 getNetType(test3)
 test3
@@ -26,11 +29,13 @@ getEdgeProbMat(test3)
 extractStruct(test3)
 
 test4 = NetworkModel(Nnodes = 10, type = "latent")
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 getNnodes(test4)
 getNetType(test4)
 round(getEdgeProbMat(test4),2)
 
 test5 = NetworkModel(Nnodes = 5, type = "random", model_param = set_model_param(random_ngroups = 3))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 getNnodes(test5)
 getNetType(test5)
 round(getEdgeProbMat(test5),2)
@@ -52,6 +57,7 @@ computePval(netsl, sampleNetwork(test2), sampleNetwork(test2), 1, pl)
 getNetType(netsl)
 
 NetM = NetworkModel(Nnodes = 30, type = "block")
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 adja1 = sampleNetwork(NetM)
 adja2 = sampleNetwork(NetM)
 Nobs = 1
@@ -60,13 +66,16 @@ NetS = NetworkStructSBM(Nnodes = 30, model_param = set_model_param(block_nclass 
 getNetType(NetS)
 
 m1 = NetworkModel(Nnodes = 50, type = "block", model_param = set_model_param(block_probs = matrix(0.45, nrow = 1, ncol = 1), block_assign = rep(1, times = 50)))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 m2 = NetworkModel(Nnodes = 50, type = "block", model_param = set_model_param(block_probs = matrix(0.5, nrow = 1, ncol = 1), block_assign = rep(1, times = 50)))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 
 computePval(NetworkStructList(Nnodes = 50, type = "tree"), sampleNetwork(m1), sampleNetwork(m2), 1, pl)
 computePval(NetworkStructList(Nnodes = 50, type = "random"), sampleNetwork(m1), sampleNetwork(m2), 1, pl)
 
 
 nmp = NetworkModelPair(m1 = NetworkModel(type = "block"), is_null = TRUE)
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 sampleNetwork(NetM = nmp)
 
 
