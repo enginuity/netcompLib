@@ -347,25 +347,20 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE) {
 
 #' Instantiates an object of class NetworkStruct
 #' 
-#' @param Nnodes Number of nodes in network
-#' @param type Type of network model (accepts 'block', 'tree', 'random', 'latent') ('none' is also accepted, but the resulting object isn't really interesting; its mainly for testing the class)
-#' @param model_params Model parameters specified by set_model_param()
+#' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
 #' 
-#' @return Object of class NetworkStruct
+#' @return [NetworkStruct] :: A representation of the generated model structure
 #' 
 #' @export
 #' 
-NetworkStruct = function(Nnodes = NULL, type = NULL, model_params = set_model_param()) {
-  # creates a default NetworkStruct object -- this is the default constructor, but probably should never be used. the specific ones for a specific model should be used. 
-  # maybe want to make this eventually call the network generation methods
+NetworkStruct = function(model_params = set_model_param()) {
+  type = model_params$type
   
-  if (is.null(type)) { type = model_params$type }
-  ## currently this does nothing but return a lame object, that satisfies the generic methods (although the generic methods would not do much?)
-  if (type == "none") { return(new("NetworkStruct", Nnodes = Nnodes)) }
-  if (type == "block") { return(NetworkStructSBM(Nnodes = Nnodes, model_params = model_params)) }
-  if (type == "tree") { return(NetworkStructHRG(Nnodes = Nnodes, model_params = model_params)) }
+  if (type == "none") { return(new("NetworkStruct")) }
+  if (type == "block") { return(NetworkStructSBM(model_params)) }
+  if (type == "tree") { return(NetworkStructHRG(model_params)) }
   if (type == "latent") { stop("Not valid with latent space models") }
-  if (type == "random") { return(NetworkStructRND(Nnodes = Nnodes, model_params = model_params)) }
+  if (type == "random") { return(NetworkStructRND(model_params)) }
   stop("Invalid 'type' specified")
 }
 
@@ -376,20 +371,17 @@ NetworkStruct = function(Nnodes = NULL, type = NULL, model_params = set_model_pa
 #' 
 #' These are the random edge partitions used in the network hypothesis testing. 
 #' 
-#' @param Nnodes Number of nodes for each network
 #' @param Nmodels Number of random edge partitions to generate
-#' @param type Type of random edge partition to generate
-#' @param model_params List of model parameters; see set_model_param(). 
+#' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
 #' 
-#' @return Object of class NetworkStructList
+#' @return [NetworkStructList] :: A representation of the generated model structure
 #' 
 #' @export
 #' 
-NetworkStructList = function(Nnodes = NULL, Nmodels = 10, type = NULL, model_params = set_model_param()) {
+NetworkStructList = function(Nmodels = 10, model_params = set_model_param()) {
   # TODO: [Improvement] 'type' can be a vector, and call it vectorized => resulting network list has multiple types
-  if (is.null(Nnodes)) { Nnodes = model_params$Nnodes }
   
-  res = replicate(n = Nmodels, expr = NetworkStruct(Nnodes = Nnodes, type = type, model_params = model_params))
+  res = replicate(n = Nmodels, expr = NetworkStruct(model_params))
   netsl = new("NetworkStructList", Nnodes = Nnodes, models = res)
   return(netsl)
 }
@@ -400,18 +392,15 @@ NetworkStructList = function(Nnodes = NULL, Nmodels = 10, type = NULL, model_par
 #' 
 #' This will generate a network model with random class assignments and class probabilities (unless otherwise specified)
 #' 
-#' @param Nnodes Number of nodes in the network model
-#' @param model_params A list of model parameters -- see set_model_param()
+#' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
 #' 
-#' @return NetworkModelRND object
+#' @return [NetworkStructRND] :: A representation of the generated model structure
 #' 
 #' @export
 #' 
-NetworkStructRND = function(Nnodes = NULL, model_params = set_model_param()) {
-  if (is.null(Nnodes)) { Nnodes = model_params$Nnodes }
-  
+NetworkStructRND = function(model_params = set_model_param()) {
   # Just generate a model and then lose the probability information. 
-  NetM = NetworkModelRND(Nnodes = Nnodes, model_params = model_params)
+  NetM = NetworkModelRND(model_params)
   return(extractStruct(NetM))
 }
 
@@ -420,18 +409,15 @@ NetworkStructRND = function(Nnodes = NULL, model_params = set_model_param()) {
 #' 
 #' This will generate a network model with random class assignments and class probabilities (unless otherwise specified)
 #' 
-#' @param Nnodes Number of nodes in the network model
-#' @param model_params A list of model parameters -- see set_model_param()
+#' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
 #' 
-#' @return NetworkModelRND object
+#' @return [NetworkStructHRG] :: A representation of the generated model structure
 #' 
 #' @export
 #' 
-NetworkStructHRG = function(Nnodes = NULL, model_params = set_model_param()) {
-  if (is.null(Nnodes)) { Nnodes = model_params$Nnodes }
-  
+NetworkStructHRG = function(model_params = set_model_param()) {
   # Just generate a model and then lose the probability information. 
-  NetM = NetworkModelHRG(Nnodes = Nnodes, model_params = model_params)
+  NetM = NetworkModelHRG(model_params)
   return(extractStruct(NetM))
 }
 
@@ -440,16 +426,15 @@ NetworkStructHRG = function(Nnodes = NULL, model_params = set_model_param()) {
 #' 
 #' This will generate a network model with random class assignments and class probabilities (unless otherwise specified)
 #' 
-#' @param Nnodes Number of nodes in the network model
-#' @param model_params A list of model parameters -- see set_model_param()
+#' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
 #' 
-#' @return NetworkModelSBM object
+#' @return [NetworkStructSBM] :: A representation of the generated model structure
 #' 
 #' @export
 #' 
-NetworkStructSBM = function(Nnodes = 10, model_params = set_model_param()) {
+NetworkStructSBM = function(model_params = set_model_param()) {
   # Just generate a model and then lose the probability information. 
-  NetM = NetworkModelSBM(Nnodes = Nnodes, model_params = model_params)
+  NetM = NetworkModelSBM(model_params)
   return(extractStruct(NetM))
 }
 
