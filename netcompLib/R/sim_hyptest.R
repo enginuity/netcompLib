@@ -27,7 +27,10 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
     load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
     
     gen_NetMPair = NetworkModelPair(NetworkModelSBM(Nnodes = 30), NetworkModelSBM(Nnodes = 30), is_null = FALSE)
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:28 2015--
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:23 2015--
     fit_NetSList = NetworkStructList(Nnodes = 30, Nmodels = 100, type = "block")
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
     Nobs = 1; Nsim = 100; verbose = TRUE;
     param_list = set_sim_param(cc_adj = c(0,1,2), thres_ignore = c(5, 10), n_models = c(1, 25, 50, 100))
   }
@@ -35,6 +38,7 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
   # Check that enough models were generated
   Nfit = max(param_list$n_models)
   if (is.null(fit_NetSList)) { fit_NetSList = NetworkStructList(Nmodels = Nfit, model_param = fitm_params) }
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
   if (Nfit > length(fit_NetSList@models)) { stop("Not enough fitted models generated") }
   partial_indices = lapply(param_list$n_models, function(x) { 1:x })
   
@@ -83,6 +87,7 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
 sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_NetSList = NULL, fit_models_params = set_model_param(), param_list = set_sim_param(), pval_adj_fx = list(mult_pearson, mult_highcrit), verbose = 0) { 
   if (is.null(fit_NetSList)) {
     fit_NetSList = NetworkStructList(model_param = fit_models_params, Nmodels = max(param_list$n_models))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
   }
   
   if (verbose > 2) { print("** Calling sim_hyptest **")}
@@ -189,7 +194,11 @@ sim_power_rpart = function(GL, NL, FL, Nsim = 500, Nsim_crit = 500, Nobs = 1, ve
   ## input list of generating models is GL, null-hyp -> NL, fitting models -> FL
   if (FALSE) {
     GL = list(NetworkModelPair(m1 = NetworkModelSBM(Nnodes = 30), is_null = TRUE), 
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:28 2015--
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:23 2015--
               NetworkModelPair(m1 = NetworkModelSBM(Nnodes = 30), is_null = TRUE))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:28 2015--
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:23 2015--
     NL = GL
     FL = list(set_model_param(Nnodes = 30), set_model_param(Nnodes = 30))
     Nsim = 200
@@ -211,6 +220,7 @@ sim_power_rpart = function(GL, NL, FL, Nsim = 500, Nsim_crit = 500, Nobs = 1, ve
     
     ## If FL contains networkstructlists, then use those for everything. otherwise, generate a new one each time...
     if (is(FL[[S]], "NetworkStructList")) { 
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
       if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Simulating Critical Values) =====\n", sep = "") }
       critvals = sim_critvals(NetMPair = NL[[S]], Nsim = Nsim_crit, Nobs = Nobs, fit_NetSList = FL[[S]], param_list = pl, pval_adj_fx = pval_adj_fx, verbose = verbose)
       

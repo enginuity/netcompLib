@@ -19,6 +19,7 @@ computeDfAdj = function(NetM, NetS, hidden_edges = NULL) {
     ## Test code
     NetM = NetworkModel(set_model_param(Nnodes = 20, type = "block", block_assign = rep(c(1,2), each = 10), block_probs = matrix(c(.3, .3, .3, .7), nrow = 2)))
     NetS = NetworkStructSBM(Nnodes = 20, model_param = set_model_param(block_assign = rep(c(1,2), times = 10)))
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
   }
   
   if (getNnodes(NetM) != getNnodes(NetS)) { stop("Number of nodes is not consistent between input NetM and NetS") }

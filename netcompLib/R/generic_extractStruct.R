@@ -22,6 +22,7 @@ extractStruct.NetworkModel = function(NetM) {
 
 extractStruct.NetworkModelPair = function(NetM) {
   netsl = new("NetworkStructList", Nnodes = getNnodes(NetM), 
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
               models = list(extractStruct(NetM@m1), extractStruct(NetM@m2)))
   return(netsl)
 }
@@ -52,6 +53,7 @@ extractStruct.NetworkModelSBM = function(NetM) {
   }}
   
   nets = new("NetworkStructSBM", Nnodes = getNnodes(NetM), groups = ga, counts = counts, expand = expanded, correct = correction)
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
   return(nets)
 }
 
@@ -61,6 +63,7 @@ extractStruct.NetworkModelHRG = function(NetM) {
   expc = expanded_children_from_tree(tr)
   
   nets = new("NetworkStructHRG", Nnodes = getNnodes(NetM), tree_list = tr, expand = expc, 
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
              counts = sapply(expc, function(x) {length(x[[1]]) * length(x[[2]]) }))
   return(nets)
 }
@@ -68,6 +71,7 @@ extractStruct.NetworkModelHRG = function(NetM) {
 
 extractStruct.NetworkModelRND = function(NetM) {
   nets = new("NetworkStructRND", Nnodes = getNnodes(NetM), counts = NetM@counts, ids = NetM@ids)
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
   return(nets)
 }
 
@@ -76,5 +80,6 @@ extractStruct.NetworkModelRND = function(NetM) {
 setMethod("extractStruct", signature(NetM = "NetworkModel"), extractStruct.NetworkModel)
 setMethod("extractStruct", signature(NetM = "NetworkModelHRG"), extractStruct.NetworkModelHRG)
 setMethod("extractStruct", signature(NetM = "NetworkModelPair"), extractStruct.NetworkModelPair)
+#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:28 2015--
 setMethod("extractStruct", signature(NetM = "NetworkModelSBM"), extractStruct.NetworkModelSBM)
 setMethod("extractStruct", signature(NetM = "NetworkModelRND"), extractStruct.NetworkModelRND)
