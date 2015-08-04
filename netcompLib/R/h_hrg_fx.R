@@ -138,7 +138,7 @@ anc_table_from_expanded_children = function(expanded.children, nn, nodes.to.upda
 closest_ancestor = function(tree) {
   nn = tree$nodes
   int_nodes = length(tree$prob)
-  tot_nodes  nn + int_nodes
+  tot_nodes = nn + int_nodes
   
   expanded_children = expanded_children_from_tree(tree)
   anc_table = anc_table_from_expanded_children(expanded_children, nn)

@@ -49,6 +49,8 @@ NetworkModel = function(model_params = set_model_param()) {
 #' @export
 #' 
 NetworkModelSBM = function(model_params = set_model_param()) {
+  ## TODO: [Rewrite] this
+  
   Nnodes = model_params$Nnodes
   
   ## Helper function for adjusting block model probabilities  
@@ -128,6 +130,8 @@ NetworkModelSBM = function(model_params = set_model_param()) {
 #' @export
 #' 
 NetworkModelHRG = function(model_params = set_model_param()) {
+  ## TODO: [Rewrite] this
+  
   Nnodes = model_params$Nnodes
   
   # helper function that generates a fixed structure tree (as close to binary tree as possible)
@@ -239,6 +243,8 @@ NetworkModelHRG = function(model_params = set_model_param()) {
 #' @export
 #' 
 NetworkModelLSM = function(model_params = set_model_param()) {
+  ## TODO: [Rewrite] this
+  
   Nnodes = model_params$Nnodes
   
   K = model_params$latent_nclass
@@ -282,6 +288,7 @@ NetworkModelLSM = function(model_params = set_model_param()) {
 #' @export
 #' 
 NetworkModelRND = function(model_params = set_model_param()) {
+  ## TODO: [Rewrite] this
   Nnodes = model_params$Nnodes
   
   rnd_Ngroups = model_params$random_ngroups
