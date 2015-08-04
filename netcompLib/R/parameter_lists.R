@@ -56,26 +56,32 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, bloc
 #' 
 #' @export
 #' 
-set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_models = c(1,25,50,100)) {
-
-  return(list(cc_adj = cc_adj, thres_ignore = thres_ignore, alphas = alphas, n_models = n_models))
+set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_models = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE)) {
+#|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
+  fxlist = list()
+  for (j in seq_along(pval_fx_names)) {
+    reslist[[pval_fx_names[j]]] = eval(parse(text = pval_fx_names[j]))
+  }
+  return(list(cc_adj = cc_adj, thres_ignore = thres_ignore, alphas = alphas, n_models = n_models,
+              pval = list(fx = fxlist, simnull = pval_sim_null))
 }
 
 
-
+## TODO: [Delete] all the following code
 #' Generate a list of p-value computation functions
 #' 
 #' @param fx_names [vector-char] :: Function names (these MUST correspond to existing functions, or else errors will occur eventually)
+#' @param sim_null_dist [vector-logical] :: Does the null distribution need to be simulated? 
 #' 
 #' @return [list] :: A named list, where the names are the input function names, and the entries are the actual functions stored inside. 
 #' 
 #' @export
 #' 
-set_pval_fx = function(fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson")) {
+set_pval_fx = function(fx_names = , sim_null_dist = ) {
+#|----##Function deleted. These simulations should be replaced with newer code... --Tue Aug  4 00:51:02 2015--
   ## TODO: Use this as replacement when possible (not urgent -- this doesn't change workability of code. )
-  reslist = list()
-  for (j in seq_along(fx_names)) {
-    reslist[[fx_names[j]]] = eval(parse(text = fx_names[j]))
+
+    reslist[[fx_names[j]]]$simdist = sim_null_dist[j]
   }
   return(reslist)
 }

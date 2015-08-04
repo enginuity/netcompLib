@@ -13,11 +13,13 @@ m1 = sampleNetwork(n1, Nobs = 1)
 m2 = sampleNetwork(n2, Nobs = 1)
 
 computePval(NetworkStructSBM(Nnodes = 30), adja1 = m1, adja2 = m2, Nobs = 1, pl = set_sim_param(n_models = 1), mode = "nodewise")
+#|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
 
 netsl = NetworkStructList(Nnodes = 30, type = "block", Nmodels = 100)
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
 res = computePval(netsl, m1, m2, 1, pl = set_sim_param(n_models = c(100)), mode = "nodewise")
+#|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
 
 par(mfrow = c(2,2))
 temp = sapply(res, function(x) x$node)
@@ -43,11 +45,13 @@ m1 = sampleNetwork(n1, Nobs = 1)
 m2 = sampleNetwork(n2, Nobs = 1)
 
 computePval(NetworkStructSBM(Nnodes = 60), adja1 = m1, adja2 = m2, Nobs = 1, pl = set_sim_param(n_models = 1), mode = "nodewise")
+#|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
 
 netsl = NetworkStructList(Nnodes = 60, type = "block", Nmodels = 100)
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
 res = computePval(netsl, m1, m2, 1, pl = set_sim_param(n_models = c(100)), mode = "nodewise")
+#|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
 
 temp = sapply(res, function(x) x$node)
 plot(1:60, apply(temp, 1, function(x) { mean(x[is.finite(x)])}), ylab = "Mean Nodal Contribution", xlab = "Node", main = "Network Size = 60", ylim = c(-5, 10))
