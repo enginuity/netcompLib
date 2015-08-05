@@ -11,7 +11,6 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode) standardG
 #' @param adja2 Adjacency matrix/array
 #' @param Nobs Number of network observations per class (default = 1)
 #' @param pl A list of parameters, set by set_sim_param
-#|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
 #' @param mode How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node; 'chisq' gives the chi-square test statistic
 #' 
 #' @return A matrix (or a list of matrices) of p-values (depending on the testing parameters)
@@ -226,6 +225,17 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl, mode = "de
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
     load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
   }
+
+  if (mode == "fast") {
+    fitN = fitModel(NetS, abind(adja1, adja2, along = 3))
+    fit1 = fitModel(NetS, adja1); fit2 = fitModel(NetS, adja2)
+    
+    llN = computeLik(fitN, abind(adja1, adja2, along = 3))
+    llA = computeLik(fit1, adja1) + computeLik(fit2, adja2)
+    
+    D = -2*(llN - llA)
+    return(pchisq(q = D, df = length(fitN@groups) * (length(fitN@groups) -1)/ 2))
+  }
   
   ## Compute total count for each edge (and edgesumc is the sum of products, to be used in computing cell-wise correlations)
   if (Nobs > 1) {
@@ -308,7 +318,6 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl, mode = "de
 # setMethod ---------------------------------------------------------------
 setMethod("computePval", signature(NetS = "NetworkStruct"), computePval.NetworkStruct)
 setMethod("computePval", signature(NetS = "NetworkStructList"), computePval.NetworkStructList)
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
 setMethod("computePval", signature(NetS = "NetworkStructSBM"), computePval.NetworkStructSBM)
 setMethod("computePval", signature(NetS = "NetworkStructRND"), computePval.NetworkStructRND)
 setMethod("computePval", signature(NetS = "NetworkStructHRG"), computePval.NetworkStructHRG)

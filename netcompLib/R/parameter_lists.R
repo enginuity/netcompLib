@@ -42,7 +42,7 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, bloc
   return(list(Nnodes = Nnodes, type = type, pmin = pmin, pmax = pmax, block_nclass = block_nclass, block_avgdensity = block_avgdensity, block_assign = block_assign, block_probs = block_probs, random_ngroups = random_ngroups, tree_type = tree_type, latent_dim = latent_dim, latent_nclass = latent_nclass, latent_sdcenter = latent_sdcenter, latent_isgennorm = latent_isgennorm))
 }
 
-
+## TODO: [Document] output of this function
 #' Set up simulation parameters
 #' 
 #' This function creates a list of simulation parameters that are desired. 
@@ -52,38 +52,28 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, bloc
 #' @param alphas [vector-double] :: Size(s) of the hypothesis test (probability of reject given true null)
 #' @param n_models [vector-int] :: Number(s) of edge partitions to use for testing
 #' 
-#' @return [list] :: A list of parameters
+#' @return [list] :: A list of parameters, structured as follows
+#' \itemize{
+#' \item cc_adj -- [vector-int] :: 
+#' \item thres_ignore -- [vector-int] :: 
+#' \item alphas -- [vector-double] :: 
+#' \item n_models -- [vector-int] ::
+#' \item pval_adj -- [list] ::
+#'   \itemize{
+#'    \item fx -- [named_list-functions] ::
+#'    \item simnull - [vector-logical] :: 
+#'   }
+#' }
+#' 
 #' 
 #' @export
 #' 
 set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_models = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE)) {
-#|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
   fxlist = list()
   for (j in seq_along(pval_fx_names)) {
     reslist[[pval_fx_names[j]]] = eval(parse(text = pval_fx_names[j]))
   }
   return(list(cc_adj = cc_adj, thres_ignore = thres_ignore, alphas = alphas, n_models = n_models,
-              pval = list(fx = fxlist, simnull = pval_sim_null))
+              pval_adj = list(fx = fxlist, simnull = pval_sim_null)))
 }
 
-
-## TODO: [Delete] all the following code
-#' Generate a list of p-value computation functions
-#' 
-#' @param fx_names [vector-char] :: Function names (these MUST correspond to existing functions, or else errors will occur eventually)
-#' @param sim_null_dist [vector-logical] :: Does the null distribution need to be simulated? 
-#' 
-#' @return [list] :: A named list, where the names are the input function names, and the entries are the actual functions stored inside. 
-#' 
-#' @export
-#' 
-set_pval_fx = function(fx_names = , sim_null_dist = ) {
-#|----##Function deleted. These simulations should be replaced with newer code... --Tue Aug  4 00:51:02 2015--
-  ## TODO: Use this as replacement when possible (not urgent -- this doesn't change workability of code. )
-
-    reslist[[fx_names[j]]]$simdist = sim_null_dist[j]
-  }
-  return(reslist)
-}
-
-  

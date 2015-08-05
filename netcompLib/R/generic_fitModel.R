@@ -31,12 +31,19 @@ fitModel.NetworkStructList = function(NetS, adja) {
 
 
 fitModel.NetworkStructSBM = function(NetS, adja) {
-  res = NetworkModel(Nnodes = getNnodes(NetS), type = "block", model_param = set_model_param(block_assign = NetS@groups))
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
+  res = NetworkModel(set_model_param(Nnodes = getNnodes(NetS), type = "block", block_assign = NetS@groups))
   if (is.null(adja)) {
   } else {
-    ## TODO: Fill in code for estimating probabilities. 
-    stop("Not implemented for non-null adjacency array")
+    Nobs = dim(adja)[3]
+    if (Nobs == 1) { adjm = adja[,,1] } else { adjm = apply(adja, c(1,2), sum) }
+    gr = res@assign
+    for (i in unique(gr)) { for (j in unique(gr)) { 
+      if (i != j) {
+        res@probmat[i,j] = sum(adjm[gr == i,gr == j])/(sum(gr == i) * sum(gr == j))
+      } else if (i == j) {
+        res@probmat[i,i] = sum(adjm[gr == i,gr == i])/(sum(gr == i) * (sum(gr == i)-1)/2)
+      }
+    }}
   }
   return(res)
 }

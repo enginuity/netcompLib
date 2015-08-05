@@ -118,7 +118,6 @@ NetworkModelSBM = function(model_params = set_model_param()) {
 }
 
 
-
 #' Constructor for HRG network model
 #' 
 #' This will generate a network model with random class assignments and class probabilities (unless otherwise specified)
