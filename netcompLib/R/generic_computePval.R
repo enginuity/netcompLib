@@ -17,23 +17,23 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode) standardG
 #' 
 #' @export
 #' 
-computePval = function(NetS, adja1, adja2, Nobs, pl, mode = 'default') {
+computePval = function(NetS, adja1, adja2, Nobs = 1, pl, mode = 'default') {
   stop("Placeholder for documentation purposes")
 }
 
 
-computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
+computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default") {
   stop("Not implemented for this case")
 }
 
 
-computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
+computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default") {
   res = lapply(NetS@models, function(x) { computePval(x, adja1, adja2, Nobs, pl, mode = mode) } )
   return(res)
 }
 
 
-computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
+computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default") {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
@@ -122,7 +122,7 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs, pl, mode = "de
 }
 
 
-computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
+computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default") {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
@@ -213,7 +213,7 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs, pl, mode = "de
 }
 
 
-computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs, pl, mode = "default") {
+computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default") {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
