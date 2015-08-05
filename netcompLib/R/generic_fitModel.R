@@ -92,17 +92,17 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default") {
       ii = which(gr == i); ij = which(gr == j)
       ci = sum(gr == i); cj = sum(gr == j)
       if (i == j) { 
-        c11m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 1)/2
-        c10m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 0)/2
-        c01m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 1)/2
-        c00m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 0)/2
+        c11m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 1, na.rm = TRUE)/2
+        c10m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 0, na.rm = TRUE)/2
+        c01m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 1, na.rm = TRUE)/2
+        c00m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 0, na.rm = TRUE)/2
         tm[i,j] = ci * (ci -1)/2
       }
       if (i != j) { 
-        c11m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 1)
-        c10m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 0)
-        c01m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 1)
-        c00m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 0)
+        c11m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 1, na.rm = TRUE)
+        c10m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 0, na.rm = TRUE)
+        c01m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 1, na.rm = TRUE)
+        c00m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 0, na.rm = TRUE)
         tm[i,j] = ci*cj 
       }
     }}
@@ -111,7 +111,14 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default") {
               c01m[lower.tri(c11m, diag = TRUE)], c00m[lower.tri(c11m, diag = TRUE)])
     n = tm[lower.tri(tm, diag = TRUE)]
     
-    temp = optim(rep(0, times = length(n) + 1), fn = llfx, C = C, n=n, control = list(fnscale = -1))
+    bestval = -Inf
+    for(i in 1:10) { 
+      temp = optim(rnorm(length(n) + 1), fn = llfx, C = C, n=n, control = list(fnscale = -1))
+      if (temp$value > bestval) {
+        bestval = temp$value; best = temp
+      }
+    }
+    
     return(list(res, temp))
   }
   
@@ -138,17 +145,17 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default") {
       ii = which(gr == i); ij = which(gr == j)
       ci = sum(gr == i); cj = sum(gr == j)
       if (i == j) { 
-        c11m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 1)/2
-        c10m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 0)/2
-        c01m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 1)/2
-        c00m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 0)/2
+        c11m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 1, na.rm = TRUE)/2
+        c10m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 0, na.rm = TRUE)/2
+        c01m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 1, na.rm = TRUE)/2
+        c00m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 0, na.rm = TRUE)/2
         tm[i,j] = ci * (ci -1)/2
       }
       if (i != j) { 
-        c11m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 1)
-        c10m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 0)
-        c01m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 1)
-        c00m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 0)
+        c11m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 1, na.rm = TRUE)
+        c10m[i,j] = sum(a1[ii,ij] == 1 & a2[ii,ij] == 0, na.rm = TRUE)
+        c01m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 1, na.rm = TRUE)
+        c00m[i,j] = sum(a1[ii,ij] == 0 & a2[ii,ij] == 0, na.rm = TRUE)
         tm[i,j] = ci*cj 
       }
     }}
@@ -156,9 +163,14 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default") {
     D = cbind(c11m[lower.tri(c11m, diag = TRUE)], c10m[lower.tri(c11m, diag = TRUE)],
               c01m[lower.tri(c11m, diag = TRUE)], c00m[lower.tri(c11m, diag = TRUE)])
     n = tm[lower.tri(tm, diag = TRUE)]
-    print(length(n))
-    temp = optim(rep(0, times = (2*length(n) + 1)), fn = llfx, D = D, n=n, control = list(fnscale = -1))
-    return(list(res, temp))
+    bestval = -Inf
+    for(i in 1:10) { 
+      temp = optim(rnorm(2*length(n) + 1), fn = llfx, D = D, n=n, control = list(fnscale = -1))
+      if (temp$value > bestval) {
+        bestval = temp$value; best = temp
+      }
+    }
+    return(list(res, best))
   }
   
   stop("Invalid 'mode'")
