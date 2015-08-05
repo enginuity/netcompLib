@@ -71,7 +71,7 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, bloc
 set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_models = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE)) {
   fxlist = list()
   for (j in seq_along(pval_fx_names)) {
-    reslist[[pval_fx_names[j]]] = eval(parse(text = pval_fx_names[j]))
+    fxlist[[pval_fx_names[j]]] = eval(parse(text = pval_fx_names[j]))
   }
   return(list(cc_adj = cc_adj, thres_ignore = thres_ignore, alphas = alphas, n_models = n_models,
               pval_adj = list(fx = fxlist, simnull = pval_sim_null)))
