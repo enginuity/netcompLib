@@ -221,8 +221,7 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     adja2 = sampleNetwork(NetM)
     Nobs = 1
     pl = list(cc_adj = c(0,1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
-    NetS = NetworkStructSBM(Nnodes = 30, model_param = set_model_param(block_nclass = 3))
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
+    NetS = NetworkStructSBM(set_model_param(block_nclass = 3))
     load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
   }
 
@@ -233,8 +232,7 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     llN = computeLik(fitN, abind(adja1, adja2, along = 3))
     llA = computeLik(fit1, adja1) + computeLik(fit2, adja2)
     
-    D = -2*(llN - llA)
-    return(pchisq(q = D, df = length(fitN@groups) * (length(fitN@groups) -1)/ 2))
+    return(-2*(llN - llA))
   }
   
   ## Compute total count for each edge (and edgesumc is the sum of products, to be used in computing cell-wise correlations)
