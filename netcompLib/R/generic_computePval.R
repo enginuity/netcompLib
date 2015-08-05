@@ -234,6 +234,29 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     
     return(-2*(llN - llA))
   }
+
+  if (mode == "fast-densitydiff") {
+    ## case where the raw densities differ
+    fitN = fitModel(NetS, abind(adja1, adja2, along = 3), mode = "densitydiff")
+    fit1 = fitModel(NetS, adja1); fit2 = fitModel(NetS, adja2)
+    
+    llN = fitN[[2]]$value
+    llA = computeLik(fit1, adja1) + computeLik(fit2, adja2)
+    return(-2*(llN - llA))
+  }
+
+  if (mode == "fast-corr") {
+    ## case to include correlation estimation
+    fitN = fitModel(NetS, abind(adja1, adja2, along = 3), mode = "corr-global-null")
+    fitA = fitModel(NetS, abind(adja1, adja2, along = 3), mode = "corr-global")
+    
+    llN = fitN[[2]]$value
+    llA = fitA[[2]]$value
+    return(-2*(llN - llA))
+    
+  }
+
+
   
   ## Compute total count for each edge (and edgesumc is the sum of products, to be used in computing cell-wise correlations)
   if (Nobs > 1) {
