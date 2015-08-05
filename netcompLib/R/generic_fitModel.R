@@ -33,6 +33,7 @@ fitModel.NetworkStructList = function(NetS, adja, mode = "default") {
 fitModel.NetworkStructSBM = function(NetS, adja, mode = "default") {
   ## mode -- default
   ## if mode = densitydiff, then, assume global density difference parameter
+  ## TODO: Re-implement this?!?! the modes may not be the best way to deal with this... 
   
   res = NetworkModel(set_model_param(Nnodes = getNnodes(NetS), type = "block", block_assign = NetS@groups))
   
@@ -82,7 +83,7 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default") {
       q = 1- p; pq = p * q 
       c11 = C[,1]; c10 = C[,2]; c01 = C[,3]; c00 = C[,4]
       res = c11 * log(p^2 + r * pq) + c00 * log(q^2 + r * pq) + (c10 + c01) * log((1-r) * pq)
-      if (any(is.nan(res))) return(-Inf)
+      if (any(is.nan(res))) return(-100000)
       return(sum(res))
     }
     
@@ -136,7 +137,7 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default") {
       c11 = D[,1]; c10 = D[,2]; c01 = D[,3]; c00 = D[,4]
       A = r * sqrt(p1 * p2 * (1 - p1) * (1 - p2))
       res = c11 * log(p1 * p2 + A) + c00 * log((1-p1)*(1-p2) + A) + c10 * log(p1 * (1-p2) - A) + c01 * log((1-p1) * p2 - A)
-      if (any(is.nan(res))) return(-Inf)
+      if (any(is.nan(res))) return(-100000)
       return(sum(res))
     }
     
