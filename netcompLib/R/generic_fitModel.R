@@ -36,13 +36,14 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default") {
   ## TODO: Re-implement this?!?! the modes may not be the best way to deal with this... 
   
   res = NetworkModel(set_model_param(Nnodes = getNnodes(NetS), type = "block", block_assign = NetS@groups))
-  
   Nobs = dim(adja)[3]
+  
   NG = max(res@assign)
   gr = res@assign
-  
+  res@probmat = matrix(NA, NG, NG)
   if (mode == "default") {
-    if (Nobs == 1) { adjm = adja[,,1] } else { adjm = apply(adja, c(1,2), sum) }                      
+    if (Nobs == 1) { adjm = adja[,,1] }
+    if (Nobs > 1) { adjm = apply(adja, c(1,2), sum) }
     for(i in 1:NG) { for(j in 1:NG) {
       ii = which(gr == i); ij = which(gr == j)
       ci = sum(gr == i); cj = sum(gr == j)

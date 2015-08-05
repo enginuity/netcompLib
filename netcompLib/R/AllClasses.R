@@ -388,7 +388,7 @@ NetworkStructList = function(Nmodels = 10, model_params = set_model_param()) {
   # TODO: [Improvement] 'type' can be a vector, and call it vectorized => resulting network list has multiple types
   
   res = replicate(n = Nmodels, expr = NetworkStruct(model_params))
-  netsl = new("NetworkStructList", Nnodes = Nnodes, models = res)
+  netsl = new("NetworkStructList", Nnodes = model_params$Nnodes, models = res)
   return(netsl)
 }
 

@@ -28,7 +28,7 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "d
 
 
 computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default") {
-  res = lapply(NetS@models, function(x) { computePval(x, adja1, adja2, Nobs, pl, mode = mode) } )
+  res = lapply(NetS@models, function(x) { cat("."); computePval(x, adja1, adja2, Nobs, pl, mode = mode) } )
   return(res)
 }
 
