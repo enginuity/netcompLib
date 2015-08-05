@@ -38,10 +38,12 @@ fitModel.NetworkStructSBM = function(NetS, adja) {
     if (Nobs == 1) { adjm = adja[,,1] } else { adjm = apply(adja, c(1,2), sum) }
     gr = res@assign
     for (i in unique(gr)) { for (j in unique(gr)) { 
+      ii = which(gr == i); ij = which(gr == j)
+      ci = sum(gr == i); cj = sum(gr == j)
       if (i != j) {
-        res@probmat[i,j] = sum(adjm[gr == i,gr == j])/(sum(gr == i) * sum(gr == j))
+        res@probmat[i,j] = sum(adjm[ii,ij]) / (ci * cj * Nobs)
       } else if (i == j) {
-        res@probmat[i,i] = sum(adjm[gr == i,gr == i])/(sum(gr == i) * (sum(gr == i)-1)/2)
+        res@probmat[i,i] = sum(adjm[ii,ii]) / (Nobs * ci * (ci-1))
       }
     }}
   }
