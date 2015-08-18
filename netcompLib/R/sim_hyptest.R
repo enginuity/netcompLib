@@ -120,9 +120,9 @@ setup_array = function(pl) {
   ## creates an array that names things properly
   if (!is.list(pl)) { stop("Input is not a list") }
   
-  lengths = sapply(pl, length)
+  lengths = sapply(pl, length)[1:4]
   namelist = list()
-  for (j in seq_along(pl)) {
+  for (j in 1:4) {
     namelist[[names(pl)[j]]] = pl[[j]]
   }
   
@@ -161,11 +161,15 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sim_power_rpart)
 #' Simulates the power for different pairs of generating models
 #' 
 #' @param GL [list] :: List of generating models (NetModPairs)
 #' @param NL [list] :: List of null-hypothesis models (NetModPairs)
 #' @param FL [list] :: List of fitting model parameters
+#' @param attrib [dataframe] :: Parameters of simulations
+#' @param descrip [char] :: Description of simulation
+#' @param outfile [char] :: Filename to store simulation results
 #' @param Nsim [int, 500] :: Number of simulations
 #' @param Nsim_crit [int, 500] :: Number of simulations for critical values
 #' @param Nobs [int, 1] :: Number of network observations
@@ -176,7 +180,7 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) {
 #' 
 #' @export
 #' 
-sim_power_rpart = function(GL, NL, FL, Nsim = 500, Nsim_crit = 500, Nobs = 1, verbose = 0, pl) {
+sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsim_crit = 500, Nobs = 1, verbose = 0, pl = set_sim_param()) {
   ## then, will also need a function that helps generate the lists of models? maybe? 
   ## for simulations -- given a list of generating models, a list of null-hypothesis models (to generate crit values from), and a corresspnding list of fitting models: 
   
@@ -210,6 +214,8 @@ sim_power_rpart = function(GL, NL, FL, Nsim = 500, Nsim_crit = 500, Nobs = 1, ve
       
       if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Simulating Power) =====\n", sep = "") }
       sim_res = sim_hyptest(gen_NetMPair = GL[[S]], fit_NetSList = FL[[S]], Nobs = Nobs, Nsim = Nsim, pl = pl, verbose = verbose)
+      
+      
     } else {
       if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Simulating Critical Values) =====\n", sep = "") }
       critvals = sim_critvals(NetMPair = NL[[S]], Nsim = Nsim_crit, Nobs = Nobs, fit_models_params = FL[[S]], pl = pl, verbose = verbose)
@@ -238,10 +244,14 @@ sim_power_rpart = function(GL, NL, FL, Nsim = 500, Nsim_crit = 500, Nobs = 1, ve
         }
       }
     }    
+    
+    ## Save to file
+    reslist = list(GL = GL, NL = NL, FL = FL, pl = pl, attrib = attrib, descrip = descrip, power = power_list)
+    save(reslist, file = outfile)
   }
   
   
-  return(power_list)
+  return(reslist)
 }
 
 
