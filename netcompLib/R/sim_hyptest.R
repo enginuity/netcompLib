@@ -111,7 +111,6 @@ sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_NetSList = NULL, fit
 #' Create a named array matching a list
 #' 
 #' @param pl [List] :: List of simulation parameters, as given by set_sim_param()
-#|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
 #' 
 #' @return [Array] :: NA-filled named array
 #' 
@@ -136,7 +135,6 @@ setup_array = function(pl) {
 #' 
 #' @param rl [List] :: Should be output of sim_hyptest (or something similar) 
 #' @param pl [List] :: List of simulation parameters, as given by set_sim_param()
-#|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
 #' @param cc_adj [int] :: Amount of SE's away from the correlation estimate used (how conservative? 0 means no adjustment (and requires large sample for guarantees; larger values give a conservative p-value))
 #' @param thres_ignore [int] :: Ignore edge groups with fewer than this many edges
 #' @param alphas [int] :: Size of test
@@ -179,7 +177,6 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) {
 #' @export
 #' 
 sim_power_rpart = function(GL, NL, FL, Nsim = 500, Nsim_crit = 500, Nobs = 1, verbose = 0, pl) {
-#|----##Function deleted. These simulations should be replaced with newer code... --Tue Aug  4 00:51:02 2015--
   ## then, will also need a function that helps generate the lists of models? maybe? 
   ## for simulations -- given a list of generating models, a list of null-hypothesis models (to generate crit values from), and a corresspnding list of fitting models: 
   
@@ -188,12 +185,8 @@ sim_power_rpart = function(GL, NL, FL, Nsim = 500, Nsim_crit = 500, Nobs = 1, ve
   
   ## input list of generating models is GL, null-hyp -> NL, fitting models -> FL
   if (FALSE) {
-    GL = list(NetworkModelPair(m1 = NetworkModelSBM(Nnodes = 30), is_null = TRUE), 
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:28 2015--
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:23 2015--
-              NetworkModelPair(m1 = NetworkModelSBM(Nnodes = 30), is_null = TRUE))
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:28 2015--
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:23 2015--
+    GL = list(NetworkModelPair(m1 = NetworkModelSBM(set_model_param(Nnodes = 30)), is_null = TRUE), 
+              NetworkModelPair(m1 = NetworkModelSBM(set_model_param(Nnodes = 30)), is_null = TRUE))
     NL = GL
     FL = list(set_model_param(Nnodes = 30), set_model_param(Nnodes = 30))
     Nsim = 200

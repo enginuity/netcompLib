@@ -3,12 +3,14 @@
 setGeneric("fitModel", function(NetS, adja, mode) standardGeneric("fitModel"))
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fitModel)
 #' Estimates the best-fit model for given structure
 #' 
 #' Note: if adja is NULL, will fill in random probabilities drawn from an uniform distribution
 #' 
 #' @param NetS NetworkStruct object
 #' @param adja adjacency array/ matrix
+#' @param mode temp
 #' 
 #' @return NetworkModel object containing best-fit model per structure. 
 #' 

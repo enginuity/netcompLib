@@ -43,6 +43,7 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, bloc
 }
 
 ## TODO: [Document] output of this function
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (set_sim_param)
 #' Set up simulation parameters
 #' 
 #' This function creates a list of simulation parameters that are desired. 
@@ -51,6 +52,8 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, bloc
 #' @param thres_ignore [vector-int] :: Ignore edge groups with fewer than this many edges
 #' @param alphas [vector-double] :: Size(s) of the hypothesis test (probability of reject given true null)
 #' @param n_models [vector-int] :: Number(s) of edge partitions to use for testing
+#' @param pval_fx_names temp
+#' @param pval_sim_null temp
 #' 
 #' @return [list] :: A list of parameters, structured as follows
 #' \itemize{
@@ -64,7 +67,6 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, bloc
 #'    \item simnull - [vector-logical] :: 
 #'   }
 #' }
-#' 
 #' 
 #' @export
 #' 
