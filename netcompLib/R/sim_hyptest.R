@@ -145,10 +145,6 @@ setup_array = function(pl) {
 #' @export
 #' 
 sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) { 
-  ## is similar to extract_result_list (but not sure to remove extract_result_list yet)
-#|----##Function modified -- all calls need to be updated.. --Wed Aug 19 00:08:41 2015--
-  ## extracts results of a certain type
-  
   i1 = which(pl$cc_adj == cc_adj)
   i2 = which(pl$thres_ignore == thres_ignore)
   i3 = which(pl$alphas == alphas)
