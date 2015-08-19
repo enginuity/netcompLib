@@ -189,6 +189,7 @@ NetworkModelHRG = function(model_params = set_model_param()) {
   
   if (random_type == "original") {
     res_tree = starter_tree(Nnodes)  
+    pars = res_tree$parents
   } else if (random_type == "random") {
     clist = list()
     for(j in 1:(Nnodes-1)) {

@@ -57,7 +57,7 @@ getEdgeProbMat.NetworkModelHRG = function(NetM, mode) {
   ## TODO: Rewrite closest_ancestor, so this section of code isn't this ugly. 
   
   tm = list(prob = NetM@prob, children = NetM@children, parents = NetM@parents, nodes = nn)
-  clo.anc = closest_ancestor(tm)$anc.table
+  clo.anc = closest_ancestor(tm)$anc_table
   
   out <- matrix(0, nn, nn)
   series <- lower_diag(nn)
