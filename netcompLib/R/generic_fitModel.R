@@ -1,38 +1,38 @@
 ##@S Function to create a NetworkModel object from a NetworkStruct object
 
-setGeneric("fitModel", function(NetS, adja, mode) standardGeneric("fitModel"))
+setGeneric("fitModel", function(NetS, adja, mode, optim_tries) standardGeneric("fitModel"))
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fitModel)
 #' Estimates the best-fit model for given structure
 #' 
 #' Note: if adja is NULL, will fill in random probabilities drawn from an uniform distribution
 #' 
-#' @param NetS NetworkStruct object
+#' @param NetS [\code{\link{NetworkStruct}}] :: Edge partition to fit model on
 #' @param adja adjacency array/ matrix
-#' @param mode temp
+#' @param mode [char] :: Method to fit model -- choices are: "default", "densitydiff", "corr-global-null", "corr-global"
+#' @param optim_tries [int] :: Number of attempts at optimization of likelihood function
 #' 
 #' @return NetworkModel object containing best-fit model per structure. 
 #' 
 #' @export
 #' 
-fitModel = function(NetS, adja, mode = "default") {
+fitModel = function(NetS, adja, mode = "default", optim_tries = 10) {
   stop("No implementation in template")
   return(NULL)
 }
 
 
-fitModel.NetworkStruct = function(NetS, adja, mode = "default") { 
+fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10) { 
   stop("No implmentation for template NetworkStruct")
 }
 
 
-fitModel.NetworkStructList = function(NetS, adja, mode = "default") {
+fitModel.NetworkStructList = function(NetS, adja, mode = "default", optim_tries = 10) {
   return(lapply(NetS@models, function(x) { fitModel(x, adja) } ))
 }
 
 
-fitModel.NetworkStructSBM = function(NetS, adja, mode = "default") {
+fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries = 10) {
   ## mode -- default
   ## if mode = densitydiff, then, assume global density difference parameter
   ## TODO: Re-implement this?!?! the modes may not be the best way to deal with this... 
@@ -183,7 +183,7 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default") {
 }
 
 
-fitModel.NetworkStructRND = function(NetS, adja, mode = "default") {
+fitModel.NetworkStructRND = function(NetS, adja, mode = "default", optim_tries = 10) {
   if (is.null(adja)) {
     stop("Not implemented")
     ## TODO: Fill in code for conversion
@@ -194,7 +194,7 @@ fitModel.NetworkStructRND = function(NetS, adja, mode = "default") {
 }
 
 
-fitModel.NetworkStructHRG = function(NetS, adja, mode = "default") {
+fitModel.NetworkStructHRG = function(NetS, adja, mode = "default", optim_tries = 10) {
   if (is.null(adja)) {
     stop("Not implemented")
     ## TODO: Fill in code for conversion
