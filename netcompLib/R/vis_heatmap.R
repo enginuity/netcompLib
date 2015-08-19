@@ -37,3 +37,29 @@ plot_probmatrix = function(pm, add_legend = TRUE, is_dm = FALSE, only_legend = F
   invisible(0)
 }
 
+
+#' Plot the Edge Group structure of a network model
+#' 
+#' @param NetM [\code{\link{NetworkModel}}] :: Model to plot edge group of
+#' @param ... [] :: Further parameters to pass on to the plot function
+#' 
+#' @return [int] :: Ignore output; a plot is produced
+#' 
+#' @export
+#' 
+plot_edgegroup = function(NetM, ...) {
+  z = getEdgeProbMat(NetM)
+  u = sort(unique(as.vector(z)), decreasing = FALSE)
+  for(j in 1:nrow(z)) {
+    z[j,] = match(z[j,], u)
+  }
+  
+  mat = z - 1
+  
+  N = nrow(mat)
+  plot(-5, -5, xlim = c(0,N) + 0.5, ylim = c(0,N) + 0.5, ...)
+  for(j in 1:N) { for(k in 1:N) { 
+    rect(j - 0.5, k - 0.5, j + 0.5, k + 0.5, col =mat[j,k])
+  }}
+  invisible(0)
+}
