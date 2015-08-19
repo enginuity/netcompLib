@@ -91,9 +91,14 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
       p = 1/(1 + exp(-t[-1]))
       r = 2 / (1 + exp(-t[1])) - 1 
       q = 1- p; pq = p * q 
+      
+      p11 = p^2 + r * pq
+      p00 = q^2 + r * pq
+      p10 = (1-r) * pq
+      if (!all(is_prob(c(p11, p10, p00)))) return(10^-239)
+      
       c11 = C[,1]; c10 = C[,2]; c01 = C[,3]; c00 = C[,4]
-      res = c11 * log(p^2 + r * pq) + c00 * log(q^2 + r * pq) + (c10 + c01) * log((1-r) * pq)
-      if (any(is.nan(res))) return(-100000)
+      res = c11 * log(p11) + c00 * log(p00) + (c10 + c01) * log(p10)
       return(sum(res))
     }
     
@@ -146,8 +151,14 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
       p2 = 1/(1 + exp(-rt))
       c11 = D[,1]; c10 = D[,2]; c01 = D[,3]; c00 = D[,4]
       A = r * sqrt(p1 * p2 * (1 - p1) * (1 - p2))
-      res = c11 * log(p1 * p2 + A) + c00 * log((1-p1)*(1-p2) + A) + c10 * log(p1 * (1-p2) - A) + c01 * log((1-p1) * p2 - A)
-      if (any(is.nan(res))) return(-100000)
+      
+      p11 = p1 * p2 + A
+      p10 = p1 * (1-p2) - A
+      p01 = (1-p1) * p2 - A
+      p00 = (1-p1)*(1-p2) + A
+      
+      if (!all(is_prob(c(p11, p10, p01, p00)))) return(10^-239)
+      res = c11 * log(p11) + c00 * log(p00) + c10 * log(p01) + c01 * log(p00)
       return(sum(res))
     }
     
