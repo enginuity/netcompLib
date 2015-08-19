@@ -72,7 +72,14 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
     
     x = xm[lower.tri(xm, diag = TRUE)]; y = ym[lower.tri(ym, diag = TRUE)]
     n = tm[lower.tri(tm, diag = TRUE)]
-    temp = optim(rnorm(n = length(n)+1), fn = llfx, x=x, y=y, n=n, control = list(fnscale = -1))
+    
+    bestval = -Inf
+    for(i in 1:optim_tries) { 
+      temp = optim(rnorm(n = length(n)+1), fn = llfx, x=x, y=y, n=n, control = list(fnscale = -1))
+      if (temp$value > bestval) {
+        bestval = temp$value; best = temp
+      }
+    }
     return(list(res, temp))
   }
   
@@ -117,7 +124,7 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
     n = tm[lower.tri(tm, diag = TRUE)]
     
     bestval = -Inf
-    for(i in 1:10) { 
+    for(i in 1:optim_tries) { 
       temp = optim(rnorm(length(n) + 1), fn = llfx, C = C, n=n, control = list(fnscale = -1))
       if (temp$value > bestval) {
         bestval = temp$value; best = temp
@@ -169,8 +176,9 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
     D = cbind(c11m[lower.tri(c11m, diag = TRUE)], c10m[lower.tri(c11m, diag = TRUE)],
               c01m[lower.tri(c11m, diag = TRUE)], c00m[lower.tri(c11m, diag = TRUE)])
     n = tm[lower.tri(tm, diag = TRUE)]
+    
     bestval = -Inf
-    for(i in 1:10) { 
+    for(i in 1:optim_tries) { 
       temp = optim(rnorm(2*length(n) + 1), fn = llfx, D = D, n=n, control = list(fnscale = -1))
       if (temp$value > bestval) {
         bestval = temp$value; best = temp
