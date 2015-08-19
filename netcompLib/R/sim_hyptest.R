@@ -146,6 +146,7 @@ setup_array = function(pl) {
 #' 
 sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) { 
   ## is similar to extract_result_list (but not sure to remove extract_result_list yet)
+#|----##Function modified -- all calls need to be updated.. --Wed Aug 19 00:08:41 2015--
   ## extracts results of a certain type
   
   i1 = which(pl$cc_adj == cc_adj)
@@ -186,6 +187,9 @@ sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsi
   
   ## for each pair, simulate the critical values
   ## then -- do simulation
+  
+  ## TODO: [Improve] Allow for output of p-values also. 
+  
   
   ## input list of generating models is GL, null-hyp -> NL, fitting models -> FL
   if (FALSE) {
@@ -228,7 +232,6 @@ sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsi
     if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Computing Power) =====\n", sep = "") }
     power_list[[S]] = list()
     
-    
     for(j in seq_along(pl$pval_adj$fx)) {
       power_list[[S]][[j]] = setup_array(pl)
       for(k in seq_len(nrow(cases))) {
@@ -250,7 +253,6 @@ sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsi
     save(reslist, file = outfile)
   }
   
-  
   return(reslist)
 }
 
@@ -258,48 +260,44 @@ sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsi
 
 
 ## TODO: [Update] this function to work with the new simulation functions
+
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (extract_result_list)
 #' Extracts p-values (or aggregated p-values) for a specific class of testing. 
 #' 
 #' @param full_output Full result list from sim_test
+#' @param reslist temp
 #' @param cc_adj Value for correlation adjustment
 #' @param thres_ignore Value for thresholding
 #' @param alphas Size of test
 #' @param n_models Number of fixed models to use
-#' @param raw_pvals T/F: Output raw p-values as a list?
+#' @param raw_pvals T/F: Output raw p-values as a list? 
 #' 
 #' @return Vector of aggregated p-values (and a list of raw p-values if desired)
 #' 
 #' @export
 #' 
-extract_result_list = function(full_output, cc_adj = 2, thres_ignore = 5, alphas = 0.05, n_models = 50, raw_pvals = FALSE) {
-  
-  rl = full_output$result_list
-  pl = full_output$pl
-  pvl = full_output$pval_reslist
+extract_result_list = function(reslist, cc_adj = 2, thres_ignore = 5, alphas = 0.05, n_models = 50,  raw_pvals = FALSE) {
+  ## reslist is from sim_power_rpart
+  ## TODO: [Improve] raw_pvals is broken
+
+  rl = reslist$power
+  pl = reslist$pl
   
   i1 = which(pl$cc_adj == cc_adj)
   i2 = which(pl$thres_ignore == thres_ignore)
-  i3 = which(pl$n_models == n_models)
-  i4 = which(pl$alphas == alphas)
+  i3 = which(pl$alphas == alphas)
+  i4 = which(pl$n_models == n_models)
   
-  #   result_list[[f]][[j]] = array(0, dim = c(length(pl$cc_adj), length(pl$thres_ignore), length(pl$n_models), length(pl$alphas)))  
-  res = matrix(0, nrow = length(rl[[1]]), ncol = length(rl))
+  res = matrix(0, ncol = length(rl[[1]]), nrow = length(rl))
+  colnames(res) = names(pl$pval_adj$fx)
   for(j in 1:length(rl)) {
-    inl = rl[[j]]    
+    inl = rl[[j]]
     for(k in seq_along(inl)) {
-      res[k,j] = inl[[k]][i1,i2,i3,i4]
+      res[j,k] = inl[[k]][i1,i2,i3,i4]
     }
   }
   
-  if (raw_pvals) {
-    pvals = list()
-    for(k in seq_along(inl)) {
-      pvals[[k]] = pvl[[k]][i1, i2, 1:n_models]
-    }
-    return(list(res = res, rawpvallist = pvals))
-  } else {
-    return(res)
-  }
+  return(res)
 }
 
 
