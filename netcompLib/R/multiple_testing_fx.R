@@ -2,11 +2,11 @@
 
 #' Compute higher-critiism test statistic
 #' 
-#' @param x vector of p-values
-#' @param alpha_min Minimal alpha to maximize over
-#' @param alpha_max Maximal alpha to maximize over
+#' @param x [vector-double] :: P-values
+#' @param alpha_min [double] :: Minimal alpha to maximize over
+#' @param alpha_max [double] :: Maximal alpha to maximize over
 #' 
-#' @return Test statistic
+#' @return [double] :: Test statistic
 #' 
 #' @export
 #' 
@@ -26,10 +26,10 @@ mult_highcrit = function(x, alpha_min = 10^(-8), alpha_max = 0.2) {
 #' Computes p-value by assuming normality (using larger variance estimate)
 #' Larger variance estiamte is bounded by 1/n + cor, but uses 1/n * adjust as variance. 
 #' 
-#' @param x Vector of pvalues
-#' @param adjust If NULL, function returns test statistic. Otherwise, this takes on a multiplier to variance. 
+#' @param x [vector-double] :: P-values
+#' @param adjust [logical] :: If NULL, function returns test statistic. Otherwise, this takes on a multiplier to variance. 
 #' 
-#' @return temp
+#' @return [double] :: Adjusted test statistic
 #' 
 #' @export
 #' 
@@ -42,9 +42,9 @@ mult_pearson = function(x, adjust = NULL) {
 
 #' Computes Bonferroni correction
 #' 
-#' @param x Vector of p-values
+#' @param x [vector-double] :: P-values
 #' 
-#' @return Returns minimal p-value
+#' @return [double] :: Minimal p-value
 #' 
 #' @export
 #' 
