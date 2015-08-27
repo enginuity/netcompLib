@@ -8,11 +8,11 @@ setGeneric("fitModel", function(NetS, adja, mode, optim_tries) standardGeneric("
 #' Note: if adja is NULL, will fill in random probabilities drawn from an uniform distribution
 #' 
 #' @param NetS [\code{\link{NetworkStruct}}] :: Edge partition to fit model on
-#' @param adja adjacency array/ matrix
+#' @param adja [matrix/array] :: Adjacency array or matrix
 #' @param mode [char] :: Method to fit model -- choices are: "default", "densitydiff", "corr-global-null", "corr-global"
 #' @param optim_tries [int] :: Number of attempts at optimization of likelihood function
 #' 
-#' @return NetworkModel object containing best-fit model per structure. 
+#' @return [\code{\link{NetworkModel}}] :: Returns the best-fit model for each structure. If input is a \code{\link{NetworkStructList}}, output will actually be a list of \code{\link{NetworkModel}}s. 
 #' 
 #' @export
 #' 
