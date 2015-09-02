@@ -37,7 +37,7 @@
 #' 
 #' @export
 #' 
-set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, block_nclass = 3, block_avgdensity = NULL, block_assign = NULL, block_probs = NULL, random_ngroups = 10, tree_type = "random", latent_dim = 3, latent_nclass = 3, latent_sdcenter = 5, latent_isgennorm = TRUE) {
+set_model_param = function(Nnodes = 30, type = 'block', pmin = 0.03, pmax = 0.97, block_nclass = 3, block_avgdensity = NULL, block_assign = NULL, block_probs = NULL, random_ngroups = 10, tree_type = "random", latent_dim = 3, latent_nclass = 3, latent_sdcenter = 5, latent_isgennorm = TRUE) {
   
   return(list(Nnodes = Nnodes, type = type, pmin = pmin, pmax = pmax, block_nclass = block_nclass, block_avgdensity = block_avgdensity, block_assign = block_assign, block_probs = block_probs, random_ngroups = random_ngroups, tree_type = tree_type, latent_dim = latent_dim, latent_nclass = latent_nclass, latent_sdcenter = latent_sdcenter, latent_isgennorm = latent_isgennorm))
 }
@@ -57,25 +57,43 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0, pmax = 1, bloc
 #' 
 #' @return [list] :: A list of parameters, structured as follows
 #' \itemize{
-#' \item cc_adj -- [vector-int] :: 
-#' \item thres_ignore -- [vector-int] :: 
-#' \item alphas -- [vector-double] :: 
-#' \item n_models -- [vector-int] ::
-#' \item pval_adj -- [list] ::
+#' \item cc_adj -- [vector-double] :: Amount of SE's away from the correlation estimate used (how conservative? 0 means no adjustment (and requires large sample for guarantees; larger values give a conservative p-value))
+#' \item thres_ignore -- [vector-int] :: Ignore edge groups with fewer than this many edges
+#' \item alphas -- [vector-double] :: Size(s) of the hypothesis test (probability of reject given true null)
+#' \item n_models -- [vector-int] :: Number(s) of edge partitions to use for testing
+#' \item pval_adj -- [list] :: Information about p-value adjustment functions
 #'   \itemize{
-#'    \item fx -- [named_list-functions] ::
-#'    \item simnull - [vector-logical] :: 
+#'    \item fx -- [named_list-functions] :: This is a named list of functions
+#'    \item simnull -- [vector-logical] :: This is a corresponding vector -- TRUE if the null distribution needs to be simulated.
 #'   }
+#' \item struct_needed -- [] :: 
+#' \item struct_indices -- [] :: 
 #' }
 #' 
 #' @export
 #' 
-set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_models = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE)) {
+set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_models = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE), recycle_fitstructs = TRUE) {
+  
+  ## TODO: [Rename] n_models into n_structs or something
+  
+  ## Extract appropriate information from function inputs
   fxlist = list()
   for (j in seq_along(pval_fx_names)) {
     fxlist[[pval_fx_names[j]]] = eval(parse(text = pval_fx_names[j]))
   }
+  
+  ## Extract fitting structure indices
+  if (recycle_fitstructs) { 
+    struct_needed = max(n_models)
+    struct_indices = lapply(n_models, function(x) { 1:x })
+  } else {
+    struct_needed = sum(n_models)
+    temp = c(0, cumsum(n_models))
+    struct_indices = lapply(seq_along(temp[-1]), function(x) { (temp[x]+1):temp[x+1] })
+  }
+  
   return(list(cc_adj = cc_adj, thres_ignore = thres_ignore, alphas = alphas, n_models = n_models,
-              pval_adj = list(fx = fxlist, simnull = pval_sim_null)))
+              pval_adj = list(fx = fxlist, simnull = pval_sim_null), 
+              struct_needed = struct_needed, struct_indices = struct_indices))
 }
 
