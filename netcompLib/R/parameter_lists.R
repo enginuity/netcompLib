@@ -42,7 +42,7 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0.03, pmax = 0.97
   return(list(Nnodes = Nnodes, type = type, pmin = pmin, pmax = pmax, block_nclass = block_nclass, block_avgdensity = block_avgdensity, block_assign = block_assign, block_probs = block_probs, random_ngroups = random_ngroups, tree_type = tree_type, latent_dim = latent_dim, latent_nclass = latent_nclass, latent_sdcenter = latent_sdcenter, latent_isgennorm = latent_isgennorm))
 }
 
-## TODO: [Document] output of this function
+
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (set_sim_param)
 #' Set up simulation parameters
 #' 
@@ -52,8 +52,9 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0.03, pmax = 0.97
 #' @param thres_ignore [vector-int] :: Ignore edge groups with fewer than this many edges
 #' @param alphas [vector-double] :: Size(s) of the hypothesis test (probability of reject given true null)
 #' @param n_models [vector-int] :: Number(s) of edge partitions to use for testing
-#' @param pval_fx_names temp
-#' @param pval_sim_null temp
+#' @param pval_fx_names [] :: temp
+#' @param pval_sim_null [] :: temp
+#' @param recycle_fitstructs [logical] :: Should fitting structures be re-used for different number of structures used?
 #' 
 #' @return [list] :: A list of parameters, structured as follows
 #' \itemize{
@@ -66,8 +67,8 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0.03, pmax = 0.97
 #'    \item fx -- [named_list-functions] :: This is a named list of functions
 #'    \item simnull -- [vector-logical] :: This is a corresponding vector -- TRUE if the null distribution needs to be simulated.
 #'   }
-#' \item struct_needed -- [] :: 
-#' \item struct_indices -- [] :: 
+#' \item struct_needed -- [int] :: Total number of random structures needed
+#' \item struct_indices -- [list-vector-int] :: Indices for the structure list for each iteration (each value in n_models)
 #' }
 #' 
 #' @export
