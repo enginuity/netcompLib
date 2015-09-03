@@ -1,33 +1,34 @@
 ##@S Generic function that performs the hypothesis test (computes the p-value for the likelihood ratio test)
 
-setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode) standardGeneric("computePval"))
+setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, verbose, verbose_settings) standardGeneric("computePval"))
 
+## TODO: [Documentation] -- check for accuracy
 #' Computes p-value for likelihood ratio test
 #' 
 #' This function takes the input network structure (or a list of network structures), and computes the likelihood ratio test for the two input adjacency matrices (or arrays). 
 #' 
-#' @param NetS Input NetworkStruct object
-#' @param adja1 Adjacency matrix/array
-#' @param adja2 Adjacency matrix/array
-#' @param Nobs Number of network observations per class (default = 1)
-#' @param pl A list of parameters, set by set_sim_param
-#' @param mode How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node; 'chisq' gives the chi-square test statistic, other modes: 'fast', 'fast-densitydiff', 'fast-corr'
+#' @param NetS [\code{\link{NetworkStruct}}] :: Model to compute p-value with
+#' @param adja1 [matrix/array] :: Adjacency matrix/array
+#' @param adja2 [matrix/array] :: Adjacency matrix/array
+#' @param Nobs [int] :: Number of network observations per class (default = 1)
+#' @param pl [list] :: Simulation/Testing parameters, set by set_sim_param
+#' @param mode [char] :: How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node; 'chisq' gives the chi-square test statistic, other modes: 'fast', 'fast-densitydiff', 'fast-corr'
 #' 
-#' @return A matrix (or a list of matrices) of p-values (depending on the testing parameters)
+#' @return [] :: A matrix (or a list of matrices) of p-values (depending on the testing parameters)
 #' 
 #' @export
 #' 
-computePval = function(NetS, adja1, adja2, Nobs = 1, pl, mode = 'default') {
+computePval = function(NetS, adja1, adja2, Nobs = 1, pl, mode = 'default', verbose = TRUE, verbose_settings = c(1,0,0)) {
   stop("Placeholder for documentation purposes")
 }
 
 
-computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default") {
+computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
   stop("Not implemented for this case")
 }
 
 
-computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default") {
+computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
   res = lapply(NetS@models, function(x) { 
     # cat("."); -- fix this; only do if verbose level is right...? 
     ## TODO: Add in verbosity parameter
@@ -37,7 +38,7 @@ computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode 
 }
 
 
-computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default") {
+computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
@@ -126,7 +127,7 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 }
 
 
-computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default") {
+computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
@@ -217,7 +218,7 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 }
 
 
-computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default") {
+computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
