@@ -3,6 +3,8 @@
 setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, verbose, verbose_settings) standardGeneric("computePval"))
 
 ## TODO: [Documentation] -- check for accuracy
+## TODO: [Documentation] -- add page for verbosity settings
+
 #' Computes p-value for likelihood ratio test
 #' 
 #' This function takes the input network structure (or a list of network structures), and computes the likelihood ratio test for the two input adjacency matrices (or arrays). 
@@ -13,6 +15,13 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, verbose, 
 #' @param Nobs [int] :: Number of network observations per class (default = 1)
 #' @param pl [list] :: Simulation/Testing parameters, set by set_sim_param
 #' @param mode [char] :: How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node; 'chisq' gives the chi-square test statistic, other modes: 'fast', 'fast-densitydiff', 'fast-corr'
+#' @param verbose [logical] :: Log results?
+#' @param verbose_settings [vector-int] :: Vector of length three:
+#' \itemize{
+#'   \item 1 - Number of levels of verbosity
+#'   \item 2 - Number of levels of high verbosity
+#'   \item 3 - Number of filler characters
+#' }
 #' 
 #' @return [] :: A matrix (or a list of matrices) of p-values (depending on the testing parameters)
 #' 
@@ -39,6 +48,9 @@ computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode 
 
 
 computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
+  
+  ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
+  
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
@@ -128,6 +140,9 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 
 
 computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
+  
+  ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
+  
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
@@ -219,6 +234,9 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 
 
 computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
+  
+  ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
+  
   if (FALSE) {
     NetM = NetworkModel(Nnodes = 30, type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--

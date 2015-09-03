@@ -17,6 +17,8 @@
 #' 
 sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_model_param(), adjm_list = NULL, 
                        Nobs = 1, Nsim = 100, pl = set_sim_param(), verbose = 0) {
+  ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
+
   ## Test case
   if(FALSE) {
     library(netcompLib); library(abind)
@@ -26,6 +28,7 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
     fit_NetSList = NetworkStructList(Nmodels = 100)
     Nobs = 1; Nsim = 100; verbose = TRUE;
     pl = set_sim_param(cc_adj = c(0,1,2), thres_ignore = c(5, 10), n_models = c(1, 25, 50, 100))
+#|----##Function modified -- all calls need to be updated.. --Wed Sep  2 20:40:58 2015--
   }
   
   # Check that enough models were generated
@@ -79,6 +82,8 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
 #' @export
 #' 
 sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_NetSList = NULL, fit_models_params = set_model_param(), pl = set_sim_param(),verbose = 0) { 
+  
+  ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
   if (is.null(fit_NetSList)) {
     fit_NetSList = NetworkStructList(model_params = fit_models_params, Nmodels = max(pl$n_models))
@@ -178,6 +183,8 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_models) {
 #' @export
 #' 
 sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsim_crit = 500, Nobs = 1, verbose = 0, pl = set_sim_param()) {
+  ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
+  
   ## then, will also need a function that helps generate the lists of models? maybe? 
   ## for simulations -- given a list of generating models, a list of null-hypothesis models (to generate crit values from), and a corresspnding list of fitting models: 
   
@@ -198,6 +205,7 @@ sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsi
     Nobs = 1
     verbose = 5
     pl = set_sim_param()
+#|----##Function modified -- all calls need to be updated.. --Wed Sep  2 20:40:58 2015--
   }
   
   if (length(GL) != length(NL) || length(NL) != length(FL)) { stop("The model lists are not compatible") }  
