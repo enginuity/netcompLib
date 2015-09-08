@@ -207,8 +207,10 @@ sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsi
     if (!is(FL[[S]], "NetworkStructList")) { FL[[S]] = NetworkStructList(pl$struct_needed, FL[[S]]) }
     
     ## Simulating critical values if necessary
-    if (verbose & vbset[1] > 0) { cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Simulation Number: ", S, " --- (Simulating Critical Values) =====", sep = "") }
-    critvals = sim_critvals(NetMPair = NL[[S]], Nsim = Nsim_crit, Nobs = Nobs, fit_NetSList = FL[[S]], pl = pl, verbose = verbose, vbset = vbset_new)
+    if (any(pl$pval_adj$simnull)) {
+      if (verbose & vbset[1] > 0) { cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Simulation Number: ", S, " --- (Simulating Critical Values) =====", sep = "") }
+      critvals = sim_critvals(NetMPair = NL[[S]], Nsim = Nsim_crit, Nobs = Nobs, fit_NetSList = FL[[S]], pl = pl, verbose = verbose, vbset = vbset_new)
+    }
     
     ## Simulating pvalues
     if (verbose & vbset[1] > 0) { cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Simulation Number: ", S, " --- (Simulating Power) =====", sep = "") }
@@ -233,7 +235,7 @@ sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsi
           power_list[[S]][[j]][i1, i2, i3, i4] = mean(test_stats[,j] > critvals[[j]][i1, i2, i3, i4])
         }
       }
-    }    
+    }
     
     ## Save to file
     reslist = list(GL = GL, NL = NL, FL = FL, pl = pl, attrib = attrib, descrip = descrip, power = power_list)
@@ -242,8 +244,6 @@ sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsi
   
   return(reslist)
 }
-
-
 
 
 ## TODO: [Update] this function to work with the new simulation functions
