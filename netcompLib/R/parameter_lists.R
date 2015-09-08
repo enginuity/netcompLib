@@ -50,7 +50,7 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0.03, pmax = 0.97
 #' @param cc_adj [vector-double] :: Amount of SE's away from the correlation estimate used (how conservative? 0 means no adjustment (and requires large sample for guarantees; larger values give a conservative p-value))
 #' @param thres_ignore [vector-int] :: Ignore edge groups with fewer than this many edges
 #' @param alphas [vector-double] :: Size(s) of the hypothesis test (probability of reject given true null)
-#' @param n_models [vector-int] :: Number(s) of edge partitions to use for testing
+#' @param n_structs [vector-int] :: Number(s) of edge partitions to use for testing
 #' @param pval_fx_names [vector-char] :: Names of functions that do p-value adjustment
 #' @param pval_sim_null [vector-logical] :: Is simulation of the null distribution necessary?
 #' @param recycle_fitstructs [logical] :: Should fitting structures be re-used for different number of structures used?
@@ -60,19 +60,19 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0.03, pmax = 0.97
 #' \item cc_adj -- [vector-double] :: Amount of SE's away from the correlation estimate used (how conservative? 0 means no adjustment (and requires large sample for guarantees; larger values give a conservative p-value))
 #' \item thres_ignore -- [vector-int] :: Ignore edge groups with fewer than this many edges
 #' \item alphas -- [vector-double] :: Size(s) of the hypothesis test (probability of reject given true null)
-#' \item n_models -- [vector-int] :: Number(s) of edge partitions to use for testing
+#' \item n_structs -- [vector-int] :: Number(s) of edge partitions to use for testing
 #' \item pval_adj -- [list] :: Information about p-value adjustment functions
 #'   \itemize{
 #'    \item fx -- [named_list-functions] :: This is a named list of functions
 #'    \item simnull -- [vector-logical] :: This is a corresponding vector -- TRUE if the null distribution needs to be simulated.
 #'   }
 #' \item struct_needed -- [int] :: Total number of random structures needed
-#' \item struct_indices -- [list-vector-int] :: Indices for the structure list for each iteration (each value in n_models)
+#' \item struct_indices -- [list-vector-int] :: Indices for the structure list for each iteration (each value in n_structs)
 #' }
 #' 
 #' @export
 #' 
-set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_models = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE), recycle_fitstructs = TRUE) {
+set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_structs = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE), recycle_fitstructs = TRUE) {
   
   ## TODO: [Rename] n_models into n_structs or something
   
@@ -84,15 +84,15 @@ set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05
   
   ## Extract fitting structure indices
   if (recycle_fitstructs) { 
-    struct_needed = max(n_models)
-    struct_indices = lapply(n_models, function(x) { 1:x })
+    struct_needed = max(n_structs)
+    struct_indices = lapply(n_structs, function(x) { 1:x })
   } else {
-    struct_needed = sum(n_models)
-    temp = c(0, cumsum(n_models))
+    struct_needed = sum(n_structs)
+    temp = c(0, cumsum(n_structs))
     struct_indices = lapply(seq_along(temp[-1]), function(x) { (temp[x]+1):temp[x+1] })
   }
   
-  return(list(cc_adj = cc_adj, thres_ignore = thres_ignore, alphas = alphas, n_models = n_models,
+  return(list(cc_adj = cc_adj, thres_ignore = thres_ignore, alphas = alphas, n_structs = n_structs,
               pval_adj = list(fx = fxlist, simnull = pval_sim_null), 
               struct_needed = struct_needed, struct_indices = struct_indices))
 }
