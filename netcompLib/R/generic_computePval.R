@@ -51,18 +51,6 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
-  if (FALSE) {
-    NetM = NetworkModel(Nnodes = 30, type = "block")
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
-    adja1 = sampleNetwork(NetM)
-    adja2 = sampleNetwork(NetM)
-    Nobs = 1
-    pl = list(cc_adj = c(0,1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
-#|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
-    NetS = NetworkStructRND(Nnodes = 30, model_param = set_model_param(block_nclass = 3))
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
-    load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
-  }
   
   ## Compute total count for each edge (and edgesumc is the sum of products, to be used in computing cell-wise correlations)
   if (Nobs > 1) {
@@ -143,19 +131,6 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
-  
-  if (FALSE) {
-    NetM = NetworkModel(Nnodes = 30, type = "block")
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
-    adja1 = sampleNetwork(NetM)
-    adja2 = sampleNetwork(NetM)
-    Nobs = 1
-    pl = list(cc_adj = c(0,1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
-#|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
-    NetS = NetworkStructHRG(Nnodes = 30, model_param = set_model_param(block_nclass = 3))
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
-    load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
-  }
   
   ## Compute total count for each edge (and edgesumc is the sum of products, to be used in computing cell-wise correlations)
   if (Nobs > 1) {
@@ -238,18 +213,6 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
-  
-  if (FALSE) {
-    NetM = NetworkModel(Nnodes = 30, type = "block")
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
-    adja1 = sampleNetwork(NetM)
-    adja2 = sampleNetwork(NetM)
-    Nobs = 1
-    pl = list(cc_adj = c(0,1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
-#|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
-    NetS = NetworkStructSBM(set_model_param(block_nclass = 3))
-    load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
-  }
 
   if (mode == "fast") {
     fitN = fitModel(NetS, abind(adja1, adja2, along = 3))
