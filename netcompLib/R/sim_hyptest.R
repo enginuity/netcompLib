@@ -1,4 +1,5 @@
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (sim_hyptest)
 #' Do simulations for the hypothesis testing, using the new code. 
 #' 
 #' @param gen_NetMPair [\code{\link{NetworkModelPair}}] :: Generating pair of models
@@ -9,6 +10,7 @@
 #' @param Nsim [int, 100] :: Number of simulations to do
 #' @param pl [List, \link{set_sim_param}()] :: Parameter list for testing procedure
 #' @param verbose [logical] :: 
+#' @param vbset temp
 #' 
 #' @return List of results
 #' 
@@ -16,17 +18,17 @@
 #' 
 sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_model_param(), adjm_list = NULL, 
                        Nobs = 1, Nsim = 100, pl = set_sim_param(), verbose = TRUE, vbset = c(1,0,0)) {
+  
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
-  # Check that enough models were generated
   
-  Nfit = max(pl$n_structs)
+  # Check that enough models were generated
+  Nfit = pl$struct_needed
   if (is.null(fit_NetSList)) { 
     fit_NetSList = NetworkStructList(Nmodels = Nfit, model_params = fitm_params) 
   }
-  
   if (Nfit > length(fit_NetSList@models)) { stop("Not enough fitted models generated") }
-  partial_indices = lapply(pl$n_structs, function(x) { 1:x })
+  
   
   ## Setup storage
   result_list = list(); for(f in seq_along(pl$pval_adj$fx)) { result_list[[f]] = list() } 
@@ -35,21 +37,31 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
   ## Generate two lists of adjacency arrays
   if (is.null(adjm_list)) { adjm_list = sampleNetwork(gen_NetMPair, Nsim = Nsim) }
   
+  
   ## Do simulations
+  if (verbose & vbset[1] > 0) { cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Simulating Hypothesis Test") }
+  vbset_new = vbset; vbset_new[1] = vbset[1] - 1; vbset_new[2] = vbset[2] - 1; vbset_new[3] = vbset[3] + 2;
+  
   for(j in 1:Nsim) {  
-    if (verbose > 3) { cat("."); if (j %% floor(Nsim/10) == 0) { print(paste("Simulation number:", j)) } }
-    pval_results = computePval(fit_NetSList, adja1 = adjm_list[[1]][[j]], adja2 = adjm_list[[2]][[j]], pl = pl, Nobs = 1)
+    if (verbose & vbset[1] > 0) { 
+      if (j && floor(Nsim / 10) == 0) { cat("\n", stringr::str_pad(string = "", width = vbset[3]+1, pad = "-"), date(), "-- Sim Number:", j) }
+      if (vbset[2] > 0) { cat(".") }
+    }
+    
+    
+    pval_results = computePval(fit_NetSList, adja1 = adjm_list[[1]][[j]], adja2 = adjm_list[[2]][[j]], pl = pl, Nobs = 1, verbose = verbose, vbset = vbset_new)
     pval_reslist[[j]] = abind(pval_results, along = 3)
     
     for(f in seq_along(pl$pval_adj$fx)) {
       result_list[[f]][[j]] = setup_array(pl)
       for (k in seq_along(pl$n_structs)) {
         for (a in seq_along(pl$alphas)) {
-          result_list[[f]][[j]][,,a,k] = apply(pval_reslist[[j]][,,partial_indices[[k]], drop = FALSE], c(1,2),pl$pval_adj$fx[[f]])
+          result_list[[f]][[j]][,,a,k] = apply(pval_reslist[[j]][,,pl$struct_indices[[k]], drop = FALSE], c(1,2),pl$pval_adj$fx[[f]])
         }
       }
     }
   }
+  
   return(result_list)
 }
 
@@ -182,7 +194,7 @@ sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsi
   
   
   ## input list of generating models is GL, null-hyp -> NL, fitting models -> FL
-
+  
   if (length(GL) != length(NL) || length(NL) != length(FL)) { stop("The model lists are not compatible") }  
   power_list = list()
   cases = expand.grid(pl)
