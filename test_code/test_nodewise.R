@@ -13,6 +13,7 @@ m1 = sampleNetwork(n1, Nobs = 1)
 m2 = sampleNetwork(n2, Nobs = 1)
 
 computePval(NetworkStructSBM(Nnodes = 30), adja1 = m1, adja2 = m2, Nobs = 1, pl = set_sim_param(n_models = 1), mode = "nodewise")
+#|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
 #|----##Function modified -- all calls need to be updated.. --Wed Sep  2 20:40:58 2015--
 #|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
@@ -20,6 +21,7 @@ computePval(NetworkStructSBM(Nnodes = 30), adja1 = m1, adja2 = m2, Nobs = 1, pl 
 netsl = NetworkStructList(Nnodes = 30, type = "block", Nmodels = 100)
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
 res = computePval(netsl, m1, m2, 1, pl = set_sim_param(n_models = c(100)), mode = "nodewise")
+#|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
 #|----##Function modified -- all calls need to be updated.. --Wed Sep  2 20:40:58 2015--
 #|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
 
@@ -47,6 +49,7 @@ m1 = sampleNetwork(n1, Nobs = 1)
 m2 = sampleNetwork(n2, Nobs = 1)
 
 computePval(NetworkStructSBM(Nnodes = 60), adja1 = m1, adja2 = m2, Nobs = 1, pl = set_sim_param(n_models = 1), mode = "nodewise")
+#|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
 #|----##Function modified -- all calls need to be updated.. --Wed Sep  2 20:40:58 2015--
 #|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
@@ -54,6 +57,7 @@ computePval(NetworkStructSBM(Nnodes = 60), adja1 = m1, adja2 = m2, Nobs = 1, pl 
 netsl = NetworkStructList(Nnodes = 60, type = "block", Nmodels = 100)
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
 res = computePval(netsl, m1, m2, 1, pl = set_sim_param(n_models = c(100)), mode = "nodewise")
+#|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
 #|----##Function modified -- all calls need to be updated.. --Wed Sep  2 20:40:58 2015--
 #|----##Function modified -- all calls need to be updated.. --Tue Aug  4 00:51:48 2015--
 

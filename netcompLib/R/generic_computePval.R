@@ -58,6 +58,7 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     adja2 = sampleNetwork(NetM)
     Nobs = 1
     pl = list(cc_adj = c(0,1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
+#|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
     NetS = NetworkStructRND(Nnodes = 30, model_param = set_model_param(block_nclass = 3))
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
     load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
@@ -150,6 +151,7 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     adja2 = sampleNetwork(NetM)
     Nobs = 1
     pl = list(cc_adj = c(0,1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
+#|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
     NetS = NetworkStructHRG(Nnodes = 30, model_param = set_model_param(block_nclass = 3))
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
     load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
@@ -244,6 +246,7 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     adja2 = sampleNetwork(NetM)
     Nobs = 1
     pl = list(cc_adj = c(0,1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
+#|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
     NetS = NetworkStructSBM(set_model_param(block_nclass = 3))
     load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
   }

@@ -50,6 +50,7 @@ NetworkStruct(Nnodes = 15, type = "random")
 
 
 pl = list(cc_adj = c(1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
+#|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
