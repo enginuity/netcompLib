@@ -97,7 +97,7 @@ sim_critvals = function(NetMPair, Nsim = 500, Nobs = 1, fit_NetSList = NULL, fit
   
   if (verbose & vbset[1] > 0) { cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Simulating Critical Values: Aggregating Results ***") }
   res_list = list()
-  cases = expand.grid(pl)
+  cases = expand.grid(pl[1:4])
   for(j in seq_along(pl$pval_adj$fx)) {
     res_list[[j]] = setup_array(pl)
     for(k in seq_len(nrow(cases))) {
@@ -181,7 +181,9 @@ sim_subsetresults = function(rl, pl, cc_adj, thres_ignore, alphas, n_structs) {
 #' 
 #' @export
 #' 
-sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsim_crit = 500, Nobs = 1, verbose = 0, pl = set_sim_param()) {
+sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsim_crit = 500, Nobs = 1, verbose = 0, pl = set_sim_param(), vbset = c(1,0,0)) {
+  vbset_new = vbset; vbset_new[1] = vbset[1] - 1; vbset_new[2] = vbset[2] - 1; vbset_new[3] = vbset[3] + 4;
+  
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
   ## then, will also need a function that helps generate the lists of models? maybe? 
@@ -197,27 +199,21 @@ sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsi
   
   if (length(GL) != length(NL) || length(NL) != length(FL)) { stop("The model lists are not compatible") }  
   power_list = list()
-  cases = expand.grid(pl)
+  cases = expand.grid(pl[1:4])
   
   ## Do simulations: 
   for (S in seq_along(GL)) {
+    ## Generate network structures if necessary
+    if (!is(FL[[S]], "NetworkStructList")) { FL[[S]] = NetworkStructList(pl$struct_needed, FL[[S]]) }
     
-    ## If FL contains networkstructlists, then use those for everything. otherwise, generate a new one each time...
-    if (is(FL[[S]], "NetworkStructList")) { 
-      if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Simulating Critical Values) =====\n", sep = "") }
-      critvals = sim_critvals(NetMPair = NL[[S]], Nsim = Nsim_crit, Nobs = Nobs, fit_NetSList = FL[[S]], pl = pl, verbose = verbose)
-      
-      if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Simulating Power) =====\n", sep = "") }
-      sim_res = sim_hyptest(gen_NetMPair = GL[[S]], fit_NetSList = FL[[S]], Nobs = Nobs, Nsim = Nsim, pl = pl, verbose = verbose)
-      
-      
-    } else {
-      if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Simulating Critical Values) =====\n", sep = "") }
-      critvals = sim_critvals(NetMPair = NL[[S]], Nsim = Nsim_crit, Nobs = Nobs, fit_models_params = FL[[S]], pl = pl, verbose = verbose)
-      
-      if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Simulating Power) =====\n", sep = "") }
-      sim_res = sim_hyptest(gen_NetMPair = GL[[S]], fitm_params = FL[[S]], Nobs = Nobs, Nsim = Nsim, pl = pl, verbose = verbose)
-    }
+    ## Simulating critical values if necessary
+    if (verbose & vbset[1] > 0) { cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Simulation Number: ", S, " --- (Simulating Critical Values) =====", sep = "") }
+    critvals = sim_critvals(NetMPair = NL[[S]], Nsim = Nsim_crit, Nobs = Nobs, fit_NetSList = FL[[S]], pl = pl, verbose = verbose, vbset = vbset_new)
+    
+    ## Simulating pvalues
+    if (verbose & vbset[1] > 0) { cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Simulation Number: ", S, " --- (Simulating Power) =====", sep = "") }
+    sim_res = sim_hyptest(gen_NetMPair = GL[[S]], fit_NetSList = FL[[S]], Nobs = Nobs, Nsim = Nsim, pl = pl, verbose = verbose, vbset = vbset_new)
+    
     
     ## Use critical values to reject if necessary
     if (verbose > 0) { cat("===== Simulation Number: ", S, " --- (Computing Power) =====\n", sep = "") }

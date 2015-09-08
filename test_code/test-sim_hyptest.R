@@ -16,8 +16,8 @@ GL = list(NetworkModelPair(m1 = NetworkModelSBM(set_model_param(Nnodes = 30)), i
           NetworkModelPair(m1 = NetworkModelSBM(set_model_param(Nnodes = 30)), is_null = TRUE))
 NL = GL
 FL = list(set_model_param(Nnodes = 30), set_model_param(Nnodes = 30))
-Nsim = 200
-Nsim_crit = 200
+Nsim = 20
+Nsim_crit = 20
 Nobs = 1
 verbose = 5
 pl = set_sim_param()
