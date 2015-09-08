@@ -1,6 +1,6 @@
 ##@S Generic function that performs the hypothesis test (computes the p-value for the likelihood ratio test)
 
-setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, verbose, verbose_settings) standardGeneric("computePval"))
+setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, verbose, vbset) standardGeneric("computePval"))
 
 ## TODO: [Documentation] -- check for accuracy
 ## TODO: [Documentation] -- add page for verbosity settings
@@ -16,38 +16,39 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, verbose, 
 #' @param pl [list] :: Simulation/Testing parameters, set by set_sim_param
 #' @param mode [char] :: How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node; 'chisq' gives the chi-square test statistic, other modes: 'fast', 'fast-densitydiff', 'fast-corr'
 #' @param verbose [logical] :: Log results?
-#' @param verbose_settings [vector-int] :: Vector of length three:
-#' \itemize{
-#'   \item 1 - Number of levels of verbosity
-#'   \item 2 - Number of levels of high verbosity
-#'   \item 3 - Number of filler characters
-#' }
+#' @param vbset [vector-int] :: --- FIX --- call a general verbosity documentation
+#' Verbose :: output general info in processing NSList case
+#' Verbose high :: output dots in the case of processing NSList
 #' 
 #' @return [] :: A matrix (or a list of matrices) of p-values (depending on the testing parameters)
 #' 
 #' @export
 #' 
-computePval = function(NetS, adja1, adja2, Nobs = 1, pl, mode = 'default', verbose = TRUE, verbose_settings = c(1,0,0)) {
+computePval = function(NetS, adja1, adja2, Nobs = 1, pl, mode = 'default', verbose = TRUE, vbset = c(1,0,0)) {
   stop("Placeholder for documentation purposes")
 }
 
 
-computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
+computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, vbset = c(1,0,0)) {
   stop("Not implemented for this case")
 }
 
 
-computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
+computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, vbset = c(1,0,0)) {
+  if (verbose & vbset[1] > 0) { 
+    cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Fitting on", length(NetS@models), "random structures")
+  }
+  
+  ## Call appropriate computePval for each individual NetworkStruct
   res = lapply(NetS@models, function(x) { 
-    # cat("."); -- fix this; only do if verbose level is right...? 
-    ## TODO: Add in verbosity parameter
-    computePval(x, adja1, adja2, Nobs, pl, mode = mode) 
-    } )
+    if (verbose & vbset[1] > 0 & vbset[2] > 0) { cat(".") }
+    computePval(x, adja1, adja2, Nobs, pl, mode, verbose, vs_new) 
+  } )
   return(res)
 }
 
 
-computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
+computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, vbset = c(1,0,0)) {
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
@@ -128,7 +129,7 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 }
 
 
-computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
+computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, vbset = c(1,0,0)) {
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
@@ -177,7 +178,7 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     dfs = apply(df_adjs[to_keep,,drop = FALSE], 2, sum)
     pval_matrix[,i] = pchisq(csq, dfs, lower.tail = FALSE)
   }
-
+  
   ## Compute edgewise LL's if desired
   if (mode == "nodewise") {
     ## TODO: Make this faster if necessary. 
@@ -210,10 +211,10 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 }
 
 
-computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, verbose_settings = c(1,0,0)) {
+computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, vbset = c(1,0,0)) {
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
-
+  
   if (mode == "fast") {
     fitN = fitModel(NetS, abind(adja1, adja2, along = 3))
     fit1 = fitModel(NetS, adja1); fit2 = fitModel(NetS, adja2)
@@ -223,7 +224,7 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     
     return(-2*(llN - llA))
   }
-
+  
   if (mode == "fast-densitydiff") {
     ## case where the raw densities differ
     fitN = fitModel(NetS, abind(adja1, adja2, along = 3), mode = "densitydiff")
@@ -233,7 +234,7 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     llA = computeLik(fit1, adja1) + computeLik(fit2, adja2)
     return(-2*(llN - llA))
   }
-
+  
   if (mode == "fast-corr") {
     ## case to include correlation estimation
     fitN = fitModel(NetS, abind(adja1, adja2, along = 3), mode = "corr-global-null")
@@ -244,7 +245,7 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     return(-2*(llN - llA))
     
   }
-
+  
   
   ## Compute total count for each edge (and edgesumc is the sum of products, to be used in computing cell-wise correlations)
   if (Nobs > 1) {
