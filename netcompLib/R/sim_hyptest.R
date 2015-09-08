@@ -181,19 +181,7 @@ sim_power_rpart = function(GL, NL, FL, attrib, descrip, outfile, Nsim = 500, Nsi
   
   
   ## input list of generating models is GL, null-hyp -> NL, fitting models -> FL
-  if (FALSE) {
-    GL = list(NetworkModelPair(m1 = NetworkModelSBM(set_model_param(Nnodes = 30)), is_null = TRUE), 
-              NetworkModelPair(m1 = NetworkModelSBM(set_model_param(Nnodes = 30)), is_null = TRUE))
-    NL = GL
-    FL = list(set_model_param(Nnodes = 30), set_model_param(Nnodes = 30))
-    Nsim = 200
-    Nsim_crit = 200
-    Nobs = 1
-    verbose = 5
-    pl = set_sim_param()
-    #|----##Function modified -- all calls need to be updated.. --Wed Sep  2 20:40:58 2015--
-  }
-  
+
   if (length(GL) != length(NL) || length(NL) != length(FL)) { stop("The model lists are not compatible") }  
   power_list = list()
   cases = expand.grid(pl)
