@@ -30,7 +30,7 @@ ALLOWED = (possibly a vector of allowed values)
 Example: 
 [vector-int, LEN = 2; DEFAULT = c(1,2)] :: some description
 list, matrix, array, vector
-int, double, char
+int, double, char, logical
 
 For documentation of classes: (S3 classes)
 an \itemize with items as follows: 
