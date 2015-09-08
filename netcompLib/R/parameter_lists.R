@@ -74,8 +74,6 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0.03, pmax = 0.97
 #' 
 set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_structs = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE), recycle_fitstructs = TRUE) {
   
-  ## TODO: [Rename] n_models into n_structs or something
-  
   ## Extract appropriate information from function inputs
   fxlist = list()
   for (j in seq_along(pval_fx_names)) {
