@@ -8,17 +8,18 @@
 #' @param Nobs [int, 1] :: Number network observations (default = 1)
 #' @param Nsim [int, 100] :: Number of simulations to do
 #' @param pl [List, \link{set_sim_param}()] :: Parameter list for testing procedure
-#' @param verbose [int, 0] :: level: 0 -- no output. > 3 -- full output
+#' @param verbose [logical] :: 
 #' 
 #' @return List of results
 #' 
 #' @export
 #' 
 sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_model_param(), adjm_list = NULL, 
-                       Nobs = 1, Nsim = 100, pl = set_sim_param(), verbose = 0) {
+                       Nobs = 1, Nsim = 100, pl = set_sim_param(), verbose = TRUE, vbset = c(1,0,0)) {
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
   # Check that enough models were generated
+  
   Nfit = max(pl$n_structs)
   if (is.null(fit_NetSList)) { 
     fit_NetSList = NetworkStructList(Nmodels = Nfit, model_params = fitm_params) 
