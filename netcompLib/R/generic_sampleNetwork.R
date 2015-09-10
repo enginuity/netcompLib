@@ -39,6 +39,9 @@ sampleNetwork.NetworkModel = function(NetM, Nobs = 1, Nsim = 1) {
   #     out[,,kk] <- out[,,kk]+t(out[,,kk])
   #   }
   
+  Nnodes = getNnodes(NetM)
+  epmat = getEdgeProbMat(NetM)
+  
   # uses variables out of scope (epmat, Nnodes)
   gen_one_network = function() {
     res = matrix(0, nrow = Nnodes, ncol = Nnodes) 
@@ -52,9 +55,6 @@ sampleNetwork.NetworkModel = function(NetM, Nobs = 1, Nsim = 1) {
     return(res)
   }
   
-  Nnodes = getNnodes(NetM)
-  
-  epmat = getEdgeProbMat(NetM)
   if (Nsim == 1) {
     
     res = array(0, dim = c(Nnodes, Nnodes, Nobs))
