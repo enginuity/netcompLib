@@ -43,6 +43,7 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0.03, pmax = 0.97
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (set_sim_param)
 #' Set up simulation parameters
 #' 
 #' This function creates a list of simulation parameters that are desired. 
@@ -53,7 +54,7 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0.03, pmax = 0.97
 #' @param n_structs [vector-int] :: Number(s) of edge partitions to use for testing
 #' @param pval_fx_names [vector-char] :: Names of functions that do p-value adjustment
 #' @param pval_sim_null [vector-logical] :: Is simulation of the null distribution necessary?
-#' @param recycle_fitstructs [logical] :: Should fitting structures be re-used for different number of structures used?
+#' @param fitstruct_method temp
 #' 
 #' @return [list] :: A list of parameters, structured as follows
 #' \itemize{
@@ -72,7 +73,13 @@ set_model_param = function(Nnodes = 30, type = 'block', pmin = 0.03, pmax = 0.97
 #' 
 #' @export
 #' 
-set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_structs = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE), recycle_fitstructs = TRUE) {
+set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_structs = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE), fitstruct_method = "random") {
+  
+  ## fitstruct method -- 'random', 'recycle', 'single'
+  ## 'random' means random subset -- take ordered random subset
+  ## 'recycle' means re-use structures in a fixed manner -- 
+  ## 'single' means use each structure a single time. 
+  # TODO: [Improve] 'random' and 'recycle' to use more structures for small n_structs
   
   ## Extract appropriate information from function inputs
   fxlist = list()
@@ -81,13 +88,16 @@ set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05
   }
   
   ## Extract fitting structure indices
-  if (recycle_fitstructs) { 
+  if (fitstruct_method == 'recycle') { 
     struct_needed = max(n_structs)
     struct_indices = lapply(n_structs, function(x) { 1:x })
-  } else {
+  } else if (fitstruct_method == 'single') {
     struct_needed = sum(n_structs)
     temp = c(0, cumsum(n_structs))
     struct_indices = lapply(seq_along(temp[-1]), function(x) { (temp[x]+1):temp[x+1] })
+  } else if (fitstruct_method == 'random') {
+    struct_needed = max(n_structs) * 3
+    struct_indices = lapply(seq_along(n_structs), function(x) { sort(sample(1:struct_needed, size = n_structs[x])) })
   }
   
   return(list(cc_adj = cc_adj, thres_ignore = thres_ignore, alphas = alphas, n_structs = n_structs,
