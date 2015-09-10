@@ -61,6 +61,12 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
       b = t[1]; a = t[-1]
       return(sum(x*a - n * log(1 + exp(a)) + y * (a+b) - n * log(1 + exp(a+b))))
     }
+    grfx = function(t,x,y,n) {
+      ## x,y,n,a are vectorized; b should be constant; t = c(b,a)
+      oe = function(x) { exp(x) / (1+exp(x)) }
+      b = t[1]; a = t[-1]
+      return(c(sum(y - n*oe(a+b)), x + y - n * (oe(a) + oe(a+b))))
+    }
     
     xm = matrix(0, NG, NG); ym = xm; tm = matrix(0, NG, NG)
     for(i in 1:NG) { for(j in 1:NG) {
@@ -75,7 +81,7 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
     
     bestval = -Inf
     for(i in 1:optim_tries) { 
-      temp = optim(rnorm(n = length(n)+1), fn = llfx, x=x, y=y, n=n, control = list(fnscale = -1))
+      temp = optim(rnorm(n = length(n)+1), fn = llfx, gr = grfx, x=x, y=y, n=n, control = list(fnscale = -1), method = "BFGS")
       if (temp$value > bestval) {
         bestval = temp$value; best = temp
       }
