@@ -10,11 +10,11 @@ setGeneric("sampleNetwork", function(NetM, Nobs = 1, Nsim = 1) standardGeneric("
 #' If Nsim = 1, Nobs > 1 -> Result is an array (with third dimension equal to Nobs)
 #' If Nsim > 1 -> Result is a list of matrices or arrays (depends on Nobs)
 #' 
-#' @param NetM NetworkModel object
-#' @param Nobs Number of network observations to simulate
-#' @param Nsim Number of simulations
+#' @param NetM [\code{\link{NetworkModel}}] :: Model to sample network from
+#' @param Nobs [int; DEFAULT = 1] :: Number of network observations to simulate
+#' @param Nsim [int; DEFAULT = 1] :: Number of simulations
 #' 
-#' @return List or array of adjacency matrices
+#' @return [list-matrix OR array OR list-array] :: List or array of adjacency matrices
 #' 
 #' @export
 #' 
@@ -24,21 +24,6 @@ sampleNetwork = function(NetM, Nobs = 1, Nsim = 1) {
 
 
 sampleNetwork.NetworkModel = function(NetM, Nobs = 1, Nsim = 1) { 
-  #Nsim -- if you want multiple sets of networks from the same model, generate it all now; will be given in a list if Nsim > 1. 
-  
-  # TODO: Use this style of code to improve on network simulation
-  #   # Written by Andrew Thomas
-  #   
-  #   nn <- tm$nodes
-  #   
-  #   clo.anc <- closest_ancestor(tm)$anc.table
-  #   out <- array(0, c(nn, nn, Nobs))
-  #   series <- lower_diag(nn)
-  #   for (kk in 1:Nobs) {
-  #     out[series+nn^2*(kk-1)] <- rbinom(nn*(nn-1)/2, 1, tm$prob[clo.anc[series]-nn])
-  #     out[,,kk] <- out[,,kk]+t(out[,,kk])
-  #   }
-  
   Nnodes = getNnodes(NetM)
   epmat = getEdgeProbMat(NetM)
   
