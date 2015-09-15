@@ -6,15 +6,14 @@ setGeneric("sampleNetwork", function(NetM, Nobs = 1, Nsim = 1) standardGeneric("
 #' Sample a network from a network model
 #' 
 #' Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is bad (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases: 
-#' If Nsim = 1, Nobs = 1 -> Result is a matrix
-#' If Nsim = 1, Nobs > 1 -> Result is an array (with third dimension equal to Nobs)
-#' If Nsim > 1 -> Result is a list of matrices or arrays (depends on Nobs)
+#' If Nsim = 1 -> Result is an array (with third dimension equal to Nobs)
+#' If Nsim > 1 -> Result is a list of arrays
 #' 
 #' @param NetM [\code{\link{NetworkModel}}] :: Model to sample network from
 #' @param Nobs [int; DEFAULT = 1] :: Number of network observations to simulate
 #' @param Nsim [int; DEFAULT = 1] :: Number of simulations
 #' 
-#' @return [list-matrix OR array OR list-array] :: List or array of adjacency matrices
+#' @return [array OR list-array] :: List or array of adjacency matrices
 #' 
 #' @export
 #' 
@@ -24,17 +23,16 @@ sampleNetwork = function(NetM, Nobs = 1, Nsim = 1) {
 
 
 sampleNetwork.NetworkModel = function(NetM, Nobs = 1, Nsim = 1) { 
+  
   Nnodes = getNnodes(NetM)
   epmat = getEdgeProbMat(NetM)
   
-  # uses variables out of scope (epmat, Nnodes)
-  gen_one_network = function() {
+  gen_one_network = function() { # uses variables out of scope (epmat, Nnodes)
     res = matrix(0, nrow = Nnodes, ncol = Nnodes) 
     for(k in 1:Nnodes) { for(j in 1:Nnodes) {
       if (k < j) {
         v = rbinom(n = 1, size = 1, prob = epmat[k,j])
-        res[j,k] = v
-        res[k,j] = v
+        res[j,k] = v; res[k,j] = v
       }
     }}
     return(res)
