@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage{graphicx}
 \usepackage[margin=1in]{geometry}
-
+\usepackage{todonotes}
 
 \newcommand{\codefilestatus}[3]{\begin{itemize}
 \item Last Updated: #1
@@ -18,9 +18,161 @@
 \tableofcontents
 \pagebreak
 
+\listoftodos
 
+\pagebreak
+
+\section{Introduction}
+
+This is a collection of functions that perform hypothesis testing using random edge partitions. \todo{add more to introduction}
+
+
+\section{Usage Information}
+\todo{Write general use case function} -- In general, to simply use the hypothesis testing function, one only needs to input the adjacency matrices (or perhaps arrays). A function for this process hasn't been written yet (only simulation functions that do this a number of times has been written). \\
+
+To use the other pieces of the program for whatever use case: \\
+
+\todo{add no indentation}
+Models (eg. SBM or HRGs) can be stored as classes (or a random model can be generated and stored in a class). See the section \todo{link this} to see the documentation on the available classes and the structure. \\
+
+There are some generic functions that work on models, described in the section on Functions \todo{link this}. They perform various tasks, and are almost all used for doing the hypothesis test. \\
+
+\section{Functions}
+These functions often take in as parameters some complex classes/list structures that are better documented in the package documentation \todo{add here?}. A brief table follows as a guide to function parameters. \\
+
+\begin{tabular}{|l|l|p{8cm}|} \hline
+{\bf Parameter Name} & {\bf Object Type} & {\bf Description} \\ 
+\hline
+NetM & class & Fully specifies a single network model \\ \hline
+NetS & class & Fully specifies a random edge partition \\ \hline
+param\_list OR pl & list & List of parameters for simulation (or for specifying details for testing) \\ \hline
+model\_param & list & List of parameters to generate a single network model or random edge partition\\ \hline 
+\end{tabular}
+
+
+
+
+\subsection{Functions}
+
+
+\subsubsection{Functions}
+\begin{itemize} 
+\item getNnodes(NetM)\\
+This returns the number of nodes in the network
+\item getNetType(NetM)\\
+This returns the type of network model
+\item getEdgeProbMat(NetM, mode))\\
+This computes the edge probability matrix\\
+Mode = `prob' or `group', will return either a probability matrix or a matrix with ids for group assignment. 
+\item sampleNetwork(NetM, Nobs, Nsim)\\
+This samples networks from the model
+\item extractStruct(NetM)
+This converts the network model into a structure object (basically, throws out probability information)
+\item computeLik(NetM, adja, loglik = TRUE)\\
+This computes the likelihood of the adjacency matrix given the network model. loglik specifies whether we want the log-likelihood or the actual likelihood
+\item computeKLdist(x, y = NULL) \\
+Not implemented yet -- Computes the KL distance between two network models (x,y), or if x is a pair of network models. 
+
+\item getNnodes(Net)
+\item getNetType(Net)
+\item fitModel(NetS, adja)\\
+Not implemented -- This fits the model to the adjacency matrix/array, and returns the best fit (MLE) network model. 
+\item computePval(NetS, adja1, adja2, Nobs, pl)\\
+Returns a matrix of p-values (based on the parameter list) of fitting the model on the given NetS (or, list of NetS's, in which case a list of matrices is returned)
+\item computePval\_fast(...)\\
+Not implemented -- perhaps write a faster version of this (using global variables, and thus only callable in a very specific manner), as the current code might be slow (due to R's pass by copy as opposed to reference) -- this should end up being written in C++... 
+\end{itemize}
+
+
+\subsection{Classes}
+
+\subsubsection{NetworkModel}
+\begin{itemize}
+\item NetworkModel (Abbreviated NetM)\\
+FIELD -- Nnodes : numeric
+\begin{itemize}
+\item NetworkModelSBM\\
+FIELD -- assign : numeric \\
+FIELD -- probmat : matrix\\
+\item NetworkModelHRG\\
+FIELD -- parents : numeric\\
+FIELD -- children : list\\
+FIELD -- prob : numeric\\
+\item NetworkModelLSM\\
+FIELD -- locs : matrix\\
+FIELD -- alpha : numeric\\
+\item NetworkModelRND\\
+FIELD -- counts : numeric\\
+FIELD -- prob : numeric\\
+FIELD -- ids : list\\
+\item NetworkModelPair\\
+FIELD -- m1 : NetworkModel\\
+FIELD -- m2 : NetworkModel\\
+FIELD -- is\_null : logical\\
+\end{itemize}
+\end{itemize}
+
+\subsubsection{NetworkStruct}
+\begin{itemize}
+
+\item NetworkStruct (Abbreviated NetS)\\
+FIELD -- Nnodes : numeric
+\begin{itemize}
+\item NetworkStructSBM\\
+FIELD -- groups : numeric\\
+FIELD -- counts : numeric\\
+FIELD -- expand : list\\
+FIELD -- correct : numeric\\
+\item NetworkStructHRG\\
+FIELD -- tree\_list : list\\
+FIELD -- expand : list\\
+FIELD -- counts : numeric\\
+\item NetworkStructRND\\
+FIELD -- counts : numeric\\
+FIELD -- ids : list\\
+\item NetworkStructList\\
+FIELD -- models : list\\
+\end{itemize}
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Programming Notes}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\pagebreak
+
+\section{OLD STUFF} 
 \section{Standard Function Parameter Names}
 Tables for the appropriate (consistent) parameter names
+
+
+
+
+
+
+
+
 
 \subsection{General Parameters}
 \begin{tabular}{|l|r|}
@@ -196,89 +348,5 @@ Simulation functions for the LRT method
 \subsection{vis\_heatmap.R}
 Code for visualization for a heatmap of probabilities
 
-\pagebreak
-\section{New Classes}
-\subsection{NetworkModel}
-\subsubsection{Hierarchy}
-\begin{itemize}
-\item NetworkModel (Abbreviated NetM)\\
-FIELD -- Nnodes : numeric
-\begin{itemize}
-\item NetworkModelSBM\\
-FIELD -- assign : numeric \\
-FIELD -- probmat : matrix\\
-\item NetworkModelHRG\\
-FIELD -- parents : numeric\\
-FIELD -- children : list\\
-FIELD -- prob : numeric\\
-\item NetworkModelLSM\\
-FIELD -- locs : matrix\\
-FIELD -- alpha : numeric\\
-\item NetworkModelRND\\
-FIELD -- counts : numeric\\
-FIELD -- prob : numeric\\
-FIELD -- ids : list\\
-\item NetworkModelPair\\
-FIELD -- m1 : NetworkModel\\
-FIELD -- m2 : NetworkModel\\
-FIELD -- is\_null : logical\\
-\end{itemize}
-\end{itemize}
-
-\subsubsection{Functions}
-\begin{itemize} 
-\item getNnodes(NetM)\\
-This returns the number of nodes in the network
-\item getNetType(NetM)\\
-This returns the type of network model
-\item getEdgeProbMat(NetM, mode))\\
-This computes the edge probability matrix\\
-Mode = `prob' or `group', will return either a probability matrix or a matrix with ids for group assignment. 
-\item sampleNetwork(NetM, Nobs, Nsim)\\
-This samples networks from the model
-\item extractStruct(NetM)
-This converts the network model into a structure object (basically, throws out probability information)
-\item computeLik(NetM, adja, loglik = TRUE)\\
-This computes the likelihood of the adjacency matrix given the network model. loglik specifies whether we want the log-likelihood or the actual likelihood
-\item computeKLdist(x, y = NULL) \\
-Not implemented yet -- Computes the KL distance between two network models (x,y), or if x is a pair of network models. 
-\end{itemize}
-
-\subsection{NetworkStruct}
-\subsubsection{Hierarchy}
-\begin{itemize}
-
-\item NetworkStruct (Abbreviated NetS)\\
-FIELD -- Nnodes : numeric
-\begin{itemize}
-\item NetworkStructSBM\\
-FIELD -- groups : numeric\\
-FIELD -- counts : numeric\\
-FIELD -- expand : list\\
-FIELD -- correct : numeric\\
-\item NetworkStructHRG\\
-FIELD -- tree\_list : list\\
-FIELD -- expand : list\\
-FIELD -- counts : numeric\\
-\item NetworkStructRND\\
-FIELD -- counts : numeric\\
-FIELD -- ids : list\\
-\item NetworkStructList\\
-FIELD -- models : list\\
-\end{itemize}
-\end{itemize}
-
-
-\subsubsection{Functions}
-\begin{itemize}
-\item getNnodes(Net)
-\item getNetType(Net)
-\item fitModel(NetS, adja)\\
-Not implemented -- This fits the model to the adjacency matrix/array, and returns the best fit (MLE) network model. 
-\item computePval(NetS, adja1, adja2, Nobs, pl)\\
-Returns a matrix of p-values (based on the parameter list) of fitting the model on the given NetS (or, list of NetS's, in which case a list of matrices is returned)
-\item computePval\_fast(...)\\
-Not implemented -- perhaps write a faster version of this (using global variables, and thus only callable in a very specific manner), as the current code might be slow (due to R's pass by copy as opposed to reference) -- this should end up being written in C++... 
-\end{itemize}
 \end{document}
 
