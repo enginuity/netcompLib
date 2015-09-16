@@ -10,3 +10,11 @@ netcomp_lib.Rproj
 codeProcessing_logs/*
 netcomp_logfile/*
 netcompLib/NAMESPACE
+
+## Latex stuff
+*.aux
+*.log
+*.pdf
+*.tdo
+*.toc
+*.synctex.gz
