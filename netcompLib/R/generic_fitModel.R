@@ -56,37 +56,19 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
   }
   
   if (mode == "densitydiff") {
-    llfx = function(t,x,y,n) {
-      ## x,y,n,a are vectorized; b should be constant; t = c(b,a)
-      b = t[1]; a = t[-1]
-      return(sum(x*a - n * log(1 + exp(a)) + y * (a+b) - n * log(1 + exp(a+b))))
-    }
-    grfx = function(t,x,y,n) {
-      ## x,y,n,a are vectorized; b should be constant; t = c(b,a)
-      oe = function(x) { exp(x) / (1+exp(x)) }
-      b = t[1]; a = t[-1]
-      return(c(sum(y - n*oe(a+b)), x + y - n * (oe(a) + oe(a+b))))
-    }
+    ## Allow fitting when inputting longer adjacency arrays? (or perhaps a pair of them)
     
-    xm = matrix(0, NG, NG); ym = xm; tm = matrix(0, NG, NG)
-    for(i in 1:NG) { for(j in 1:NG) {
-      ii = which(gr == i); ij = which(gr == j)
-      ci = sum(gr == i); cj = sum(gr == j)
-      if (i == j) { xm[i,j] = sum(adja[ii,ij,1])/2 ; ym[i,j] = sum(adja[ii,ij,2])/2; tm[i,j] = ci * (ci -1)/2}
-      if (i != j) { xm[i,j] = sum(adja[ii,ij,1]) ; ym[i,j] = sum(adja[ii,ij,2]); tm[i,j] = ci*cj }
-    }}
-    
-    x = xm[lower.tri(xm, diag = TRUE)]; y = ym[lower.tri(ym, diag = TRUE)]
-    n = tm[lower.tri(tm, diag = TRUE)]
+    temp = aggstat_dendiff(res, adja[,,1], adja[,,2]) ## should work for all struct types
+    x = temp$x; y = temp$y; n = temp$n
     
     bestval = -Inf
     for(i in 1:optim_tries) { 
-      temp = optim(rnorm(n = length(n)+1), fn = llfx, gr = grfx, x=x, y=y, n=n, control = list(fnscale = -1), method = "BFGS")
+      temp = optim(rnorm(n = length(n)+1), fn = llFx_dendiff, gr = llGrFx_dendiff, x=x, y=y, n=n, control = list(fnscale = -1), method = "BFGS")
       if (temp$value > bestval) {
         bestval = temp$value; best = temp
       }
     }
-    return(list(res, temp))
+    return(list(res, temp)) ## TODO: Fix output
   }
   
   if (mode == "corr-global-null") {

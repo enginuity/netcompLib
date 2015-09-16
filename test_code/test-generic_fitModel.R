@@ -11,3 +11,9 @@ getNnodes(genmod)
 adja = sampleNetwork(genmod, Nobs = 2)
 optim_tries = 10
 mode = 'densitydiff'
+
+
+getEdgeProbMat(genmod, 'group')
+
+
+
