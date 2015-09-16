@@ -1,0 +1,284 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+
+
+\newcommand{\codefilestatus}[3]{\begin{itemize}
+\item Last Updated: #1
+\item Documented? #2
+\item Standardized Parameterization? #3
+\end{itemize}}
+
+\begin{document}
+
+
+\title{Documentation for netcomplib}
+
+\maketitle
+\tableofcontents
+\pagebreak
+
+
+\section{Standard Function Parameter Names}
+Tables for the appropriate (consistent) parameter names
+
+\subsection{General Parameters}
+\begin{tabular}{|l|r|}
+\hline
+{\bf Object Type} & {\bf Parameter Names} \\
+
+
+\hline
+Num. Nodes in network & Nnodes \\
+
+\hline
+Num. Simulations & Nsim \\
+
+\hline
+Num. Network observation (pairs) & Nobs \\
+
+\hline 
+General Logging File	 & logfile \\
+
+\hline
+\end{tabular}
+
+
+
+\subsection{Adjacency \& Probability Matrices}
+\begin{tabular}{|l|r|}
+\hline
+{\bf Object Type} & {\bf Parameter Names} \\
+
+
+\hline
+Observed adjacency matrix (matrix) & obsadjm; obsadjm[k]; adjm[k];\\
+
+\hline 
+Observed adjacency matrices (array) & obsadjs; adja[k]; \\
+
+\hline
+Edge Probability Matrix (matrix) & epmat \\
+
+\hline
+\end{tabular}
+
+\subsection{General Models}
+\begin{tabular}{|l|r|}
+\hline
+{\bf Object Type} & {\bf Parameter Names} \\
+
+
+\hline
+HRG Model & tree; tree[k]; treel \\
+\hline
+Baseline (generating) model & btree; btree[k]; btreel \\
+\hline
+Fixed (estimating) model & ftree; ftree[k]; ftreel \\
+
+\hline
+\end{tabular}
+
+
+\section{Object Types}
+The following will be a description of different types of objects needed for different model classes and such
+\subsection{Hierarchical Random Graphs (HRG)}
+HRG models need to have the tree information stored: This is stored as a list with the following fields: 
+\begin{itemize}
+\item \$prob = Node probabilities
+\item \$children = Children vector
+\item \$parents = Parent vector 
+\item \$nodes = Number of nodes in the network model
+\end{itemize}
+
+\subsection{General Network Model}
+\subsubsection{Old Format}
+There is an old model format that is intended to store lists of models. The format is a list with: 
+\begin{itemize}
+
+
+\item \$mode = "tree", "block", or "latent"
+\item \$m1, \$m2 = individual model lists that one can generate observations from. 
+\end{itemize}
+
+\subsubsection{Generating Models}
+A list of generating models should be stored in a variable like `gen\_models', and looks like: 
+\begin{itemize}
+\item \$mode = Type of generating model: tree, block, latent
+\item \$m1, \$m2 = Models to run \_network functions on. 
+\item \$is\_null = null hypothesis true? (m1 = m2)
+\item \$Nnodes = number of nodes in network 
+\end{itemize}
+
+\subsubsection{Fitting Models}
+A list of such fitting models: This format leads to faster processing. Each list looks like: stored in variables like `fit\_models'
+\begin{itemize}
+
+
+\item \$mode = tree, block, random
+\item \$model\_list = list of models
+\item \$Nnodes  = number of nodes in network
+\item \$Nmodels = number of models in model\_list
+\end{itemize}
+
+\subsection{Parameter Lists}
+\subsubsection{Parameter List for Simulations}
+\begin{itemize}
+\item thres\_ignore = Edge groups with fewer than this many cells will be ignored
+\item cc\_adj = Number of 'sd's away to be conservative with, regarding correlation estimate. 
+\item alphas = Sizes of test to generate cutoffs for
+\item n\_models = Number of fixed edge partitions to use
+
+\end{itemize}
+
+
+\section{Model Generation and Network Simulation}
+
+\subsection{model\_generation\_cases.R}
+Contains code to sample tree, block, latent models, and to sample networks from these models. 
+
+\section{Hypothesis Test and Simulations}
+\subsection{compute\_lrt\_subfxs.R}
+This contains the newer code for fast (in R) simulations. 
+
+\section{Unsorted Function Files}
+
+\subsection{allcode-general.R -- TO CLEAR UP}
+Collection of main tree-processing code. This should be split up into sections...
+
+\subsection{bootstrap\_networkcomp.R -- TO CLEAR UP}
+Stores the bootstrap network comparison code. There are several versions, and they need to be combined into one... (TODO)
+
+\subsection{compute\_edgep\_dist.R}
+Functions to compute various distance measures
+
+\subsection{compute\_lrt.R}
+Functions to compute the likelihood ratio test
+
+
+
+\subsection{distance\_distrib\_samp.R -- TO CLEAR}
+Collection of more recent functions. Need to be organized. 
+
+
+\subsection{model\_generation.R}
+Functions to generate general models
+
+\subsection{model\_generation\_hrg.R}
+Functions to generate HRG models \\
+This is to be obseleted
+
+\subsection{model\_generation\_latent.R}
+Functions to generate Latent space models \\
+This is to be obseleted
+\subsection{model\_generation\_sbm.R}
+Functions to generate SBMs \\
+This is to be obseleted
+
+\subsection{model\_mcmc\_hrg.R}
+MCMC code in R for the HRG
+
+\subsection{multiple\_tree\_functions.R -- TO CLEAR}
+Collection of functions to work with ensembles of data. 
+
+\subsection{multiple\_testing\_fx.R}
+Functions to perform / simulate multiple testing
+
+\subsection{new\_sim\_fxs.R}
+New work on simulation functions (this file is temporary)
+
+\subsection{sim\_bootstrap\_dist.R}
+Simulation functions for distances using bootstrap method
+
+\subsection{sim\_lrt.R}
+Simulation functions for the LRT method
+
+\subsection{vis\_heatmap.R}
+Code for visualization for a heatmap of probabilities
+
+\pagebreak
+\section{New Classes}
+\subsection{NetworkModel}
+\subsubsection{Hierarchy}
+\begin{itemize}
+\item NetworkModel (Abbreviated NetM)\\
+FIELD -- Nnodes : numeric
+\begin{itemize}
+\item NetworkModelSBM\\
+FIELD -- assign : numeric \\
+FIELD -- probmat : matrix\\
+\item NetworkModelHRG\\
+FIELD -- parents : numeric\\
+FIELD -- children : list\\
+FIELD -- prob : numeric\\
+\item NetworkModelLSM\\
+FIELD -- locs : matrix\\
+FIELD -- alpha : numeric\\
+\item NetworkModelRND\\
+FIELD -- counts : numeric\\
+FIELD -- prob : numeric\\
+FIELD -- ids : list\\
+\item NetworkModelPair\\
+FIELD -- m1 : NetworkModel\\
+FIELD -- m2 : NetworkModel\\
+FIELD -- is\_null : logical\\
+\end{itemize}
+\end{itemize}
+
+\subsubsection{Functions}
+\begin{itemize} 
+\item getNnodes(NetM)\\
+This returns the number of nodes in the network
+\item getNetType(NetM)\\
+This returns the type of network model
+\item getEdgeProbMat(NetM, mode))\\
+This computes the edge probability matrix\\
+Mode = `prob' or `group', will return either a probability matrix or a matrix with ids for group assignment. 
+\item sampleNetwork(NetM, Nobs, Nsim)\\
+This samples networks from the model
+\item extractStruct(NetM)
+This converts the network model into a structure object (basically, throws out probability information)
+\item computeLik(NetM, adja, loglik = TRUE)\\
+This computes the likelihood of the adjacency matrix given the network model. loglik specifies whether we want the log-likelihood or the actual likelihood
+\item computeKLdist(x, y = NULL) \\
+Not implemented yet -- Computes the KL distance between two network models (x,y), or if x is a pair of network models. 
+\end{itemize}
+
+\subsection{NetworkStruct}
+\subsubsection{Hierarchy}
+\begin{itemize}
+
+\item NetworkStruct (Abbreviated NetS)\\
+FIELD -- Nnodes : numeric
+\begin{itemize}
+\item NetworkStructSBM\\
+FIELD -- groups : numeric\\
+FIELD -- counts : numeric\\
+FIELD -- expand : list\\
+FIELD -- correct : numeric\\
+\item NetworkStructHRG\\
+FIELD -- tree\_list : list\\
+FIELD -- expand : list\\
+FIELD -- counts : numeric\\
+\item NetworkStructRND\\
+FIELD -- counts : numeric\\
+FIELD -- ids : list\\
+\item NetworkStructList\\
+FIELD -- models : list\\
+\end{itemize}
+\end{itemize}
+
+
+\subsubsection{Functions}
+\begin{itemize}
+\item getNnodes(Net)
+\item getNetType(Net)
+\item fitModel(NetS, adja)\\
+Not implemented -- This fits the model to the adjacency matrix/array, and returns the best fit (MLE) network model. 
+\item computePval(NetS, adja1, adja2, Nobs, pl)\\
+Returns a matrix of p-values (based on the parameter list) of fitting the model on the given NetS (or, list of NetS's, in which case a list of matrices is returned)
+\item computePval\_fast(...)\\
+Not implemented -- perhaps write a faster version of this (using global variables, and thus only callable in a very specific manner), as the current code might be slow (due to R's pass by copy as opposed to reference) -- this should end up being written in C++... 
+\end{itemize}
+\end{document}
+
