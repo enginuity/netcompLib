@@ -56,7 +56,7 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
   }
   
   if (mode == "densitydiff") {
-    ## Allow fitting when inputting longer adjacency arrays? (or perhaps a pair of them)
+    ## TODO: Allow fitting when inputting longer adjacency arrays? (or perhaps a pair of them)
     
     temp = aggstat_dendiff(res, adja[,,1], adja[,,2]) ## should work for all struct types
     x = temp$x; y = temp$y; n = temp$n
@@ -68,9 +68,19 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
         bestval = temp$value; best = temp
       }
     }
+    
+    m1 = 3
+    NetworkModelPair(m1, m2, is_null = FALSE)
+    
     return(list(res, temp)) ## TODO: Fix output
+    ## should output networkmodel pair! 
   }
   
+  
+  
+  
+  
+  ## TO REDO. 
   if (mode == "corr-global-null") {
     sample_start = function(n) { 
       t = rnorm(n)
