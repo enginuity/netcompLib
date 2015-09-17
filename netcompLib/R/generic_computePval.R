@@ -51,6 +51,7 @@ computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode 
 
 
 computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
+#|----##** MUST EDIT -- TODO -- Added model_type parameter --Thu Sep 17 03:10:20 2015--
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
@@ -132,6 +133,7 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 
 
 computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
+#|----##** MUST EDIT -- TODO -- Added model_type parameter --Thu Sep 17 03:10:20 2015--
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
@@ -214,6 +216,7 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 
 
 computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
+#|----##** MUST EDIT -- TODO -- Added model_type parameter --Thu Sep 17 03:10:20 2015--
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
