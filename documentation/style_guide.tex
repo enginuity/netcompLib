@@ -164,7 +164,16 @@ FIELD -- models : list\\
 \begin{itemize}
 \item Add dependencies into package -- 'abind' for function 'abind', and 'faraway' for functions 'logit', 'ilogit'
 \item Check if 'logit' function in package 'gtools' is better
-
+\item Document computeDfAdj properly -- seems to work, check if it works
+\item Work on simplifying simulation code: 
+\begin{itemize}
+\item put model type inside of setmodelparam
+\item generalizeble to list of genmodel and list of fit parameters -- do expand.grid of combinations
+\item include pvalue adjustment as a setsimparam?
+\end{itemize}
+\item in SBM.assign, reset this to 1:num-unique, and resize probmat appropriately
+\item reassign-edgegroup-prob -- document this, and check: seems to work. 
+\item TODO - allow by-group to emulate old faster code, or else need to adjust the simulation functions
 \end{itemize}
 
 
