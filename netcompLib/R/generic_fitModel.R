@@ -69,11 +69,9 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
       }
     }
     
-    m1 = 3
-    NetworkModelPair(m1, m2, is_null = FALSE)
-    
-    return(list(res, temp)) ## TODO: Fix output
-    ## should output networkmodel pair! 
+    m1 = reassign_edgegroup_prob(res, temp$names, probs = ilogit(temp$par[-1]))
+    m2 = reassign_edgegroup_prob(res, temp$names, probs = ilogit(temp$par[-1] + temp$par[1]))
+    return(NetworkModelPair(m1 = m1, m2 = m2, is_null = FALSE, model_type = "densitydiff", addl_param = list(dd_param_add = temp$par[1])))
   }
   
   
