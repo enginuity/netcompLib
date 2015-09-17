@@ -6,7 +6,7 @@ setClass("NetworkModelSBM", representation(assign = "numeric", probmat = "matrix
 setClass("NetworkModelHRG", representation(parents = "numeric", children = "list", prob = "numeric"), contains = "NetworkModel")
 setClass("NetworkModelLSM", representation(locs = "matrix", alpha = "numeric"), contains = "NetworkModel")
 setClass("NetworkModelRND", representation(counts = "numeric", prob = "numeric", ids = "list"), contains = "NetworkModel")
-setClass("NetworkModelPair", representation(m1 = "NetworkModel", m2 = "NetworkModel", is_null = "logical"), contains = "NetworkModel")
+setClass("NetworkModelPair", representation(m1 = "NetworkModel", m2 = "NetworkModel", is_null = "logical", model_type = "character", addl_param = "list"), contains = "NetworkModel")
 
 setClass("NetworkStruct", representation(Nnodes = "numeric"))
 setClass("NetworkStructSBM", representation(groups = "numeric", counts = "numeric", expand = "list", correct = "numeric"), contains = "NetworkStruct")
@@ -334,15 +334,15 @@ NetworkModelRND = function(model_params = set_model_param()) {
 #' 
 #' @export
 #' 
-NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE) {
+NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "default", addl_param = list()) {
   if (!(inherits(m1, "NetworkModel"))) { m1 = NetworkModel(m1) }
   if (!(inherits(m2, "NetworkModel")) & !is.null(m2)) { m2 = NetworkModel(m2) }
   
   if (is_null) {
-    netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m1, is_null = TRUE)
+    netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m1, is_null = TRUE, model_type = model_type, addl_param = addl_param)
   } else {
     if (is.null(m2)) { stop("---You must provide the second model if the null hypothesis is FALSE.---") }
-    netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m2, is_null = FALSE)
+    netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m2, is_null = FALSE, model_type = model_type, addl_param = addl_param)
   }
   return(netmp)
 }
