@@ -1,10 +1,11 @@
 ##@S Generic function that performs the hypothesis test (computes the p-value for the likelihood ratio test)
 
-setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, verbose, vbset) standardGeneric("computePval"))
+setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, model_type, verbose, vbset) standardGeneric("computePval"))
 
 ## TODO: [Documentation] -- check for accuracy
 ## TODO: [Documentation] -- add page for verbosity settings
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computePval)
 #' Computes p-value for likelihood ratio test
 #' 
 #' This function takes the input network structure (or a list of network structures), and computes the likelihood ratio test for the two input adjacency matrices (or arrays). 
@@ -15,6 +16,7 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, verbose, 
 #' @param Nobs [int] :: Number of network observations per class (default = 1)
 #' @param pl [list] :: Simulation/Testing parameters, set by set_sim_param
 #' @param mode [char] :: How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node; 'chisq' gives the chi-square test statistic, other modes: 'fast', 'fast-densitydiff', 'fast-corr'
+#' @param model_type temp
 #' @param verbose [logical] :: Log results?
 #' @param vbset [vector-int] :: --- FIX --- call a general verbosity documentation
 #' Verbose :: output general info in processing NSList case
@@ -24,17 +26,17 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, verbose, 
 #' 
 #' @export
 #' 
-computePval = function(NetS, adja1, adja2, Nobs = 1, pl, mode = 'default', verbose = TRUE, vbset = c(1,0,0)) {
+computePval = function(NetS, adja1, adja2, Nobs = 1, pl, mode = 'default', model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
   stop("Placeholder for documentation purposes")
 }
 
 
-computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, vbset = c(1,0,0)) {
+computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default",  verbose = TRUE, vbset = c(1,0,0)) {
   stop("Not implemented for this case")
 }
 
 
-computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, vbset = c(1,0,0)) {
+computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
   if (verbose & vbset[1] > 0) { 
     cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Fitting on", length(NetS@models), "random structures")
   }
@@ -42,13 +44,13 @@ computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode 
   ## Call appropriate computePval for each individual NetworkStruct
   res = lapply(NetS@models, function(x) { 
     if (verbose & vbset[1] > 0 & vbset[2] > 0) { cat(".") }
-    computePval(x, adja1, adja2, Nobs, pl, mode, verbose, vs_new) 
+    computePval(x, adja1, adja2, Nobs, pl, mode, model_type, verbose, vs_new) 
   } )
   return(res)
 }
 
 
-computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, vbset = c(1,0,0)) {
+computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
@@ -129,7 +131,7 @@ computePval.NetworkStructRND = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 }
 
 
-computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, vbset = c(1,0,0)) {
+computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
@@ -211,7 +213,7 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 }
 
 
-computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", verbose = TRUE, vbset = c(1,0,0)) {
+computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
