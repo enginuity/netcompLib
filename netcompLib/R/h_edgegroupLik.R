@@ -24,6 +24,17 @@ aggstat_dendiff = function(NetM, adja1, adja2) {
   return(lapply(list(n = tapply(inds, inds, function(x) { sum(x > 0) }), x = tapply(xs, inds, sum), y = tapply(ys, inds, sum), names = names(tapply(ys, inds, sum))), unname))
 }
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (reassign_edgegroup_prob)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' @param ids temp
+#' @param probs temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 reassign_edgegroup_prob = function(NetM, ids, probs) {
   if (inherits(NetM, "NetworkModelSBM")) {
     ids = as.numeric(ids)

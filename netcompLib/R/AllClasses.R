@@ -321,6 +321,7 @@ NetworkModelRND = function(model_params = set_model_param()) {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (NetworkModelPair)
 #' Instantiates an object of class NetworkModelPair
 #' 
 #' This is done by providing both network models. If m2 is not given and is_null is FALSE, there is an error. Otherwise, m2 will be ignored if is_null is TRUE. (ie null hypothesis means both models are the same, so m1)
@@ -329,6 +330,8 @@ NetworkModelRND = function(model_params = set_model_param()) {
 #' @param m1 [\code{\link{NetworkModel}} OR list] :: This can either be a model object, or a list containing model parameters
 #' @param m2 [\code{\link{NetworkModel}} OR list] :: This can either be a model object, or a list containing model parameters
 #' @param is_null [logical] :: If TRUE, m2 is ignored (since the null hypothesis means that both models are identical)
+#' @param model_type temp
+#' @param addl_param temp
 #' 
 #' @return [NetworkModelPair] :: An object containing information about two network models. 
 #' 
