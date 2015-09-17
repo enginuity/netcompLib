@@ -3,6 +3,16 @@
 
 # Functions to aggregate over edge groups ---------------------------------
 
+#' Aggregate statistics for density-difference estimation
+#' 
+#' @param NetM [] :: model
+#' @param adja1 [] :: adjm 1
+#' @param adja2 [] :: adjm 2
+#' 
+#' @return [] :: list of statistics: n, x, y -- n = total edges in edge group, x,y = edge appearance count in each edge group
+#' 
+#' @export
+#' 
 aggstat_dendiff = function(NetM, adja1, adja2) {
   m = getEdgeProbMat(NetM, 'group')
   subset = lower.tri(m)
@@ -18,22 +28,39 @@ aggstat_dendiff = function(NetM, adja1, adja2) {
 # Likelihood Functions -- based on edge groups ----------------------------
 
 
+#' Compute log-likelihood function for density-difference
+#' 
+#' @param t [] :: c(b,a) - b is single value; a is vector
+#' @param x [] :: edge counts in net 1
+#' @param y [] :: edge counts in net 2
+#' @param n [] :: total edge group size
+#' 
+#' @return [] :: value of log-likelihood
+#' 
+#' @export
+#' 
 llFx_dendiff = function(t,x,y,n) {
-  ## x,y,n,a are vectorized; b should be constant; t = c(b,a)
   b = t[1]; a = t[-1]
   return(sum(x*a - n * log(1 + exp(a)) + y * (a+b) - n * log(1 + exp(a+b))))
 }
 
 
+#' Compute gradient vector of log-likelihood in density-difference model
+#' 
+#' @param t [] :: c(b,a) - b is single value; a is vector
+#' @param x [] :: edge counts in net 1
+#' @param y [] :: edge counts in net 2
+#' @param n [] :: total edge group size
+#' 
+#' @return [] :: gradient vector
+#' 
+#' @export
+#' 
 llGrFx_dendiff = function(t,x,y,n) {
-  ## x,y,n,a are vectorized; b should be constant; t = c(b,a)
   oe = function(x) { exp(x) / (1+exp(x)) }
   b = t[1]; a = t[-1]
   return(c(sum(y - n*oe(a+b)), x + y - n * (oe(a) + oe(a+b))))
 }
-
-
-
 
 
 
