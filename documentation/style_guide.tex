@@ -70,8 +70,8 @@ This samples networks from the model
 This converts the network model into a structure object (basically, throws out probability information)
 \item computeLik(NetM, adja, loglik = TRUE)\\
 This computes the likelihood of the adjacency matrix given the network model. loglik specifies whether we want the log-likelihood or the actual likelihood
-\item computeKLdist(x, y = NULL) \\
-Not implemented yet -- Computes the KL distance between two network models (x,y), or if x is a pair of network models. 
+\item computeDist(x, y = NULL) \\
+Not implemented yet -- Computes the KL distance between two network models (x,y)
 
 \item getNnodes(Net)
 \item getNetType(Net)
@@ -109,6 +109,16 @@ FIELD -- ids : list\\
 FIELD -- m1 : NetworkModel\\
 FIELD -- m2 : NetworkModel\\
 FIELD -- is\_null : logical\\
+FIELD -- model\_type : character -- Allowed values:
+\begin{itemize}
+\item `default'
+\item `densitydiff'
+\item `correlated' -- not implemented -- {\bf TODO}
+\end{itemize}
+FIELD -- addl\_param : named list -- Entries: 
+\begin{itemize}
+\item dd\_param\_add : numeric = added parameter for log-odds addition
+\end{itemize}
 \end{itemize}
 \end{itemize}
 
@@ -150,7 +160,12 @@ FIELD -- models : list\\
 
 
 
+\section{TODOS to add as issues:}
+\begin{itemize}
+\item Add dependencies into package -- 'abind' for function 'abind', and 'faraway' for functions 'logit', 'ilogit'
+\item Check if 'logit' function in package 'gtools' is better
 
+\end{itemize}
 
 
 
@@ -234,44 +249,6 @@ Fixed (estimating) model & ftree; ftree[k]; ftreel \\
 
 \section{Object Types}
 The following will be a description of different types of objects needed for different model classes and such
-\subsection{Hierarchical Random Graphs (HRG)}
-HRG models need to have the tree information stored: This is stored as a list with the following fields: 
-\begin{itemize}
-\item \$prob = Node probabilities
-\item \$children = Children vector
-\item \$parents = Parent vector 
-\item \$nodes = Number of nodes in the network model
-\end{itemize}
-
-\subsection{General Network Model}
-\subsubsection{Old Format}
-There is an old model format that is intended to store lists of models. The format is a list with: 
-\begin{itemize}
-
-
-\item \$mode = "tree", "block", or "latent"
-\item \$m1, \$m2 = individual model lists that one can generate observations from. 
-\end{itemize}
-
-\subsubsection{Generating Models}
-A list of generating models should be stored in a variable like `gen\_models', and looks like: 
-\begin{itemize}
-\item \$mode = Type of generating model: tree, block, latent
-\item \$m1, \$m2 = Models to run \_network functions on. 
-\item \$is\_null = null hypothesis true? (m1 = m2)
-\item \$Nnodes = number of nodes in network 
-\end{itemize}
-
-\subsubsection{Fitting Models}
-A list of such fitting models: This format leads to faster processing. Each list looks like: stored in variables like `fit\_models'
-\begin{itemize}
-
-
-\item \$mode = tree, block, random
-\item \$model\_list = list of models
-\item \$Nnodes  = number of nodes in network
-\item \$Nmodels = number of models in model\_list
-\end{itemize}
 
 \subsection{Parameter Lists}
 \subsubsection{Parameter List for Simulations}
@@ -283,70 +260,6 @@ A list of such fitting models: This format leads to faster processing. Each list
 
 \end{itemize}
 
-
-\section{Model Generation and Network Simulation}
-
-\subsection{model\_generation\_cases.R}
-Contains code to sample tree, block, latent models, and to sample networks from these models. 
-
-\section{Hypothesis Test and Simulations}
-\subsection{compute\_lrt\_subfxs.R}
-This contains the newer code for fast (in R) simulations. 
-
-\section{Unsorted Function Files}
-
-\subsection{allcode-general.R -- TO CLEAR UP}
-Collection of main tree-processing code. This should be split up into sections...
-
-\subsection{bootstrap\_networkcomp.R -- TO CLEAR UP}
-Stores the bootstrap network comparison code. There are several versions, and they need to be combined into one... (TODO)
-
-\subsection{compute\_edgep\_dist.R}
-Functions to compute various distance measures
-
-\subsection{compute\_lrt.R}
-Functions to compute the likelihood ratio test
-
-
-
-\subsection{distance\_distrib\_samp.R -- TO CLEAR}
-Collection of more recent functions. Need to be organized. 
-
-
-\subsection{model\_generation.R}
-Functions to generate general models
-
-\subsection{model\_generation\_hrg.R}
-Functions to generate HRG models \\
-This is to be obseleted
-
-\subsection{model\_generation\_latent.R}
-Functions to generate Latent space models \\
-This is to be obseleted
-\subsection{model\_generation\_sbm.R}
-Functions to generate SBMs \\
-This is to be obseleted
-
-\subsection{model\_mcmc\_hrg.R}
-MCMC code in R for the HRG
-
-\subsection{multiple\_tree\_functions.R -- TO CLEAR}
-Collection of functions to work with ensembles of data. 
-
-\subsection{multiple\_testing\_fx.R}
-Functions to perform / simulate multiple testing
-
-\subsection{new\_sim\_fxs.R}
-New work on simulation functions (this file is temporary)
-
-\subsection{sim\_bootstrap\_dist.R}
-Simulation functions for distances using bootstrap method
-
-\subsection{sim\_lrt.R}
-Simulation functions for the LRT method
-
-\subsection{vis\_heatmap.R}
-Code for visualization for a heatmap of probabilities
 
 \end{document}
 
