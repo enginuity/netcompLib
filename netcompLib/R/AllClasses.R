@@ -338,8 +338,8 @@ NetworkModelRND = function(model_params = set_model_param()) {
 #' @export
 #' 
 NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "default", addl_param = list()) {
-  if (!(inherits(m1, "NetworkModel"))) { m1 = NetworkModel(m1) }
-  if (!(inherits(m2, "NetworkModel")) & !is.null(m2)) { m2 = NetworkModel(m2) }
+  if (!(is(m1, "NetworkModel"))) { m1 = NetworkModel(m1) }
+  if (!(is(m2, "NetworkModel")) & !is.null(m2)) { m2 = NetworkModel(m2) }
   
   if (is_null) {
     netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m1, is_null = TRUE, model_type = model_type, addl_param = addl_param)
