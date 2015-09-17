@@ -1,6 +1,6 @@
 ##@S Generic function that performs the hypothesis test (computes the p-value for the likelihood ratio test)
 
-setGeneric("computeLik", function(NetM, adja, loglik, na.rm) standardGeneric("computeLik"))
+setGeneric("computeLik", function(NetM, adja, loglik, by_node, na.rm) standardGeneric("computeLik"))
 
 #' Compute Likelihood of Network given a model
 #' 
@@ -13,12 +13,13 @@ setGeneric("computeLik", function(NetM, adja, loglik, na.rm) standardGeneric("co
 #' 
 #' @export
 #' 
-computeLik = function(NetM, adja, loglik = TRUE, na.rm = TRUE) {
+computeLik = function(NetM, adja, loglik = TRUE, by_node = FALSE, na.rm = TRUE) {
+ ## by node -- true -> return a vector of log likelihoods. (summed up by node)
   stop("Placeholder for generic function -- this call is meaningless for a generic NetworkModel")
 }
 
 
-computeLik.NetworkModel = function(NetM, adja, loglik = TRUE, na.rm = TRUE) {
+computeLik.NetworkModel = function(NetM, adja, loglik = TRUE, by_node = FALSE, na.rm = TRUE) {
   if (length(dim(adja)) == 2) {
     adjm = adja; Nobs = 1
   } else if (length(dim(adja)) == 3) {
@@ -29,7 +30,12 @@ computeLik.NetworkModel = function(NetM, adja, loglik = TRUE, na.rm = TRUE) {
   
   eps = getEdgeProbMat(NetM)
   resm = adjm * log(eps) + (Nobs - adjm) * log(1 - eps)
-  res = sum(resm[upper.tri(x = resm, diag = FALSE)], na.rm = na.rm)
+  diag(resm) = 0
+  tempres = apply(resm, 1, sum, na.rm = na.rm)
+  
+  if (by_node) { res = tempres } else { res = sum(tempres, na.rm = na.rm) }
+  # old cleaner code... 
+  # res = sum(resm[upper.tri(x = resm, diag = FALSE)], na.rm = na.rm)
     
   if (loglik) {
     return(res) 
@@ -38,6 +44,15 @@ computeLik.NetworkModel = function(NetM, adja, loglik = TRUE, na.rm = TRUE) {
   }
 }
 
+computeLik.NetworkModelPair = function(NetM, adja, loglik = TRUE, by_node = FALSE, na.rm = TRUE) {
+  ## TODO: apply for general cases -- right now, ASSUMES adja is dimension 2. 
+  
+  ## nothing difficult right now... 
+  return(computeLik(NetM@m1, adja[,,1], loglik, by_node, na.rm) + 
+           computeLik(NetM@m2, adja[,,2], loglik, by_node, na.rm))
+}
+
 # setMethod ---------------------------------------------------------------
 setMethod("computeLik", signature(NetM = "NetworkModel"), computeLik.NetworkModel)
+setMethod("computeLik", signature(NetM = "NetworkModelPair"), computeLik.NetworkModelPair)
 
