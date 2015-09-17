@@ -342,6 +342,12 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
     netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m1, is_null = TRUE, model_type = model_type, addl_param = addl_param)
   } else {
     if (is.null(m2)) { stop("---You must provide the second model if the null hypothesis is FALSE.---") }
+    
+    if (model_type == "densitydiff") {
+      ## Adjust second model here! add the adjustment parameter
+      m2 = m1
+      m2@probmat = ilogit(logit(m2@probmat) + addl_param$dd_param_add)
+    }
     netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m2, is_null = FALSE, model_type = model_type, addl_param = addl_param)
   }
   return(netmp)
