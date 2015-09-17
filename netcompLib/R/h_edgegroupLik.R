@@ -21,10 +21,23 @@ aggstat_dendiff = function(NetM, adja1, adja2) {
   if (length(dim(adja2)) == 2) { yraw = adja2 } else { yraw = apply(adja2, c(1,2), sum) }
   xs = xraw[subset]; ys = yraw[subset]
   
-  return(lapply(list(n = tapply(inds, inds, function(x) { sum(x > 0) }), x = tapply(xs, inds, sum), y = tapply(ys, inds, sum)), unname))
+  return(lapply(list(n = tapply(inds, inds, function(x) { sum(x > 0) }), x = tapply(xs, inds, sum), y = tapply(ys, inds, sum), names = names(tapply(ys, inds, sum))), unname))
 }
 
-
+reassign_edgegroup_prob = function(NetM, ids, probs) {
+  if (inherits(NetM, "NetworkModelSBM")) {
+    ids = as.numeric(ids)
+    for(j in seq_along(ids)) {
+      NN = NetM@Nnodes
+      s = ids[j] %/% NN; r = ids[j] %% NN
+      NetM@probmat[r,s] = probs[j]; NetM@probmat[s,r] = probs[j]
+    }
+    return(NetM)
+  } else {
+    ## Implement cases for HRG, RND
+    stop("Case not implemented")
+  } 
+}
 # Likelihood Functions -- based on edge groups ----------------------------
 
 
