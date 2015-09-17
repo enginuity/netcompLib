@@ -2,11 +2,13 @@
 
 setGeneric("computeLik", function(NetM, adja, loglik, by_node, na.rm) standardGeneric("computeLik"))
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeLik)
 #' Compute Likelihood of Network given a model
 #' 
 #' @param NetM Network Model 
 #' @param adja Adjacency matrix/array
 #' @param loglik if true -- give log-likelihood instead of likelihood
+#' @param by_node temp
 #' @param na.rm if true -- ignores NAs in the adjacency matrix
 #' 
 #' @return likelihood (or log-likelihood)
@@ -31,7 +33,7 @@ computeLik.NetworkModel = function(NetM, adja, loglik = TRUE, by_node = FALSE, n
   eps = getEdgeProbMat(NetM)
   resm = adjm * log(eps) + (Nobs - adjm) * log(1 - eps)
   diag(resm) = 0
-  tempres = apply(resm, 1, sum, na.rm = na.rm)
+  tempres = apply(resm, 1, sum, na.rm = na.rm)/2
   
   if (by_node) { res = tempres } else { res = sum(tempres, na.rm = na.rm) }
   # old cleaner code... 
