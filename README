@@ -16,23 +16,4 @@ load_source.R -- This script loads the functions in the netcompLib package into 
 Directory Structure: 
 
 netcompLib/ -- This folder contains all the functions (and source) for this package. The format is a standard R package. 
-
--------------------------
-Documentation rules -- For parameter listings in function documentation: 
-[<type>] :: <documentation>
-, will separate information about parameters: eg. 
-LEN = (length of vector) or 
-DIM = (dimensions of matrix, etc.)
-; will separate information about values the parameter takes on
-DEFAULT = (default value) or
-ALLOWED = (possibly a vector of allowed values)
-
-Example: 
-[vector-int, LEN = 2; DEFAULT = c(1,2)] :: some description
-list, matrix, array, vector
-int, double, char, logical
-
-For documentation of classes: (S3 classes)
-an \itemize with items as follows: 
-\item <name> -- [<mode description as above>] :: <documentation>
-
+documentation/ -- This folder contains a latex file for documenting this package. 

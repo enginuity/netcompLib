@@ -287,6 +287,40 @@ The following will be a description of different types of objects needed for dif
 
 \end{itemize}
 
+\pagebreak
+\section{Programming Details}
+\subsection{Documentation Guide}
+\begin{verbatim}
+Documentation rules -- For parameter listings in function documentation: 
+@param <parameter> [<type>] :: <documentation>
+
+<parameter> = parameter name
+<documentation> = verbal description of usage of parameter
+<type> = classification of parameter
+
+Inside of <type>: 
+, will separate information about parameters: eg. 
+LEN = (length of vector) or 
+DIM = (dimensions of matrix, etc.)
+; will separate information about values the parameter takes on
+DEFAULT = (default value) or
+ALLOWED = (possibly a vector of allowed values)
+OR = separates different possible types of paraemterization (or output)
+- = identifies subtype of more general type of parameter
+
+Example: 
+[vector-int, LEN = 2; DEFAULT = c(1,2)] :: some description
+list, matrix, array, vector
+int, double, char, logical
+
+For documentation of classes: (S3 classes)
+an \itemize with items as follows: 
+\item <name> -- [<mode description as above>] :: <documentation>
+
+\end{verbatim}
+
+
+
 
 \end{document}
 
