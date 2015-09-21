@@ -10,18 +10,11 @@
 #' @param NetS [\code{\link{NetworkStruct}}] :: Testing model structure
 #' @param hidden_edges [matrix-logical] :: Entries of matrix are 'true' if they are hidden in the inference process. (so default would be a matrix of falses)
 #' 
-#' @return A vector of theoretical df adjustments (one for each edge group)
+#' @return [vector] :: Theoretical df adjustments for each edge group
 #' 
 #' @export
 #' 
 computeDfAdj = function(NetM, NetS, hidden_edges = NULL) {
-  if (FALSE) {
-    ## Test code
-    NetM = NetworkModel(set_model_param(Nnodes = 20, type = "block", block_assign = rep(c(1,2), each = 10), block_probs = matrix(c(.3, .3, .3, .7), nrow = 2)))
-    NetS = NetworkStructSBM(Nnodes = 20, model_param = set_model_param(block_assign = rep(c(1,2), times = 10)))
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
-  }
-  
   if (getNnodes(NetM) != getNnodes(NetS)) { stop("Number of nodes is not consistent between input NetM and NetS") }
   test_mod = fitModel(NetS, adja = NULL)
   test_nodeids = getEdgeProbMat(NetM = test_mod, mode = "group")
@@ -44,7 +37,6 @@ computeDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 }
 
 
-
 #' Computes a distance between two network models
 #' 
 #' @param x [\code{\link{NetworkModel}}] :: First network model
@@ -60,6 +52,7 @@ computeDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 #' @export
 #' 
 computeDist = function(x, y, type = "KLsym") {
+  ## TODO: Change x,y into NetM1, NetM2. 
   p1 = getEdgeProbMat(x); p2 = getEdgeProbMat(y)
   
   h_kldist = function(p1, p2) {
