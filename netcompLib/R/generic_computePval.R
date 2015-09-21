@@ -2,7 +2,6 @@
 
 setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, model_type, verbose, vbset) standardGeneric("computePval"))
 
-## TODO: [Documentation] -- check for accuracy
 ## TODO: [Documentation] -- add page for verbosity settings
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computePval)
