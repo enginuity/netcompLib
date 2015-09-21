@@ -174,6 +174,24 @@ FIELD -- models : list\\
 \item in SBM.assign, reset this to 1:num-unique, and resize probmat appropriately
 \item reassign-edgegroup-prob -- document this, and check: seems to work. 
 \item TODO - allow by-group to emulate old faster code, or else need to adjust the simulation functions
+\item Write tests -- see if new code is reasonable
+\item Check if the new compute\_pval works properly
+\item Fix/document verbosity. 
+\begin{itemize}
+\item param 'verbose' = T/F - simple setting
+\item param 'vbset' = (a,b,c) - a = number of functions (and calls) verbose; b = number of functions high-verbose; c = number of filler characters -- (eg +2 per sub function call)
+\end{itemize}
+\item Verbose logfile? -- so can output to file instead of terminal
+\item Runtime estimation -- run 1\% of the process, and then estimate total runtime
+\item Fix recycle\_fitstructs -- true means use max(n\_models). false means use sum(n\_models) -- generate list of indices, and store it in paramlist. when more models were generated; throw away the extras. 
+\item Delete long processes inside computepval eventually -- for now, the settings are: 
+\begin{itemize}
+\item default - gives pval table using old code
+\item chisq - only gives chisquare statistic
+\item pvals - should give new version of default
+\item nodal - gives list: chisq - chisquare stat, pvals - pval table, nodecontrib - nodal contributions
+\end{itemize}
+available model types: default, densitydiff, correlated, fast
 \end{itemize}
 
 
