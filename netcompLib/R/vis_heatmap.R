@@ -1,4 +1,4 @@
-
+##@S Functions for heatmap visualization of adjacency matrices or of models
 
 #' Plots a heatmap of a probability matrix
 #' 
@@ -38,11 +38,10 @@ plot_probmatrix = function(pm, add_legend = TRUE, is_dm = FALSE, only_legend = F
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (plot_edgegroup)
 #' Plot the Edge Group structure of a network model
 #' 
 #' @param NetM [\code{\link{NetworkModel}}] :: Model to plot edge group of
-#' @param cols temp
+#' @param cols [vector-int OR vector-char] :: Specify coloring scheme for edge groups
 #' @param ... [] :: Further parameters to pass on to the plot function
 #' 
 #' @return [int] :: Ignore output; a plot is produced
