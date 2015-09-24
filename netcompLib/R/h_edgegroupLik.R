@@ -78,6 +78,43 @@ reassign_edgegroup_prob = function(NetM, ids, probs) {
 }
 # Likelihood Functions -- based on edge groups ----------------------------
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (hCorr_paramToProb)
+#' <What does this function do>
+#' 
+#' @param rho temp
+#' @param a temp
+#' @param b temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
+hCorr_paramToProb = function(rho, a, b = a) {
+  # rho is scalar, a, b can be vectors
+  # returns table of probs: 11, 10, 01, 00
+  lambda = -log(exp(a+b+rho) + exp(a) + exp(b) + 1)
+  df = cbind(exp(a+b+rho+lambda), exp(a+lambda), exp(b+lambda), exp(lambda))
+  names(df) = c("11", "10", "01", "00")
+  return(df)
+}
+
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (hCorr_probToParam)
+#' <What does this function do>
+#' 
+#' @param pt temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
+hCorr_probToParam = function(pt) {
+  # pt should be a table with 4 columns -- probs of 11, 10, 01, 00
+  lambda = log(pt[,4])
+  b = log(pt[,3]) - lambda
+  a = log(pt[,2]) - lambda
+  rho = log(pt[,1]) - lambda - a - b
+  return(list(a = a, b = b, lambda = lambda, rho = rho))
+}
 
 #' Compute log-likelihood function for density-difference
 #' 
