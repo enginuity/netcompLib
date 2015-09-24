@@ -86,7 +86,7 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
     n = aggstat$n; C = aggstat$C
     
     best = h_optim(nparam = 2*length(n)+1, optim_tries = optim_tries, fn = llFx_calt, gn = llGrFx_calt, n = n, C = C)
-    rho = best$par[1]; a = best$par[1 + 1:n]; b = best$par[1+n + 1:n]
+    rho = best$par[1]; a = best$par[1 + seq_along(n)]; b = best$par[1+n+seq_along(n)]
     pt = hCorr_paramToProb(rho, a, b)
     
     m1 = reassign_edgegroup_prob(res, aggstat$names, probs = pt[,1] + pt[,2])

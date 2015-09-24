@@ -242,7 +242,7 @@ llGrFx_cnull = function(t,C,n) {
 llFx_calt = function(t,C,n) {
   # t  = c(rho, a_v, b_v)
   N = nrow(C)
-  rho = t[-1]; rt = t[-1]
+  rho = t[1]; rt = t[-1]
   a = rt[seq_len(N)]; rt = rt[-seq_len(N)]
   b = rt
   lambda = - log(exp(a + b + rho) + exp(a) + exp(b) + 1)
@@ -263,7 +263,7 @@ llFx_calt = function(t,C,n) {
 #' 
 llGrFx_calt = function(t, C, n) {
   N = nrow(C)
-  rho = t[-1]; rt = t[-1]
+  rho = t[1]; rt = t[-1]
   a = rt[seq_len(N)]; rt = rt[-seq_len(N)]
   b = rt
   
