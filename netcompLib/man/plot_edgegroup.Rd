@@ -9,7 +9,7 @@ plot_edgegroup(NetM, cols = 1:100, ...)
 \arguments{
 \item{NetM}{[\code{\link{NetworkModel}}] :: Model to plot edge group of}
 
-\item{cols}{temp}
+\item{cols}{[vector-int OR vector-char] :: Specify coloring scheme for edge groups}
 
 \item{...}{[] :: Further parameters to pass on to the plot function}
 }

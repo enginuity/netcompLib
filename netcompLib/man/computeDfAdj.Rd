@@ -14,7 +14,7 @@ computeDfAdj(NetM, NetS, hidden_edges = NULL)
 \item{hidden_edges}{[matrix-logical] :: Entries of matrix are 'true' if they are hidden in the inference process. (so default would be a matrix of falses)}
 }
 \value{
-A vector of theoretical df adjustments (one for each edge group)
+[vector] :: Theoretical df adjustments for each edge group
 }
 \description{
 For a fixed null hypothesis model, and for a fixed network structure, compute the true theoretical df adjustment
