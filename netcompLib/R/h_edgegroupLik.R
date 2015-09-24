@@ -87,4 +87,60 @@ llGrFx_dendiff = function(t,x,y,n) {
 }
 
 
+llFx_cnull = function(t, C, n) {
+  # C = cbind(c11, c10, c01, c00); n = vector of total counts; t = c(rho, theta_v)
+  rho = t[1]
+  theta = t[-1]
+  
+  lambda = -log(exp(2 * theta + rho) + 2 * exp(theta) + 1)
+  return(sum(C[,1] * (2 * theta + rho) + (C[,2] + C[,3]) * theta + n * lambda))
+}
+
+llGrFx_cnull = function(t,C,n) {
+  rho = t[1]; theta = t[-1]
+  # term1 = exp(2 * theta_k + rho); term2 = 2 * exp(theta_k)
+  tr1 = exp(2 * theta + rho)
+  tr2 = 2 * exp(theta)
+  den = tr1 + tr2 + 1
+  lambda = -log(den)
+  
+  grad = t * 0
+  grad[1] = sum(C[,1] - n * tr1/den)
+  grad[-1] = 2 * C[,1] + C[,2] + C[,3] - 2 * n * (1 - 1/den)
+  
+  return(grad)
+}
+
+llFx_calt = function(t,C,n) {
+  # t  = c(rho, a_v, b_v)
+  N = nrow(C)
+  rho = t[-1]; rt = t[-1]
+  a = rt[seq_len(N)]; rt = rt[-seq_len(N)]
+  b = rt
+  lambda = - log(exp(a + b + rho) + exp(a) + exp(b) + 1)
+  
+  return(sum(C[,1]*(a+b+rho) + C[,2]*a + C[,3]*b + n*lambda))
+}
+
+llGrFx_calt = function(t, C, n) {
+  N = nrow(C)
+  rho = t[-1]; rt = t[-1]
+  a = rt[seq_len(N)]; rt = rt[-seq_len(N)]
+  b = rt
+
+  ## term1 = exp(a + b + rho)
+  tr1 = exp(a + b + rho); tr2 = exp(a); tr3 = exp(b); 
+  den = tr1 + tr2 + tr3 + 1
+  lambda = - log(den)
+  
+  grad = t * 0
+  grad[1] = sum(C[,1] - n * tr1/den)
+  grad[seq_len(N) + 1] = C[,1] + C[,2] - n * (tr1 + tr2) / den
+  grad[seq_len(N) + 1 + N] = C[,1] + C[,3] - n * (tr1 + tr3) / den
+  return(grad)
+}
+
+
+
+
 
