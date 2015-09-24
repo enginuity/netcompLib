@@ -78,6 +78,31 @@ reassign_edgegroup_prob = function(NetM, ids, probs) {
 }
 # Likelihood Functions -- based on edge groups ----------------------------
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (h_optim)
+#' <What does this function do>
+#' 
+#' @param nparam temp
+#' @param optim_tries temp
+#' @param fn temp
+#' @param gn temp
+#' @param ... temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
+h_optim = function(nparam, optim_tries, fn, gn, ...) {
+  bestval = -Inf
+  for(i in 1:optim_tries) { 
+    temp = optim(rnorm(n = nparam), fn = fn, gr = gn, control = list(fnscale = -1), method = "BFGS", ...)
+    if (temp$value > bestval) {
+      bestval = temp$value; best = temp
+    }
+  }
+  return(best)
+}
+
+
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (hCorr_paramToProb)
 #' <What does this function do>
 #' 
