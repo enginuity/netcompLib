@@ -16,5 +16,5 @@ mode = 'densitydiff'
 
 getEdgeProbMat(genmod, 'group')
 
-
+NetM = fitModel(NetS, adja, "corr-global-null")
 

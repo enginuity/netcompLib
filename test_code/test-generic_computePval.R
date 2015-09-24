@@ -1,8 +1,10 @@
 ## For testing computePval 
 library(netcompLib)
+library(abind)
+library(faraway)
+load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
 
 ## For setting parameters
-load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
 NetM = NetworkModel(set_model_param(Nnodes = 30, type = "block"))
 adja1 = sampleNetwork(NetM)
 adja2 = sampleNetwork(NetM)
