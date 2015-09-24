@@ -43,11 +43,12 @@ aggstat_corr = function(NetM, adja1, adja2) {
   if (length(dim(adja2)) == 2) { yraw = adja2 } else { yraw = apply(adja2, c(1,2), sum) }
   xs = xraw[subset]; ys = yraw[subset]
   xy = xs+ys
+  xyd = xs-ys
   
   ## C matrix returned hsould be c11, c10, c01, c00
   return(c(lapply(list(n = tapply(inds, inds, function(x) { sum(x > 0) }), names = names(tapply(ys, inds, sum))), unname), 
-         list(C = cbind(c11 = tapply(xy == 2, inds, sum), c10 = tapply(xy == xs, inds, sum),
-                        c01 = tapply(xy == ys, inds, sum), c00 = tapply(xy == 0, inds, sum)))))
+           list(C = cbind(c11 = tapply(xy == 2, inds, sum), c10 = tapply(xyd == 1, inds, sum),
+                          c01 = tapply(xyd == -1, inds, sum), c00 = tapply(xy == 0, inds, sum)))))
 }
 
 
@@ -95,8 +96,13 @@ h_optim = function(nparam, optim_tries, fn, gn, ...) {
   bestval = -Inf
   for(i in 1:optim_tries) { 
     temp = optim(rnorm(n = nparam), fn = fn, gr = gn, control = list(fnscale = -1), method = "BFGS", ...)
-    if (temp$value > bestval) {
-      bestval = temp$value; best = temp
+    if (temp$value < 0) {
+      
+      if (temp$value > bestval) {
+        bestval = temp$value; best = temp
+      }
+    } else {
+      cat("badrun.")
     }
   }
   return(best)
@@ -219,7 +225,7 @@ llGrFx_cnull = function(t,C,n) {
   grad[1] = sum(C[,1] - n * tr1/den)
   grad[-1] = 2 * C[,1] + C[,2] + C[,3] - 2 * n * (1 - 1/den)
   
-  return(grad)
+  return(grad/100)
 }
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (llFx_calt)
@@ -260,7 +266,7 @@ llGrFx_calt = function(t, C, n) {
   rho = t[-1]; rt = t[-1]
   a = rt[seq_len(N)]; rt = rt[-seq_len(N)]
   b = rt
-
+  
   ## term1 = exp(a + b + rho)
   tr1 = exp(a + b + rho); tr2 = exp(a); tr3 = exp(b); 
   den = tr1 + tr2 + tr3 + 1
@@ -270,7 +276,7 @@ llGrFx_calt = function(t, C, n) {
   grad[1] = sum(C[,1] - n * tr1/den)
   grad[seq_len(N) + 1] = C[,1] + C[,2] - n * (tr1 + tr2) / den
   grad[seq_len(N) + 1 + N] = C[,1] + C[,3] - n * (tr1 + tr3) / den
-  return(grad)
+  return(grad/100)
 }
 
 
