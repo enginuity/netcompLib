@@ -119,7 +119,7 @@ hCorr_paramToProb = function(rho, a, b = a) {
   # returns table of probs: 11, 10, 01, 00
   lambda = -log(exp(a+b+rho) + exp(a) + exp(b) + 1)
   df = cbind(exp(a+b+rho+lambda), exp(a+lambda), exp(b+lambda), exp(lambda))
-  names(df) = c("11", "10", "01", "00")
+  colnames(df) = c("11", "10", "01", "00")
   return(df)
 }
 
