@@ -14,6 +14,7 @@ load_source.R -- This script loads the functions in the netcompLib package into 
 
 -------------------------
 Directory Structure: 
-
-netcompLib/ -- This folder contains all the functions (and source) for this package. The format is a standard R package. 
 documentation/ -- This folder contains a latex file for documenting this package. 
+experimental/ -- This folder contains old/new code that are currently not added to the package. They contain experiments or badly formatted old code. 
+netcompLib/ -- This folder contains all the functions (and source) for this package. The format is a standard R package. 
+test_code/ -- Eventually will contain actual test code; currently just tests a number of the functions. 
