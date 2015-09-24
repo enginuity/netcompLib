@@ -15,3 +15,4 @@ getEdgeProbMat(NetM, "prob")
 NetM@probmat
 
 aggstat_dendiff(NetM, adja1, adja2)
+aggstat_corr(NetM, adja1, adja2)
