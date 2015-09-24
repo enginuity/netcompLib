@@ -24,6 +24,22 @@ aggstat_dendiff = function(NetM, adja1, adja2) {
   return(lapply(list(n = tapply(inds, inds, function(x) { sum(x > 0) }), x = tapply(xs, inds, sum), y = tapply(ys, inds, sum), names = names(tapply(ys, inds, sum))), unname))
 }
 
+aggstat_corr = function(NetM, adja1, adja2) {
+  m = getEdgeProbMat(NetM, 'group')
+  subset = lower.tri(m)
+  inds = m[subset]
+  if (length(dim(adja1)) == 2) { xraw = adja1 } else { xraw = apply(adja1, c(1,2), sum) }
+  if (length(dim(adja2)) == 2) { yraw = adja2 } else { yraw = apply(adja2, c(1,2), sum) }
+  xs = xraw[subset]; ys = yraw[subset]
+  xy = xs+ys
+  
+  ## C matrix returned hsould be c11, c10, c01, c00
+  return(c(lapply(list(n = tapply(inds, inds, function(x) { sum(x > 0) }), names = names(tapply(ys, inds, sum))), unname), 
+         list(C = cbind(c11 = tapply(xy == 2, inds, sum), c10 = tapply(xy == xs, inds, sum),
+                        c01 = tapply(xy == ys, inds, sum), c00 = tapply(xy == 0, inds, sum)))))
+}
+
+
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (reassign_edgegroup_prob)
 #' <What does this function do>
 #' 
