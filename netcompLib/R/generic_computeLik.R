@@ -55,7 +55,7 @@ computeLik.NetworkModelPair = function(NetM, adja, loglik = TRUE, by_node = FALS
     matches_x = matrix(match(adjm, as.numeric(colnames(pt))), nrow = nrow(adjm))
     matches_group = matrix(match(getEdgeProbMat(NetM, "group")[[1]], as.numeric(NetM@addl_param$c_names)), nrow = nrow(adjm))
     
-    llbynode = sapply(1:100, function(i) { sum(log(mapply(function(x,y) {pt[x,y]}, y=matches_x[i,],x=matches_group[i,])[-i]))/2 })
+    llbynode = sapply(seq_len(nrow(adjm)), function(i) { sum(log(mapply(function(x,y) {pt[x,y]}, y=matches_x[i,],x=matches_group[i,])[-i]))/2 })
     
     if (by_node) { res = llbynode } else { res = sum(llbynode, na.rm = na.rm) }
     if (loglik) { return(res) } else { return(exp(res)) }
