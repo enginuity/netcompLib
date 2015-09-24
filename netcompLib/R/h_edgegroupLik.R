@@ -24,6 +24,17 @@ aggstat_dendiff = function(NetM, adja1, adja2) {
   return(lapply(list(n = tapply(inds, inds, function(x) { sum(x > 0) }), x = tapply(xs, inds, sum), y = tapply(ys, inds, sum), names = names(tapply(ys, inds, sum))), unname))
 }
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (aggstat_corr)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' @param adja1 temp
+#' @param adja2 temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 aggstat_corr = function(NetM, adja1, adja2) {
   m = getEdgeProbMat(NetM, 'group')
   subset = lower.tri(m)
@@ -103,6 +114,17 @@ llGrFx_dendiff = function(t,x,y,n) {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (llFx_cnull)
+#' <What does this function do>
+#' 
+#' @param t temp
+#' @param C temp
+#' @param n temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 llFx_cnull = function(t, C, n) {
   # C = cbind(c11, c10, c01, c00); n = vector of total counts; t = c(rho, theta_v)
   rho = t[1]
@@ -112,6 +134,17 @@ llFx_cnull = function(t, C, n) {
   return(sum(C[,1] * (2 * theta + rho) + (C[,2] + C[,3]) * theta + n * lambda))
 }
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (llGrFx_cnull)
+#' <What does this function do>
+#' 
+#' @param t temp
+#' @param C temp
+#' @param n temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 llGrFx_cnull = function(t,C,n) {
   rho = t[1]; theta = t[-1]
   # term1 = exp(2 * theta_k + rho); term2 = 2 * exp(theta_k)
@@ -127,6 +160,17 @@ llGrFx_cnull = function(t,C,n) {
   return(grad)
 }
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (llFx_calt)
+#' <What does this function do>
+#' 
+#' @param t temp
+#' @param C temp
+#' @param n temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 llFx_calt = function(t,C,n) {
   # t  = c(rho, a_v, b_v)
   N = nrow(C)
@@ -138,6 +182,17 @@ llFx_calt = function(t,C,n) {
   return(sum(C[,1]*(a+b+rho) + C[,2]*a + C[,3]*b + n*lambda))
 }
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (llGrFx_calt)
+#' <What does this function do>
+#' 
+#' @param t temp
+#' @param C temp
+#' @param n temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 llGrFx_calt = function(t, C, n) {
   N = nrow(C)
   rho = t[-1]; rt = t[-1]
