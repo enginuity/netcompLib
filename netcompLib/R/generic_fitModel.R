@@ -178,7 +178,7 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
       # p1,p2,r in logit form
       N = nrow(D)
       r = 2 / (1 + exp(-t[1])) - 1; rt = t[-1]
-      p1 = 1/(1 + exp(-t[seq_len(N)])); rt = rt[-seq_len(N)]
+      p1 = 1/(1 + exp(-rt[seq_len(N)])); rt = rt[-seq_len(N)]
       p2 = 1/(1 + exp(-rt))
       c11 = D[,1]; c10 = D[,2]; c01 = D[,3]; c00 = D[,4]
       A = r * sqrt(p1 * p2 * (1 - p1) * (1 - p2))
