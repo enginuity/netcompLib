@@ -224,11 +224,19 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     ## Fit on appropriate model_type
     adj_abound = abind(adja1, adja2, along = 3)
     
-    fitN = fitModel(NetS, adj_abound, mode = model_type)
-    fit1 = fitModel(NetS, adja1); fit2 = fitModel(NetS, adja2)
-    
-    llN = computeLik(fitN, adj_abound, by_node = by_node)
-    llA = computeLik(fit1, adja1, by_node = by_node) + computeLik(fit2, adja2, by_node = by_node)
+    if (model_type %in% c("default", "densitydiff")) {
+      fitN = fitModel(NetS, adj_abound, mode = model_type)
+      fit1 = fitModel(NetS, adja1); fit2 = fitModel(NetS, adja2)
+      
+      llN = computeLik(fitN, adj_abound, by_node = by_node)
+      llA = computeLik(fit1, adja1, by_node = by_node) + computeLik(fit2, adja2, by_node = by_node)
+    } else if (model_type == "correlated") {
+      fitN = fitModel(NetS, adj_abound, mode = "corr-global-null")
+      fitA = fitModel(NetS, adj_abound, mode = "corr-global")
+      
+      llN = computeLik(fitN, adj_abound, by_node = by_node)
+      llA = computeLik(fitA, adj_abound, by_node = by_node)
+    }
     
     chisq = sum(-2 * (llN - llA)) 
     ## TODO: Implement pvals case
@@ -240,23 +248,10 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
       }
     }
     
-    if (model_type == "correlated") {
-      ## TODO: Implement this case properly. 
-      stop("Not implemented properly!")
-      fitN = fitModel(NetS, adj_abound, mode = "corr-global-null")
-      fitA = fitModel(NetS, adj_abound, mode = "corr-global")
-      
-      llN = fitN[[2]]$value
-      llA = fitA[[2]]$value
-    } else {
-      stop(cat("Invalid model_type", model_type))
-    }
-    
-    ## New code -- case non-fast. Want to compare 'fast' results to these... 
-    
-    
     return(-2*(llN - llA))
   }
+  
+  
   
   
   ## OLD CODE for running 'fast' version... 
