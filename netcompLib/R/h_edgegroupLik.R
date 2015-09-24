@@ -79,16 +79,16 @@ reassign_edgegroup_prob = function(NetM, ids, probs) {
 }
 # Likelihood Functions -- based on edge groups ----------------------------
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (h_optim)
-#' <What does this function do>
+
+#' Optimize a log-likelihood - helper
 #' 
-#' @param nparam temp
-#' @param optim_tries temp
-#' @param fn temp
-#' @param gn temp
-#' @param ... temp
+#' @param nparam [int] :: number of parameters needing randomization
+#' @param optim_tries [int] :: number of runs of optimization
+#' @param fn [function] :: log-likelihood function
+#' @param gn [function] :: gradient function
+#' @param ... [] :: other parameters to pass onto \code{\link{optim}}
 #' 
-#' @return temp
+#' @return [list] :: best output of optim
 #' 
 #' @export
 #' 
@@ -110,13 +110,13 @@ h_optim = function(nparam, optim_tries, fn, gn, ...) {
 
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (hCorr_paramToProb)
-#' <What does this function do>
+#' Converts parameters to probabilities in correlation model
 #' 
-#' @param rho temp
-#' @param a temp
-#' @param b temp
+#' @param rho [double] :: correlation parameter
+#' @param a [vector-double] :: network1 parameters
+#' @param b [vector-double] :: network2 parameters
 #' 
-#' @return temp
+#' @return [matrix] :: 
 #' 
 #' @export
 #' 
@@ -130,11 +130,11 @@ hCorr_paramToProb = function(rho, a, b = a) {
 }
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (hCorr_probToParam)
-#' <What does this function do>
+#' Converts probabilities to parameters in correlation model
 #' 
-#' @param pt temp
+#' @param pt [] :: 
 #' 
-#' @return temp
+#' @return [] :: 
 #' 
 #' @export
 #' 
