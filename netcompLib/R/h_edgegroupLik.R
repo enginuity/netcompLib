@@ -97,19 +97,23 @@ aggstat_corr = function(NetM, adja1, adja2) {
 #' @export
 #' 
 reassign_edgegroup_prob = function(NetM, ids, probs) {
+  ids = as.numeric(ids)
+  
   if (inherits(NetM, "NetworkModelSBM")) {
-    ids = as.numeric(ids)
     for(j in seq_along(ids)) {
       NN = NetM@Nnodes
       s = ids[j] %/% NN; r = ids[j] %% NN
       NetM@probmat[r,s] = probs[j]; NetM@probmat[s,r] = probs[j]
     }
     return(NetM)
-  } else {
-    ## TODO: Issue 1 -- need to implement this for other two cases. 
+  } else if (inherits(NetM, "NetworkModelHRG")) {
+    ## TODO: [Issue 1] -- need to implement this
     
-    ## Implement cases for HRG, RND
-    stop("Case not implemented")
+  } else if (inherits(NetM, "NetworkModelRND")) {
+    ## TODO: [Issue 1] -- need to implement this
+    
+  } else {
+    stop("Invalid NetM object")
   } 
 }
 # Likelihood Functions -- based on edge groups ----------------------------
@@ -231,7 +235,7 @@ llGrFx_dendiff = function(t,x,y,n) {
 llFx_cnull = function(t, C, n) {
   # C = cbind(c11, c10, c01, c00); n = vector of total counts; t = c(rho, theta_v)
   N = nrow(C)
-
+  
   rho = t[1]
   a = t[-1]
   
