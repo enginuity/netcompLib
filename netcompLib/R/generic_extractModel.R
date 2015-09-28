@@ -30,7 +30,7 @@ extractModel.NetworkStructList = function(NetS, model_param = set_model_param())
 extractModel.NetworkStructSBM = function(NetS, model_param = set_model_param()) {
   model_param$Nnodes = getNnodes(NetS)
   model_param$type = "block"
-  model_param$block_assign = NetS@assign
+  model_param$block_assign = NetS@groups
   
   res = NetworkModel(model_param)
   
