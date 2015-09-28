@@ -205,6 +205,9 @@ llFx_cnull = function(t, C, n) {
 }
 
 
+
+
+
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (llGrFx_cnull)
 #' <What does this function do>
 #' 
@@ -226,7 +229,7 @@ llGrFx_cnull = function(t,C,n) {
   
   grad = t * 0
   grad[1] = sum(C[,1] - n * tr1/den)
-  grad[seq_along(a)] = 2 * C[,1] + C[,2] + C[,3] - 2 * n * ((tr1+tr2)/den)
+  grad[1+seq_along(a)] = 2 * C[,1] + C[,2] + C[,3] - 2 * n * ((tr1+tr2)/den)
   
   return(grad)
 }
