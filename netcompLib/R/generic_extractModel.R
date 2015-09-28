@@ -19,46 +19,38 @@ extractModel.NetworkStructList = function(NetS, model_param = set_model_param())
 
 
 extractModel.NetworkStructSBM = function(NetS, model_param = set_model_param()) {
-#   
-#   
-#   ## mode -- default
-#   ## if mode = densitydiff, then, assume global density difference parameter
-#   ## TODO: Re-implement this?!?! the modes may not be the best way to deal with this... 
-#   
-#   res = NetworkModel(set_model_param(Nnodes = getNnodes(NetS), type = "block", block_assign = NetS@groups))
-#   ## TODO: Implement this as: [issue 1]
-#   ## res = extractModel(NetS)
-#   
-#   Nobs = dim(adja)[3]
-#   if (length(dim(adja)) == 2) { Nobs = 1}
-#   
-#   NG = max(res@assign)
-#   gr = res@assign
-#   res@probmat = matrix(NA, NG, NG)
-#   if (mode == "default") {
-#     if (Nobs == 1) { adjm = adja[,,1] }
-#     if (Nobs > 1) { adjm = apply(adja, c(1,2), sum) }
-#     for(i in 1:NG) { for(j in 1:NG) {
-#       ii = which(gr == i); ij = which(gr == j)
-#       ci = sum(gr == i); cj = sum(gr == j)
-#       if (i != j) { res@probmat[i,j] = sum(adjm[ii,ij]) / (Nobs * ci * cj) }
-#       if (i == j) { res@probmat[i,j] = sum(adjm[ii,ij]) / (Nobs * ci * (ci - 1)) }
-#     }}
-#     return(res) 
-#   }
-#   
+  model_param$Nnodes = getNnodes(NetS)
+  model_param$type = "block"
+  model_param$block_assign = NetS@assign
+  
+  res = NetworkModel(model_param)
+  
+  return(res)
 }
 
 
 extractModel.NetworkStructRND = function(NetS, model_param = set_model_param()) {
-  stop("Not implemented yet")
-  ## TODO: Fill in code for conversion
+  model_param$Nnodes = getNnodes(NetS)
+  model_param$type = "random"
+  model_param$random_ngroups = length(NetS@ids)
+  
+  res = NetworkModel(model_param)
+  res@ids = NetS@counts
+  res@counts = NetS@counts
+  
+  return(res)
 }
 
 
 extractModel.NetworkStructHRG = function(NetS, model_param = set_model_param()) {
-  stop("Not implemented")
-  ## TODO: Fill in code for conversion
+  model_param$Nnodes = getNnodes(NetS)
+  model_param$type = "tree"
+  
+  res = NetworkModel(model_param)
+  res@parents = NetS@tree_list$parents
+  res@children = NetS@tree_list$children
+  
+  return(res)
 }
 
 
