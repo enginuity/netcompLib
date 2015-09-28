@@ -92,6 +92,8 @@ reassign_edgegroup_prob = function(NetM, ids, probs) {
     }
     return(NetM)
   } else {
+    ## TODO: Issue 1 -- need to implement this for other two cases. 
+    
     ## Implement cases for HRG, RND
     stop("Case not implemented")
   } 
