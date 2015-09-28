@@ -23,43 +23,20 @@ fitModel = function(NetS, adja, mode = "default", optim_tries = 10) {
 
 
 fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10) { 
-  stop("No implmentation for template NetworkStruct")
-}
-
-
-fitModel.NetworkStructList = function(NetS, adja, mode = "default", optim_tries = 10) {
-  return(lapply(NetS@models, function(x) { fitModel(x, adja) } ))
-}
-
-
-fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries = 10) {
   ## mode -- default
   ## if mode = densitydiff, then, assume global density difference parameter
   ## TODO: Re-implement this?!?! the modes may not be the best way to deal with this... 
   
-  res = NetworkModel(set_model_param(Nnodes = getNnodes(NetS), type = "block", block_assign = NetS@groups))
-  ## TODO: Implement this as: [issue 1]
-  ## res = extractModel(NetS)
+  res = extractModel(NetS)
   
   Nobs = dim(adja)[3]
-  if (length(dim(adja)) == 2) { Nobs = 1}
+  if (length(dim(adja)) == 2) { Nobs = 1 }
   
-  NG = max(res@assign)
-  gr = res@assign
-  res@probmat = matrix(NA, NG, NG)
   if (mode == "default") {
-    if (Nobs == 1) { adjm = adja[,,1] }
-    if (Nobs > 1) { adjm = apply(adja, c(1,2), sum) }
-    for(i in 1:NG) { for(j in 1:NG) {
-      ii = which(gr == i); ij = which(gr == j)
-      ci = sum(gr == i); cj = sum(gr == j)
-      if (i != j) { res@probmat[i,j] = sum(adjm[ii,ij]) / (Nobs * ci * cj) }
-      if (i == j) { res@probmat[i,j] = sum(adjm[ii,ij]) / (Nobs * ci * (ci - 1)) }
-    }}
-    return(res) 
-  }
-  
-  if (mode == "densitydiff") {
+    aggstat = aggstat_single(res, adja)
+
+    return(reassign_edgegroup_prob(res, aggstat$names, probs = aggstat$x/aggstat$n))
+  } else if (mode == "densitydiff") {
     ## TODO: Allow fitting when inputting longer adjacency arrays? (or perhaps a pair of them)
     
     aggstat = aggstat_dendiff(res, adja[,,1], adja[,,2]) ## should work for all struct types
@@ -102,25 +79,8 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
 }
 
 
-fitModel.NetworkStructRND = function(NetS, adja, mode = "default", optim_tries = 10) {
-  if (is.null(adja)) {
-    stop("Not implemented")
-    ## TODO: Fill in code for conversion
-  } else {
-    ## TODO: Fill in code for estimating probabilities. 
-    stop("Not implemented for non-null adjacency array")
-  }
-}
-
-
-fitModel.NetworkStructHRG = function(NetS, adja, mode = "default", optim_tries = 10) {
-  if (is.null(adja)) {
-    stop("Not implemented")
-    ## TODO: Fill in code for conversion
-  } else {
-    ## TODO: Fill in code for estimating probabilities. 
-    stop("Not implemented for non-null adjacency array")
-  }
+fitModel.NetworkStructList = function(NetS, adja, mode = "default", optim_tries = 10) {
+  return(lapply(NetS@models, function(x) { fitModel(x, adja) } ))
 }
 
 
