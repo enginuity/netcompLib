@@ -38,6 +38,9 @@ fitModel.NetworkStructSBM = function(NetS, adja, mode = "default", optim_tries =
   ## TODO: Re-implement this?!?! the modes may not be the best way to deal with this... 
   
   res = NetworkModel(set_model_param(Nnodes = getNnodes(NetS), type = "block", block_assign = NetS@groups))
+  ## TODO: Implement this as: [issue 1]
+  ## res = extractModel(NetS)
+  
   Nobs = dim(adja)[3]
   if (length(dim(adja)) == 2) { Nobs = 1}
   
