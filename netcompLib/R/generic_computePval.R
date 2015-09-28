@@ -222,7 +222,7 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
   if (mode != "default") {
     by_node = (mode == "nodal")
     ## Fit on appropriate model_type
-    adj_abound = abind(adja1, adja2, along = 3)
+    adj_abound = abind::abind(adja1, adja2, along = 3)
     
     if (model_type %in% c("default", "densitydiff")) {
       fitN = fitModel(NetS, adj_abound, mode = model_type)

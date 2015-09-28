@@ -44,8 +44,8 @@ fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10
     
     best = h_optim(nparam = length(n) + 1, optim_tries = optim_tries, fn = llFx_dendiff, gn = llGrFx_dendiff, x = x, y = y, n = n)
     
-    m1 = reassign_edgegroup_prob(res, aggstat$names, probs = ilogit(best$par[-1]))
-    m2 = reassign_edgegroup_prob(res, aggstat$names, probs = ilogit(best$par[-1] + best$par[1]))
+    m1 = reassign_edgegroup_prob(res, aggstat$names, probs = faraway::ilogit(best$par[-1]))
+    m2 = reassign_edgegroup_prob(res, aggstat$names, probs = faraway::ilogit(best$par[-1] + best$par[1]))
     return(NetworkModelPair(m1 = m1, m2 = m2, is_null = FALSE, model_type = "densitydiff", addl_param = list(dd_param_add = best$par[1])))
   }
   
