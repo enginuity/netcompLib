@@ -56,17 +56,15 @@ compute_df_adjustment2 = function(n, cell_corr, cc_adj = 2) {
   return(df_adj)
 }
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (is_prob)
-#' <What does this function do>
+
+#' Checks vector for valid probabilities
 #' 
-#' @param x temp
+#' @param x [vector-double] :: Vector to check for probabilities
 #' 
-#' @return temp
+#' @return [vector-logical] :: ith entry is TRUE if x[i] is a valid probability
 #' 
 #' @export
 #' 
 is_prob = function(x) { 
-  ## returns true if x can be a probability
-  ## vectorized
   return(x >= 0 & x <= 1)
 }
