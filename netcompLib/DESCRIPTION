@@ -7,3 +7,4 @@ Author: Lawrence Wang
 Maintainer: Lawrence Wang <lawrencw@andrew.cmu.edu>
 Description: General functions for network comparisons
 License: What license is it under?
+Imports: abind, faraway
