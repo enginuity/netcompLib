@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_edgegroupLik.R
 \name{aggstat_dendiff}
 \alias{aggstat_dendiff}
-\title{Aggregate statistics for density-difference estimation}
+\title{Compute sufficient statistics for density-difference estimation}
 \usage{
 aggstat_dendiff(NetM, adja1, adja2)
 }
@@ -17,6 +17,6 @@ aggstat_dendiff(NetM, adja1, adja2)
 [] :: list of statistics: n, x, y -- n = total edges in edge group, x,y = edge appearance count in each edge group
 }
 \description{
-Aggregate statistics for density-difference estimation
+Compute sufficient statistics for density-difference estimation
 }
 

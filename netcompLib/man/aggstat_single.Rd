@@ -2,19 +2,24 @@
 % Please edit documentation in R/h_edgegroupLik.R
 \name{aggstat_single}
 \alias{aggstat_single}
-\title{<What does this function do>}
+\title{Compute sufficient statstics for a single network}
 \usage{
 aggstat_single(NetM, adja)
 }
 \arguments{
-\item{NetM}{temp}
+\item{NetM}{[NetworkModel] :: Model with respect to which structure would be computed}
 
-\item{adja}{temp}
+\item{adja}{[array-int] :: Adjacency matrix or arrays}
 }
 \value{
-temp
+[list] :: List with following entries
+\itemize{
+ \item n -- [vector-int] :: Edge group sizes
+ \item x -- [vector-int] :: Dyad group edge presence counts
+ \item names -- [vector-char] :: Dyad group IDs
+}
 }
 \description{
-<What does this function do>
+Compute sufficient statstics for a single network
 }
 
