@@ -2,25 +2,25 @@
 % Please edit documentation in R/h_edgegroupLik.R
 \name{h_optim}
 \alias{h_optim}
-\title{<What does this function do>}
+\title{Optimize a log-likelihood - helper}
 \usage{
 h_optim(nparam, optim_tries, fn, gn, ...)
 }
 \arguments{
-\item{nparam}{temp}
+\item{nparam}{[int] :: number of parameters needing randomization}
 
-\item{optim_tries}{temp}
+\item{optim_tries}{[int] :: number of runs of optimization}
 
-\item{fn}{temp}
+\item{fn}{[function] :: log-likelihood function}
 
-\item{gn}{temp}
+\item{gn}{[function] :: gradient function}
 
-\item{...}{temp}
+\item{...}{[] :: other parameters to pass onto \code{\link{optim}}}
 }
 \value{
-temp
+[list] :: best output of optim
 }
 \description{
-<What does this function do>
+Optimize a log-likelihood - helper
 }
 

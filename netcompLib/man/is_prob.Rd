@@ -2,17 +2,17 @@
 % Please edit documentation in R/h_compute_lrt.R
 \name{is_prob}
 \alias{is_prob}
-\title{<What does this function do>}
+\title{Checks vector for valid probabilities}
 \usage{
 is_prob(x)
 }
 \arguments{
-\item{x}{temp}
+\item{x}{[vector-double] :: Vector to check for probabilities}
 }
 \value{
-temp
+[vector-logical] :: ith entry is TRUE if x[i] is a valid probability
 }
 \description{
-<What does this function do>
+Checks vector for valid probabilities
 }
 

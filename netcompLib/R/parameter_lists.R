@@ -2,6 +2,7 @@
 
 ## TODO: [Examine Default Parameters]
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (set_model_param)
 #' Set network model parameters
 #' 
 #' This function sets up the (list of) model parameters to be passed into model generation functions (eg. sets the max number of blocks in a SBM). There are default parameters that are used if this function is called with no arguments. 
@@ -15,6 +16,7 @@
 #'  \item latent -- Latent Space Model. Note that this type of model CANNOT generate random edge partitions since edge groups will be size 1 each (almost surely)
 #'  \item random -- A model where each edge belongs to one of a number of classes, and the edge probability depends solely on this assignment. Should really only be used to generate random edge partitions. 
 #' }
+#' @param pairtype temp
 #' @param pmin [double] :: Minimal possible edge probability
 #' @param pmax [double] :: Maximal possible edge probability
 #' @param block_nclass [int] :: Number of blocks in block model
@@ -32,6 +34,8 @@
 #' @param latent_nclass [int] :: Number of clusters in latent space model
 #' @param latent_sdcenter [double] :: SD on centers of latent space model
 #' @param latent_isgennorm [logical] :: If TRUE: Uses normal distribution for latent locations. Otherwise, uses uniform distribution. 
+#' @param dd_param_add temp
+#' @param c_param_corr temp
 #' 
 #' @return [list] :: A list of parameters
 #' 

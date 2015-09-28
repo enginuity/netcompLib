@@ -4,11 +4,12 @@
 \alias{set_model_param}
 \title{Set network model parameters}
 \usage{
-set_model_param(Nnodes = 30, type = "block", pmin = 0.03, pmax = 0.97,
-  block_nclass = 3, block_avgdensity = NULL, block_assign = NULL,
-  block_probs = NULL, random_ngroups = 10, tree_type = "random",
-  latent_dim = 3, latent_nclass = 3, latent_sdcenter = 5,
-  latent_isgennorm = TRUE)
+set_model_param(Nnodes = 30, type = "block", pairtype = NULL,
+  pmin = 0.03, pmax = 0.97, block_nclass = 3, block_avgdensity = NULL,
+  block_assign = NULL, block_probs = NULL, random_ngroups = 10,
+  tree_type = "random", latent_dim = 3, latent_nclass = 3,
+  latent_sdcenter = 5, latent_isgennorm = TRUE, dd_param_add = 0.2,
+  c_param_corr = 0.2)
 }
 \arguments{
 \item{Nnodes}{[int] :: Number of nodes in the network model}
@@ -21,6 +22,8 @@ set_model_param(Nnodes = 30, type = "block", pmin = 0.03, pmax = 0.97,
  \item latent -- Latent Space Model. Note that this type of model CANNOT generate random edge partitions since edge groups will be size 1 each (almost surely)
  \item random -- A model where each edge belongs to one of a number of classes, and the edge probability depends solely on this assignment. Should really only be used to generate random edge partitions.
 }}
+
+\item{pairtype}{temp}
 
 \item{pmin}{[double] :: Minimal possible edge probability}
 
@@ -50,6 +53,10 @@ set_model_param(Nnodes = 30, type = "block", pmin = 0.03, pmax = 0.97,
 \item{latent_sdcenter}{[double] :: SD on centers of latent space model}
 
 \item{latent_isgennorm}{[logical] :: If TRUE: Uses normal distribution for latent locations. Otherwise, uses uniform distribution.}
+
+\item{dd_param_add}{temp}
+
+\item{c_param_corr}{temp}
 }
 \value{
 [list] :: A list of parameters

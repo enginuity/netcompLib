@@ -2,17 +2,17 @@
 % Please edit documentation in R/h_edgegroupLik.R
 \name{hCorr_probToParam}
 \alias{hCorr_probToParam}
-\title{<What does this function do>}
+\title{Converts probabilities to parameters in correlation model}
 \usage{
 hCorr_probToParam(pt)
 }
 \arguments{
-\item{pt}{temp}
+\item{pt}{[] ::}
 }
 \value{
-temp
+[] ::
 }
 \description{
-<What does this function do>
+Converts probabilities to parameters in correlation model
 }
 

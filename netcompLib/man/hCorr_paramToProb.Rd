@@ -2,21 +2,21 @@
 % Please edit documentation in R/h_edgegroupLik.R
 \name{hCorr_paramToProb}
 \alias{hCorr_paramToProb}
-\title{<What does this function do>}
+\title{Converts parameters to probabilities in correlation model}
 \usage{
 hCorr_paramToProb(rho, a, b = a)
 }
 \arguments{
-\item{rho}{temp}
+\item{rho}{[double] :: correlation parameter}
 
-\item{a}{temp}
+\item{a}{[vector-double] :: network1 parameters}
 
-\item{b}{temp}
+\item{b}{[vector-double] :: network2 parameters}
 }
 \value{
-temp
+[matrix] ::
 }
 \description{
-<What does this function do>
+Converts parameters to probabilities in correlation model
 }
 
