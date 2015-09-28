@@ -87,6 +87,4 @@ fitModel.NetworkStructList = function(NetS, adja, mode = "default", optim_tries 
 # setMethod ---------------------------------------------------------------
 setMethod("fitModel", signature(NetS = "NetworkStruct"), fitModel.NetworkStruct)
 setMethod("fitModel", signature(NetS = "NetworkStructList"), fitModel.NetworkStructList)
-setMethod("fitModel", signature(NetS = "NetworkStructSBM"), fitModel.NetworkStructSBM)
-setMethod("fitModel", signature(NetS = "NetworkStructRND"), fitModel.NetworkStructRND)
-setMethod("fitModel", signature(NetS = "NetworkStructHRG"), fitModel.NetworkStructHRG)
+
