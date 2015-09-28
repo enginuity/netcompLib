@@ -3,6 +3,25 @@
 
 # Functions to aggregate over edge groups ---------------------------------
 
+aggstat_single = function(NetM, adja) {
+  if (length(dim(adja)) == 2) { 
+    Nobs = 1
+    adjm = adja
+  } else {
+    Nobs = dim(adja)[3]
+    adjm = apply(adja, c(1,2), sum)
+  }
+  
+  m = getEdgeProbMat(NetM, 'group')
+  subset = lower.tri(m)
+  inds = m[subset]
+  
+  xs = adjm[subset]
+  
+  return(lapply(list(n = tapply(inds, inds, function(x) { sum(x > 0) }), x = tapply(xs, inds, sum)/Nobs, names = names(tapply(xs, inds, sum))), unname))
+}
+
+
 #' Aggregate statistics for density-difference estimation
 #' 
 #' @param NetM [] :: model
