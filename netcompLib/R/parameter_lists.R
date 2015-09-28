@@ -37,9 +37,13 @@
 #' 
 #' @export
 #' 
-set_model_param = function(Nnodes = 30, type = 'block', pmin = 0.03, pmax = 0.97, block_nclass = 3, block_avgdensity = NULL, block_assign = NULL, block_probs = NULL, random_ngroups = 10, tree_type = "random", latent_dim = 3, latent_nclass = 3, latent_sdcenter = 5, latent_isgennorm = TRUE) {
+set_model_param = function(Nnodes = 30, type = 'block', pairtype = NULL, pmin = 0.03, pmax = 0.97, block_nclass = 3, block_avgdensity = NULL, block_assign = NULL, block_probs = NULL, random_ngroups = 10, tree_type = "random", latent_dim = 3, latent_nclass = 3, latent_sdcenter = 5, latent_isgennorm = TRUE, dd_param_add =0.2, c_param_corr = 0.2) {
   
-  return(list(Nnodes = Nnodes, type = type, pmin = pmin, pmax = pmax, block_nclass = block_nclass, block_avgdensity = block_avgdensity, block_assign = block_assign, block_probs = block_probs, random_ngroups = random_ngroups, tree_type = tree_type, latent_dim = latent_dim, latent_nclass = latent_nclass, latent_sdcenter = latent_sdcenter, latent_isgennorm = latent_isgennorm))
+  # pairtype -- this is model_type. IF NULL, this is NOT a model pair. 
+  ## non-null choices: densitydiff, correlated-null, correlated
+  # dd_param_add, c_param_corr = model params. c_param_a, b should be obtained from the models themselves..
+  
+  return(list(Nnodes = Nnodes, type = type, pairtype = pairtype, pmin = pmin, pmax = pmax, block_nclass = block_nclass, block_avgdensity = block_avgdensity, block_assign = block_assign, block_probs = block_probs, random_ngroups = random_ngroups, tree_type = tree_type, latent_dim = latent_dim, latent_nclass = latent_nclass, latent_sdcenter = latent_sdcenter, latent_isgennorm = latent_isgennorm, dd_param_add = dd_param_add, c_param_corr = c_param_corr))
 }
 
 
