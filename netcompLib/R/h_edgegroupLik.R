@@ -3,13 +3,17 @@
 
 # Functions to aggregate over edge groups ---------------------------------
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (aggstat_single)
-#' <What does this function do>
+#' Compute sufficient statstics for a single network
 #' 
-#' @param NetM temp
-#' @param adja temp
+#' @param NetM [NetworkModel] :: Model with respect to which structure would be computed
+#' @param adja [array-int] :: Adjacency matrix or arrays
 #' 
-#' @return temp
+#' @return [list] :: List with following entries
+#' \itemize{
+#'  \item n -- [vector-int] :: Edge group sizes
+#'  \item x -- [vector-int] :: Dyad group edge presence counts
+#'  \item names -- [vector-char] :: Dyad group IDs
+#' }
 #' 
 #' @export
 #' 
@@ -32,7 +36,7 @@ aggstat_single = function(NetM, adja) {
 }
 
 
-#' Aggregate statistics for density-difference estimation
+#' Compute sufficient statistics for density-difference estimation
 #' 
 #' @param NetM [] :: model
 #' @param adja1 [] :: adjm 1
