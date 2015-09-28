@@ -3,6 +3,16 @@
 
 # Functions to aggregate over edge groups ---------------------------------
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (aggstat_single)
+#' <What does this function do>
+#' 
+#' @param NetM temp
+#' @param adja temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 aggstat_single = function(NetM, adja) {
   if (length(dim(adja)) == 2) { 
     Nobs = 1

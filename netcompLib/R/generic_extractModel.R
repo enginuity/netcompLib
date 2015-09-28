@@ -3,6 +3,15 @@
 setGeneric("extractModel", function(NetS, model_param) standardGeneric("extractModel"))
 
 
+#' Generates a random network model from a fixed structure
+#' 
+#' @param NetS temp
+#' @param model_param temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 extractModel = function(NetS, model_param = set_model_param()) {
   stop("No implementation for template")
 }
