@@ -118,6 +118,10 @@ FIELD -- model\_type : character -- Allowed values:
 FIELD -- addl\_param : named list -- Entries: 
 \begin{itemize}
 \item dd\_param\_add : numeric = added parameter for log-odds addition
+\item c\_param\_corr : numeric = parameter for correlation additive factor
+\item c\_param\_a : numeric = prob parameter in net1
+\item c\_param\_b : numeric = prob parameter in net2
+\item c\_param\_names : char = edge group Ids
 \end{itemize}
 \end{itemize}
 \end{itemize}
@@ -161,30 +165,60 @@ FIELD -- models : list\\
 
 
 \section{TODOS to add as issues:}
+
+\subsection*{Issue 1}
+\begin{itemize}
+\item Create function extractModel, which basically is fitModel except it assigns random probabilities; it only copies the input edge partition structure
+\item fitModel then can call this, and thus can have general form (wouldn't need a different one for each model type)
+\end{itemize}
+
+\subsection*{Issue 4}
+Write generic print / summary functions
+
+\subsection*{Issue 5}
+Allow partially missing edges in computeLik
+
+\subsection*{Issue 6}
+Update documentation
+
+\subsection*{Issue 7}
+Plan a C++ version of the code for speed purposes
+
+\subsection*{Issue 8}
+Write a general use function, that's easy to use
+
+\subsection*{Issue 9}
 \begin{itemize}
 \item Add dependencies into package -- 'abind' for function 'abind', and 'faraway' for functions 'logit', 'ilogit'
 \item Check if 'logit' function in package 'gtools' is better
-\item Document computeDfAdj properly -- seems to work, check if it works
-\item Work on simplifying simulation code: 
+\end{itemize}
+
+\subsection*{Issue 10}
+Work on simplifying simulation code: 
 \begin{itemize}
 \item put model type inside of setmodelparam
 \item generalizeble to list of genmodel and list of fit parameters -- do expand.grid of combinations
 \item include pvalue adjustment as a setsimparam?
 \end{itemize}
-\item in SBM.assign, reset this to 1:num-unique, and resize probmat appropriately
-\item reassign-edgegroup-prob -- document this, and check: seems to work. 
-\item TODO - allow by-group to emulate old faster code, or else need to adjust the simulation functions
-\item Write tests -- see if new code is reasonable
-\item Check if the new compute\_pval works properly
-\item Fix/document verbosity. 
+
+\subsection*{Issue 11}
+in SBM.assign, reset this to 1:num-unique, and resize probmat appropriately
+
+\subsection*{Issue 12}
+reassign-edgegroup-prob -- document this, and check: seems to work. 
+
+\subsection*{Issue 13}
+Fix/document verbosity. 
 \begin{itemize}
 \item param 'verbose' = T/F - simple setting
 \item param 'vbset' = (a,b,c) - a = number of functions (and calls) verbose; b = number of functions high-verbose; c = number of filler characters -- (eg +2 per sub function call)
 \end{itemize}
-\item Verbose logfile? -- so can output to file instead of terminal
-\item Runtime estimation -- run 1\% of the process, and then estimate total runtime
-\item Fix recycle\_fitstructs -- true means use max(n\_models). false means use sum(n\_models) -- generate list of indices, and store it in paramlist. when more models were generated; throw away the extras. 
-\item Delete long processes inside computepval eventually -- for now, the settings are: 
+
+\subsection*{Issue 14}
+Fix recycle\_fitstructs -- true means use max(n\_models). false means use sum(n\_models) -- generate list of indices, and store it in paramlist. when more models were generated; throw away the extras. 
+
+\subsection*{Issue 15}
+Delete long processes inside computepval eventually -- for now, the settings are: 
 \begin{itemize}
 \item default - gives pval table using old code
 \item chisq - only gives chisquare statistic
@@ -192,6 +226,17 @@ FIELD -- models : list\\
 \item nodal - gives list: chisq - chisquare stat, pvals - pval table, nodecontrib - nodal contributions
 \end{itemize}
 available model types: default, densitydiff, correlated, fast
+
+%% \subsection*{Issue }
+
+\subsection{Unassigned Issues}
+\begin{itemize}
+\item Document computeDfAdj properly -- seems to work, check if it works
+\item TODO - allow by-group to emulate old faster code, or else need to adjust the simulation functions
+\item Write tests -- see if new code is reasonable
+\item Check if the new compute\_pval works properly
+\item Verbose logfile? -- so can output to file instead of terminal
+\item Runtime estimation -- run 1\% of the process, and then estimate total runtime
 \end{itemize}
 
 
