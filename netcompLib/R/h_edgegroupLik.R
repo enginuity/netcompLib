@@ -196,13 +196,14 @@ llGrFx_dendiff = function(t,x,y,n) {
 llFx_cnull = function(t, C, n) {
   # C = cbind(c11, c10, c01, c00); n = vector of total counts; t = c(rho, theta_v)
   N = nrow(C)
-  
+
   rho = t[1]
   a = t[-1]
   
-  lambda = -log(exp(a+a+rho) + 2 * exp(a) + 1)
-  return(sum(C[,1]*(a+a+rho) + (C[,2]+C[,3])*a + n*lambda))
+  lambda = - log( exp(a+a+rho) + exp(a) + exp(a) + 1)
+  return(sum(C[,1]*(a+a+rho) + C[,2]*a + C[,3]*a + n*lambda))
 }
+
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (llGrFx_cnull)
 #' <What does this function do>
@@ -218,14 +219,14 @@ llFx_cnull = function(t, C, n) {
 llGrFx_cnull = function(t,C,n) {
   rho = t[1]; a = t[-1]
   # term1 = exp(2 * theta_k + rho); term2 = 2 * exp(theta_k)
-  tr1 = exp(2 * a + rho)
+  tr1 = exp(a + a + rho)
   tr2 = exp(a)
-  den = tr1 + 2 * tr2 + 1
+  den = tr1 + tr2 + tr2 + 1
   lambda = -log(den)
   
   grad = t * 0
   grad[1] = sum(C[,1] - n * tr1/den)
-  grad[seq_along(n)] = 2 * C[,1] + C[,2] + C[,3] - 2 * n * ((tr1+tr2)/den)
+  grad[seq_along(a)] = 2 * C[,1] + C[,2] + C[,3] - 2 * n * ((tr1+tr2)/den)
   
   return(grad)
 }
