@@ -24,7 +24,7 @@ computePval(NetS, adja1, adja2, Nobs = 1, pl, mode = "default",
 
 \item{verbose}{[logical] :: Prints progress if TRUE}
 
-\item{vbset}{[vector-int] :: See \link{manOutputSettings}
+\item{vbset}{[vector-int] :: See \link{OutputSettings}
 Regular-verbose -- outputs general information for processing the NetworkStructList case
 High-verbose -- outputs dots for each struct processed}
 }
