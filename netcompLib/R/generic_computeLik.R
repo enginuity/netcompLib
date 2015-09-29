@@ -31,13 +31,11 @@ computeLik.NetworkModel = function(NetM, adja, loglik = TRUE, by_node = FALSE, n
   }
   
   eps = getEdgeProbMat(NetM)
-  resm = adjm * log(eps) + (Nobs - adjm) * log(1 - eps)
-  diag(resm) = 0
-  tempres = apply(resm, 1, sum, na.rm = na.rm)/2
+  ll_dyad = adjm * log(eps) + (Nobs - adjm) * log(1 - eps)
+  diag(ll_dyad) = 0
+  ll_node = apply(ll_dyad, 1, sum, na.rm = na.rm)/2
   
-  if (by_node) { res = tempres } else { res = sum(tempres, na.rm = na.rm) }
-  # old cleaner code... 
-  # res = sum(resm[upper.tri(x = resm, diag = FALSE)], na.rm = na.rm)
+  if (by_node) { res = ll_node } else { res = sum(ll_node, na.rm = na.rm) }
     
   if (loglik) {
     return(res) 
@@ -55,9 +53,9 @@ computeLik.NetworkModelPair = function(NetM, adja, loglik = TRUE, by_node = FALS
     matches_x = matrix(match(adjm, as.numeric(colnames(pt))), nrow = nrow(adjm))
     matches_group = matrix(match(getEdgeProbMat(NetM, "group")[[1]], as.numeric(NetM@addl_param$c_names)), nrow = nrow(adjm))
     
-    llbynode = sapply(seq_len(nrow(adjm)), function(i) { sum(log(mapply(function(x,y) {pt[x,y]}, y=matches_x[i,],x=matches_group[i,])[-i]))/2 })
+    ll_node = sapply(seq_len(nrow(adjm)), function(i) { sum(log(mapply(function(x,y) {pt[x,y]}, y=matches_x[i,],x=matches_group[i,])[-i]))/2 })
     
-    if (by_node) { res = llbynode } else { res = sum(llbynode, na.rm = na.rm) }
+    if (by_node) { res = ll_node } else { res = sum(ll_node, na.rm = na.rm) }
     if (loglik) { return(res) } else { return(exp(res)) }
   }
 
