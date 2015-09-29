@@ -1,0 +1,4 @@
+
+OutputSettings = function() {
+  ## FAKE FUNCTION  
+}
