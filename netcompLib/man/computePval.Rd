@@ -22,11 +22,11 @@ computePval(NetS, adja1, adja2, Nobs = 1, pl, mode = "default",
 
 \item{model_type}{temp}
 
-\item{verbose}{[logical] :: Log results?}
+\item{verbose}{[logical] :: Prints progress if TRUE}
 
-\item{vbset}{[vector-int] :: --- FIX --- call a general verbosity documentation
-Verbose :: output general info in processing NSList case
-Verbose high :: output dots in the case of processing NSList}
+\item{vbset}{[vector-int] :: See \link{manOutputSettings}
+Regular-verbose -- outputs general information for processing the NetworkStructList case
+High-verbose -- outputs dots for each struct processed}
 }
 \value{
 [] :: A matrix (or a list of matrices) of p-values (depending on the testing parameters)

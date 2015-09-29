@@ -1,4 +1,4 @@
-\name{manOutputSettings}
+\name{OutputSettings}
 
 \title{Output Settings}
 

@@ -15,7 +15,7 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, model_typ
 #' @param mode [char] :: How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node; 'chisq' gives the chi-square test statistic, other modes: 'fast', 'fast-densitydiff', 'fast-corr'
 #' @param model_type temp
 #' @param verbose [logical] :: Prints progress if TRUE
-#' @param vbset [vector-int] :: See \link{manOutputSettings}
+#' @param vbset [vector-int] :: See \link{manual_OutputSettings}
 #' Regular-verbose -- outputs general information for processing the NetworkStructList case
 #' High-verbose -- outputs dots for each struct processed
 #' 
