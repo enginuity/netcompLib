@@ -105,16 +105,18 @@ reassign_edgegroup_prob = function(NetM, ids, probs) {
       s = ids[j] %/% NN; r = ids[j] %% NN
       NetM@probmat[r,s] = probs[j]; NetM@probmat[s,r] = probs[j]
     }
-    return(NetM)
+
   } else if (inherits(NetM, "NetworkModelHRG")) {
-    ## TODO: [Issue 1] -- need to implement this
+    NetM@prob = probs
     
   } else if (inherits(NetM, "NetworkModelRND")) {
-    ## TODO: [Issue 1] -- need to implement this
+    NetM@prob = probs
     
   } else {
     stop("Invalid NetM object")
   } 
+  
+  return(NetM)
 }
 # Likelihood Functions -- based on edge groups ----------------------------
 
