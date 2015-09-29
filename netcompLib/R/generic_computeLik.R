@@ -2,15 +2,15 @@
 
 setGeneric("computeLik", function(NetM, adja, by_node, na.rm) standardGeneric("computeLik"))
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeLik)
-#' Compute Likelihood of Network given a model
+
+#' Compute Log-likelihood of a network on a specific model
 #' 
-#' @param NetM Network Model 
-#' @param adja Adjacency matrix/array
-#' @param by_node temp
-#' @param na.rm if true -- ignores NAs in the adjacency matrix
+#' @param NetM [\code{\link{NetworkModel}}] :: Model to compute log-likelihood on
+#' @param adja [matrix/array] :: Adjacency matrix or array
+#' @param by_node [logical] :: If TRUE, returns by_node breakdown of log-likelihood
+#' @param na.rm [logical] :: If TRUE, ignores NAs in the adjacency matrix
 #' 
-#' @return likelihood (or log-likelihood)
+#' @return [list] :: likelihood (or log-likelihood)
 #' 
 #' @export
 #' 
