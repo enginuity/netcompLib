@@ -1,4 +1,5 @@
 \name{OutputSettings}
+\alias{OutputSettings}
 
 \title{Output Settings}
 
