@@ -5,7 +5,7 @@ load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcor
 
 
 ##
-NetM = NetworkModel(set_model_param(Nnodes = 10))
+NetM = NetworkModel(set_model_param(Nnodes = 6))
 adja1 = sampleNetwork(NetM)
 adja2 = sampleNetwork(NetM)
 
@@ -16,3 +16,6 @@ NetM@probmat
 
 aggstat_dendiff(NetM, adja1, adja2)
 aggstat_corr(NetM, adja1, adja2)
+
+aggstat_single(NetworkModelHRG(set_model_param(Nnodes = 6)), adja1)
+aggstat_single(NetworkModelRND(set_model_param(Nnodes = 6)), adja1)
