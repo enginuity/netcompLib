@@ -1,13 +1,12 @@
 ##@S Generic function that performs the hypothesis test (computes the p-value for the likelihood ratio test)
 
-setGeneric("computeLik", function(NetM, adja, loglik, by_node, na.rm) standardGeneric("computeLik"))
+setGeneric("computeLik", function(NetM, adja, by_node, na.rm) standardGeneric("computeLik"))
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeLik)
 #' Compute Likelihood of Network given a model
 #' 
 #' @param NetM Network Model 
 #' @param adja Adjacency matrix/array
-#' @param loglik if true -- give log-likelihood instead of likelihood
 #' @param by_node temp
 #' @param na.rm if true -- ignores NAs in the adjacency matrix
 #' 
@@ -15,13 +14,13 @@ setGeneric("computeLik", function(NetM, adja, loglik, by_node, na.rm) standardGe
 #' 
 #' @export
 #' 
-computeLik = function(NetM, adja, loglik = TRUE, by_node = FALSE, na.rm = TRUE) {
+computeLik = function(NetM, adja, by_node = FALSE, na.rm = TRUE) {
  ## by node -- true -> return a vector of log likelihoods. (summed up by node)
   stop("Placeholder for generic function -- this call is meaningless for a generic NetworkModel")
 }
 
 
-computeLik.NetworkModel = function(NetM, adja, loglik = TRUE, by_node = FALSE, na.rm = TRUE) {
+computeLik.NetworkModel = function(NetM, adja, by_node = FALSE, na.rm = TRUE) {
   if (length(dim(adja)) == 2) {
     adjm = adja; Nobs = 1
   } else if (length(dim(adja)) == 3) {
@@ -37,14 +36,10 @@ computeLik.NetworkModel = function(NetM, adja, loglik = TRUE, by_node = FALSE, n
   
   if (by_node) { res = ll_node } else { res = sum(ll_node, na.rm = na.rm) }
     
-  if (loglik) {
-    return(res) 
-  } else {
-    return(exp(res))
-  }
+  return(res) 
 }
 
-computeLik.NetworkModelPair = function(NetM, adja, loglik = TRUE, by_node = FALSE, na.rm = TRUE) {
+computeLik.NetworkModelPair = function(NetM, adja, by_node = FALSE, na.rm = TRUE) {
   ## TODO: apply for general cases -- right now, ASSUMES adja is dimension 2. 
   
   if (NetM@model_type == "correlated") {
@@ -56,7 +51,7 @@ computeLik.NetworkModelPair = function(NetM, adja, loglik = TRUE, by_node = FALS
     ll_node = sapply(seq_len(nrow(adjm)), function(i) { sum(log(mapply(function(x,y) {pt[x,y]}, y=matches_x[i,],x=matches_group[i,])[-i]))/2 })
     
     if (by_node) { res = ll_node } else { res = sum(ll_node, na.rm = na.rm) }
-    if (loglik) { return(res) } else { return(exp(res)) }
+    return(res)
   }
 
   return(computeLik(NetM@m1, adja[,,1], loglik, by_node, na.rm) + 
