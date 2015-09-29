@@ -2,9 +2,7 @@
 
 setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, model_type, verbose, vbset) standardGeneric("computePval"))
 
-## TODO: [Documentation] -- add page for verbosity settings
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computePval)
 #' Computes p-value for likelihood ratio test
 #' 
 #' This function takes the input network structure (or a list of network structures), and computes the likelihood ratio test for the two input adjacency matrices (or arrays). 
@@ -16,10 +14,10 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, model_typ
 #' @param pl [list] :: Simulation/Testing parameters, set by set_sim_param
 #' @param mode [char] :: How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node; 'chisq' gives the chi-square test statistic, other modes: 'fast', 'fast-densitydiff', 'fast-corr'
 #' @param model_type temp
-#' @param verbose [logical] :: Log results?
-#' @param vbset [vector-int] :: --- FIX --- call a general verbosity documentation
-#' Verbose :: output general info in processing NSList case
-#' Verbose high :: output dots in the case of processing NSList
+#' @param verbose [logical] :: Prints progress if TRUE
+#' @param vbset [vector-int] :: See \link{manOutputSettings}
+#' Regular-verbose -- outputs general information for processing the NetworkStructList case
+#' High-verbose -- outputs dots for each struct processed
 #' 
 #' @return [] :: A matrix (or a list of matrices) of p-values (depending on the testing parameters)
 #' 
