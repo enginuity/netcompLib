@@ -215,8 +215,9 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
-  ## TODO: Change code to work when Nobs != 1... 
   
+  ## New implmenetation -- this can be used for all NetworkStruct (as long as its not a list)
+  ## TODO: Change code to work when Nobs != 1... 
   if (mode != "default") {
     by_node = (mode == "nodal")
     ## Fit on appropriate model_type
@@ -227,13 +228,17 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
       fit1 = fitModel(NetS, adja1); fit2 = fitModel(NetS, adja2)
       
       llN = computeLik(fitN, adj_abound, by_node = by_node)
+#|----##Function output and input changed -- output is now a list --Tue Sep 29 18:22:08 2015--
       llA = computeLik(fit1, adja1, by_node = by_node) + computeLik(fit2, adja2, by_node = by_node)
+#|----##Function output and input changed -- output is now a list --Tue Sep 29 18:22:08 2015--
     } else if (model_type == "correlated") {
       fitN = fitModel(NetS, adj_abound, mode = "corr-global-null")
       fitA = fitModel(NetS, adj_abound, mode = "corr-global")
       
       llN = computeLik(fitN, adj_abound, by_node = by_node)
+#|----##Function output and input changed -- output is now a list --Tue Sep 29 18:22:08 2015--
       llA = computeLik(fitA, adj_abound, by_node = by_node)
+#|----##Function output and input changed -- output is now a list --Tue Sep 29 18:22:08 2015--
     }
     
     chisq = sum(-2 * (llN - llA)) 
@@ -248,6 +253,8 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
     
     return(-2*(llN - llA))
   }
+  
+  
   
   
   
