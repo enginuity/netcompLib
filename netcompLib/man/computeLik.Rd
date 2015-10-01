@@ -2,25 +2,31 @@
 % Please edit documentation in R/generic_computeLik.R
 \name{computeLik}
 \alias{computeLik}
-\title{Compute Likelihood of Network given a model}
+\title{Compute Log-likelihood of a network on a specific model}
 \usage{
-computeLik(NetM, adja, loglik = TRUE, by_node = FALSE, na.rm = TRUE)
+computeLik(NetM, adja, by_node = FALSE, by_group = FALSE, na.rm = TRUE)
 }
 \arguments{
-\item{NetM}{Network Model}
+\item{NetM}{[\code{\link{NetworkModel}}] :: Model to compute log-likelihood on}
 
-\item{adja}{Adjacency matrix/array}
+\item{adja}{[matrix/array] :: Adjacency matrix or array}
 
-\item{loglik}{if true -- give log-likelihood instead of likelihood}
+\item{by_node}{[logical] :: If TRUE, returns by_node breakdown of log-likelihood}
 
-\item{by_node}{temp}
+\item{by_group}{temp}
 
-\item{na.rm}{if true -- ignores NAs in the adjacency matrix}
+\item{na.rm}{[logical] :: If TRUE, ignores NAs in the adjacency matrix}
 }
 \value{
-likelihood (or log-likelihood)
+[list] :: Log-likelihood in various formats, stored in a list as follows:
+\itemize{
+\item sum -- [double] :: Entire log-likelihood
+\item bynode -- [vector-double] :: Log-likelihood summed for each node
+\item group_ll -- [vector-double] :: Log-likelihood summed in each dyad group
+\item group_size -- [vector-int] :: Dyad group sizes
+}
 }
 \description{
-Compute Likelihood of Network given a model
+Compute Log-likelihood of a network on a specific model
 }
 

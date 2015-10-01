@@ -227,18 +227,15 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
       fitN = fitModel(NetS, adj_abound, mode = model_type)
       fit1 = fitModel(NetS, adja1); fit2 = fitModel(NetS, adja2)
       
-      llN = computeLik(fitN, adj_abound, by_node = by_node)
-#|----##Function output and input changed -- output is now a list --Tue Sep 29 18:22:08 2015--
-      llA = computeLik(fit1, adja1, by_node = by_node) + computeLik(fit2, adja2, by_node = by_node)
-#|----##Function output and input changed -- output is now a list --Tue Sep 29 18:22:08 2015--
+      llN = computeLik(fitN, adj_abound, by_node = by_node)$by_node
+      llA = computeLik(fit1, adja1, by_node = by_node)$by_node + 
+  computeLik(fit2, adja2, by_node = by_node)$by_node
     } else if (model_type == "correlated") {
       fitN = fitModel(NetS, adj_abound, mode = "corr-global-null")
       fitA = fitModel(NetS, adj_abound, mode = "corr-global")
       
-      llN = computeLik(fitN, adj_abound, by_node = by_node)
-#|----##Function output and input changed -- output is now a list --Tue Sep 29 18:22:08 2015--
-      llA = computeLik(fitA, adj_abound, by_node = by_node)
-#|----##Function output and input changed -- output is now a list --Tue Sep 29 18:22:08 2015--
+      llN = computeLik(fitN, adj_abound, by_node = by_node)$by_node
+      llA = computeLik(fitA, adj_abound, by_node = by_node)$by_node
     }
     
     chisq = sum(-2 * (llN - llA)) 
