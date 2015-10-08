@@ -5,14 +5,15 @@
 
 #' Hides a random set of edges
 #' 
-#' @param adjm Input adjacency matrix
-#' @param frac Fraction of edges to hide
+#' @param adjm [matrix-int] :: Input adjacency matrix
+#' @param frac [double] :: Fraction of edges to hide
 #' 
-#' @return Adjacency matrix with hidden edges
+#' @return [matrix-int] :: Adjacency matrix with hidden edges
 #' 
 #' @export
 #' 
 hide_edges = function(adjm, frac = 0.1) {
+  ## TODO: Make this work for arrays
   ## copied from netcompSBM
   tm = matrix(1:(nrow(adjm)^2), nrow = nrow(adjm))
   vals = tm[upper.tri(tm)]
@@ -24,9 +25,9 @@ hide_edges = function(adjm, frac = 0.1) {
 
 #' Symmetrizes matrix by using upper-triangular portion
 #' 
-#' @param mat Input matrix
+#' @param mat [matrix] :: Input matrix
 #' 
-#' @return Filled matrix (with lower triangular portion replaced by the upper triangular portion). 
+#' @return [matrix] :: Filled matrix (with lower triangular portion replaced by the upper triangular portion). 
 #' 
 #' @export
 #' 
