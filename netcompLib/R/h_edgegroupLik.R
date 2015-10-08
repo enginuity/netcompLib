@@ -22,6 +22,26 @@ hide_edges = function(adjm, frac = 0.1) {
 }
 
 
+#' Symmetrizes matrix by using upper-triangular portion
+#' 
+#' @param mat Input matrix
+#' 
+#' @return Filled matrix (with lower triangular portion replaced by the upper triangular portion). 
+#' 
+#' @export
+#' 
+symmetrize_mat = function(mat) {
+  ## copied from netcompSBM
+  diag_mat = diag(mat)
+  mat[lower.tri(mat, diag = TRUE)] = 0
+  mat = mat + t(mat)
+  diag(mat) = diag_mat
+  return(mat)
+}
+
+
+
+
 #' Compute sufficient statstics for a single network
 #' 
 #' @param NetM [NetworkModel] :: Model with respect to which structure would be computed
