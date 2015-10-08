@@ -227,9 +227,9 @@ computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
       fitN = fitModel(NetS, adj_abound, mode = model_type)
       fit1 = fitModel(NetS, adja1); fit2 = fitModel(NetS, adja2)
       
-      llN = computeLik(fitN, adj_abound, by_node = by_node)$bynode
-      llA = computeLik(fit1, adja1, by_node = by_node)$bynode + 
-  computeLik(fit2, adja2, by_node = by_node)$bynode
+      llN = computeLik(fitN, adj_abound, by_node = TRUE)$bynode
+      llA = computeLik(fit1, adja1, by_node = TRUE)$bynode + 
+  computeLik(fit2, adja2, by_node = TRUE)$bynode
     } else if (model_type == "correlated") {
       fitN = fitModel(NetS, adj_abound, mode = "corr-global-null")
       fitA = fitModel(NetS, adj_abound, mode = "corr-global")
