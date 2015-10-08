@@ -32,7 +32,11 @@ aggstat_single = function(NetM, adja) {
   
   xs = adjm[subset]
   
-  return(lapply(list(n = tapply(inds, inds, function(x) { sum(x > 0) }), x = tapply(xs, inds, sum)/Nobs, names = names(tapply(xs, inds, sum))), unname))
+  return(lapply(list(
+    n = Nobs * tapply(xs, inds, function(x) { sum(x > 0, na.rm = TRUE) }), 
+    x = tapply(xs, inds, sum, na.rm = TRUE), 
+    names = names(tapply(xs, inds, sum))
+  ), unname))
 }
 
 
@@ -105,7 +109,7 @@ reassign_edgegroup_prob = function(NetM, ids, probs) {
       s = ids[j] %/% NN; r = ids[j] %% NN
       NetM@probmat[r,s] = probs[j]; NetM@probmat[s,r] = probs[j]
     }
-
+    
   } else if (inherits(NetM, "NetworkModelHRG")) {
     NetM@prob = probs
     
