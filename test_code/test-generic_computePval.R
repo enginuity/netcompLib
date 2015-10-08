@@ -11,7 +11,14 @@ adja2 = sampleNetwork(NetM)
 Nobs = 1
 pl = list(cc_adj = c(0,1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_structs = c(1,20))
 
+
+te = hide_edges(adja1[,,1], frac = 0.5)
+ta = adja2[,,1]
+ta[is.na(te)] = NA
 ## Pick the appropriate parameter
 NetS = NetworkStructRND(set_model_param(Nnodes = 30, block_nclass = 3))
 NetS = NetworkStructHRG(set_model_param(Nnodes = 30, block_nclass = 3))
 NetS = NetworkStructSBM(set_model_param(Nnodes = 30, block_nclass = 3))
+
+
+computePval(NetS, ta, te, pl = pl, mode = 'chisq')

@@ -72,7 +72,7 @@ aggstat_single = function(NetM, adja) {
   xs = adjm[subset]
   
   return(lapply(list(
-    n = Nobs * tapply(xs, inds, function(x) { sum(x > 0, na.rm = TRUE) }), 
+    n = Nobs * tapply(xs, inds, function(x) { sum(!is.na(x)) }), 
     x = tapply(xs, inds, sum, na.rm = TRUE), 
     names = names(tapply(xs, inds, sum))
   ), unname))
