@@ -14,9 +14,9 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, model_typ
 #' @param pl [list] :: Simulation/Testing parameters, set by set_sim_param
 #' @param mode [char] :: How to output results? Options are: 
 #' \itemize{
-#' \item 'pvals' :: Only gives the p-values
 #' \item 'chisq' :: Only gives the asymptotically chi-square test statistic
-#' \item 'nodal' :: Gives node contributions as well as p-values
+#' \item 'nodal' :: Outputs break down of test statistic into each vertex
+#' \item 'pval' :: Outputs p-value based on chi-square distribution
 #' }
 #' @param model_type [char] :: What model type to fit? Options are: 
 #' \itemize{
@@ -41,7 +41,7 @@ computePval = function(NetS, adja1, adja2, Nobs = 1, pl, mode = 'chisq', model_t
 computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "chisq", model_type = "default",  verbose = TRUE, vbset = c(1,0,0)) {
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
-  
+  ## 'pl' not even used here... should it be? 
   ## New implmenetation -- this can be used for all NetworkStruct (as long as its not a list)
   ## TODO: Change code to work when Nobs != 1... 
   if (mode != "default") {
