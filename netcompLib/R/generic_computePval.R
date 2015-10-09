@@ -12,8 +12,18 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, model_typ
 #' @param adja2 [matrix/array] :: Adjacency matrix/array
 #' @param Nobs [int] :: Number of network observations per class (default = 1)
 #' @param pl [list] :: Simulation/Testing parameters, set by set_sim_param
-#' @param mode [char] :: How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node; 'chisq' gives the chi-square test statistic, other modes: 'fast', 'fast-densitydiff', 'fast-corr'
-#' @param model_type temp
+#' @param mode [char] :: How to output results? Options are: 
+#' \itemize{
+#' \item 'pvals' :: Only gives the p-values
+#' \item 'chisq' :: Only gives the asymptotically chi-square test statistic
+#' \item 'nodal' :: Gives node contributions as well as p-values
+#' }
+#' @param model_type [char] :: What model type to fit? Options are: 
+#' \itemize{
+#' \item 'default' :: Uses the standard hypothesis test
+#' \item 'densitydiff' :: Uses version where null allows for a global additive parameter in probability difference
+#' \item 'correlated' :: Uses version where null allows for correlated models
+#' }
 #' @param verbose [logical] :: Prints progress if TRUE
 #' @param vbset [vector-int] :: See \link{OutputSettings}
 #' Regular-verbose -- outputs general information for processing the NetworkStructList case
@@ -23,12 +33,12 @@ setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, mode, model_typ
 #' 
 #' @export
 #' 
-computePval = function(NetS, adja1, adja2, Nobs = 1, pl, mode = 'default', model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
+computePval = function(NetS, adja1, adja2, Nobs = 1, pl, mode = 'chisq', model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
   stop("Placeholder for documentation purposes")
 }
 
 
-computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default",  verbose = TRUE, vbset = c(1,0,0)) {
+computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "chisq", model_type = "default",  verbose = TRUE, vbset = c(1,0,0)) {
   
   ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
   
@@ -69,7 +79,7 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "d
 }
 
 
-computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
+computePval.NetworkStructList = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "chisq", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
   if (verbose & vbset[1] > 0) { 
     cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Fitting on", length(NetS@models), "random structures")
   }
