@@ -59,7 +59,12 @@ aggstat_dendiff = function(NetM, adja1, adja2) {
   if (length(dim(adja2)) == 2) { yraw = adja2 } else { yraw = apply(adja2, c(1,2), sum) }
   xs = xraw[subset]; ys = yraw[subset]
   
-  return(lapply(list(n = tapply(inds, inds, function(x) { sum(x > 0) }), x = tapply(xs, inds, sum), y = tapply(ys, inds, sum), names = names(tapply(ys, inds, sum))), unname))
+  return(lapply(list(
+    n = tapply(xs, inds, function(x) { sum(!is.na(x)) }), 
+    x = tapply(xs, inds, sum, na.rm = TRUE), 
+    y = tapply(ys, inds, sum, na.rm = TRUE), 
+    names = names(tapply(ys, inds, sum))
+  ), unname))
 }
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (aggstat_corr)
@@ -84,9 +89,14 @@ aggstat_corr = function(NetM, adja1, adja2) {
   xyd = xs-ys
   
   ## C matrix returned hsould be c11, c10, c01, c00
-  return(c(lapply(list(n = tapply(inds, inds, function(x) { sum(x > 0) }), names = names(tapply(ys, inds, sum))), unname), 
-           list(C = cbind(c11 = tapply(xy == 2, inds, sum), c10 = tapply(xyd == 1, inds, sum),
-                          c01 = tapply(xyd == -1, inds, sum), c00 = tapply(xy == 0, inds, sum)))))
+  return(c(lapply(list(
+    n = tapply(xs, inds, function(x) { sum(!is.na(x)) }), 
+    names = names(tapply(ys, inds, sum))), unname), 
+    list(C = cbind(c11 = tapply(xy == 2, inds, sum, na.rm = TRUE), 
+                   c10 = tapply(xyd == 1, inds, sum, na.rm = TRUE),
+                   c01 = tapply(xyd == -1, inds, sum, na.rm = TRUE), 
+                   c00 = tapply(xy == 0, inds, sum, na.rm = TRUE)))
+  ))
 }
 
 
