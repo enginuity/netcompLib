@@ -29,7 +29,43 @@ computePval = function(NetS, adja1, adja2, Nobs = 1, pl, mode = 'default', model
 
 
 computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default",  verbose = TRUE, vbset = c(1,0,0)) {
-  stop("Not implemented for this case")
+  
+  ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
+  
+  ## New implmenetation -- this can be used for all NetworkStruct (as long as its not a list)
+  ## TODO: Change code to work when Nobs != 1... 
+  if (mode != "default") {
+    by_node = (mode == "nodal")
+    ## Fit on appropriate model_type
+    adj_abound = abind::abind(adja1, adja2, along = 3)
+    
+    if (model_type %in% c("default", "densitydiff")) {
+      fitN = fitModel(NetS, adj_abound, mode = model_type)
+      fit1 = fitModel(NetS, adja1); fit2 = fitModel(NetS, adja2)
+      
+      llN = computeLik(fitN, adj_abound, by_node = TRUE)$bynode
+      llA = computeLik(fit1, adja1, by_node = TRUE)$bynode + 
+        computeLik(fit2, adja2, by_node = TRUE)$bynode
+    } else if (model_type == "correlated") {
+      fitN = fitModel(NetS, adj_abound, mode = "corr-global-null")
+      fitA = fitModel(NetS, adj_abound, mode = "corr-global")
+      
+      llN = computeLik(fitN, adj_abound, by_node = by_node)$bynode
+      llA = computeLik(fitA, adj_abound, by_node = by_node)$bynode
+    }
+    
+    chisq = sum(-2 * (llN - llA)) 
+    ## TODO: Implement pvals case
+    if (mode == "chisq") {
+      return(chisq)
+    } else {
+      if (by_node) {
+        return(list(chisq = chisq, pvals = "NOT IMPLEMENTED", nodecontrib = -2 * (llN - llA)))
+      }
+    }
+    
+    return(-2*(llN - llA))
+  }
 }
 
 
@@ -213,43 +249,6 @@ computePval.NetworkStructHRG = function(NetS, adja1, adja2, Nobs = 1, pl, mode =
 
 
 computePval.NetworkStructSBM = function(NetS, adja1, adja2, Nobs = 1, pl, mode = "default", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
-  
-  ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
-  
-  ## New implmenetation -- this can be used for all NetworkStruct (as long as its not a list)
-  ## TODO: Change code to work when Nobs != 1... 
-  if (mode != "default") {
-    by_node = (mode == "nodal")
-    ## Fit on appropriate model_type
-    adj_abound = abind::abind(adja1, adja2, along = 3)
-    
-    if (model_type %in% c("default", "densitydiff")) {
-      fitN = fitModel(NetS, adj_abound, mode = model_type)
-      fit1 = fitModel(NetS, adja1); fit2 = fitModel(NetS, adja2)
-      
-      llN = computeLik(fitN, adj_abound, by_node = TRUE)$bynode
-      llA = computeLik(fit1, adja1, by_node = TRUE)$bynode + 
-  computeLik(fit2, adja2, by_node = TRUE)$bynode
-    } else if (model_type == "correlated") {
-      fitN = fitModel(NetS, adj_abound, mode = "corr-global-null")
-      fitA = fitModel(NetS, adj_abound, mode = "corr-global")
-      
-      llN = computeLik(fitN, adj_abound, by_node = by_node)$bynode
-      llA = computeLik(fitA, adj_abound, by_node = by_node)$bynode
-    }
-    
-    chisq = sum(-2 * (llN - llA)) 
-    ## TODO: Implement pvals case
-    if (mode == "chisq") {
-      return(chisq)
-    } else {
-      if (by_node) {
-        return(list(chisq = chisq, pvals = "NOT IMPLEMENTED", nodecontrib = -2 * (llN - llA)))
-      }
-    }
-    
-    return(-2*(llN - llA))
-  }
   
   
   
