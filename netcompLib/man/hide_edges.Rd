@@ -7,12 +7,12 @@
 hide_edges(adjm, frac = 0.1)
 }
 \arguments{
-\item{adjm}{Input adjacency matrix}
+\item{adjm}{[matrix-int] :: Input adjacency matrix}
 
-\item{frac}{Fraction of edges to hide}
+\item{frac}{[double] :: Fraction of edges to hide}
 }
 \value{
-Adjacency matrix with hidden edges
+[matrix-int] :: Adjacency matrix with hidden edges
 }
 \description{
 Hides a random set of edges

@@ -7,10 +7,10 @@
 symmetrize_mat(mat)
 }
 \arguments{
-\item{mat}{Input matrix}
+\item{mat}{[matrix] :: Input matrix}
 }
 \value{
-Filled matrix (with lower triangular portion replaced by the upper triangular portion).
+[matrix] :: Filled matrix (with lower triangular portion replaced by the upper triangular portion).
 }
 \description{
 Symmetrizes matrix by using upper-triangular portion
