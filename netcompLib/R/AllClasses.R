@@ -2,7 +2,7 @@
 ## TODO: Get default print/summary methods
 
 setClass("NetworkModel", representation(Nnodes = "numeric"))
-setClass("NetworkModelSBM", representation(assign = "numeric", probmat = "matrix"), contains = "NetworkModel")
+setClass("NetworkModelSBM", representation(groups = "numeric", probmat = "matrix"), contains = "NetworkModel")
 setClass("NetworkModelHRG", representation(parents = "numeric", children = "list", prob = "numeric"), contains = "NetworkModel")
 setClass("NetworkModelLSM", representation(locs = "matrix", alpha = "numeric"), contains = "NetworkModel")
 setClass("NetworkModelRND", representation(counts = "numeric", prob = "numeric", ids = "list"), contains = "NetworkModel")
@@ -55,7 +55,7 @@ NetworkModelSBM = function(model_params = set_model_param()) {
   
   ## Helper function for adjusting block model probabilities  
   adjust_blockprobs = function(mod, avgden = 0.4, plimit = c(0.05, 0.95)) {
-    classct = table(mod$assign)
+    classct = table(mod$groups)
     params = length(classct) * (length(classct) - 1 ) / 2 + length(classct)
     coordmat = matrix(NA, nrow = params, ncol = 4)
     colnames(coordmat) = c("row", "col", "ID", "count")
@@ -99,6 +99,7 @@ NetworkModelSBM = function(model_params = set_model_param()) {
   if (is.null(model_params$block_probs)) {
     # If we want to control average density: 
     if (!is.null(model_params$block_avgdensity)) {
+      ## broken? TODO - fix this
       prob_matrix = adjust_blockprobs(mod = res, avgden = model_params$block_avgdensity, plimit = c(model_params$pmin, model_params$pmax))
     } else {
       prob_matrix = matrix(0, nrow = K, ncol = K)
@@ -113,7 +114,7 @@ NetworkModelSBM = function(model_params = set_model_param()) {
     prob_matrix = model_params$block_probs
   }
   
-  netm = new("NetworkModelSBM", Nnodes = Nnodes, assign = group_assign, probmat = prob_matrix)
+  netm = new("NetworkModelSBM", Nnodes = Nnodes, groups = group_assign, probmat = prob_matrix)
   return(netm)
 }
 

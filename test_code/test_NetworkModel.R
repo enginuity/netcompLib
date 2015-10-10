@@ -18,6 +18,7 @@ sampleNetwork(test2)
 extractStruct(test2)
 
 test2@assign
+#|----##Maybe fix -- 'assign' field in NetworkModelSBM is edited --Sat Oct 10 19:33:04 2015--
 test2@probmat
 
 test3 = NetworkModel(Nnodes = 10, type = "tree")

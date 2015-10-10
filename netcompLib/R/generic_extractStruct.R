@@ -30,7 +30,7 @@ extractStruct.NetworkModelPair = function(NetM) {
 
 extractStruct.NetworkModelSBM = function(NetM) {
   # group assignments
-  ga = NetM@assign
+  ga = NetM@groups
   NClass = length(unique(ga))
   
   counts = rep(0, times = NClass + NClass * (NClass - 1) / 2)
