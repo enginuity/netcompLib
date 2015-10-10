@@ -6,9 +6,9 @@ setGeneric("getNetType", function(Net) standardGeneric("getNetType"))
 #' 
 #' Allowable types are currently: "block", "tree", "latent", "random"
 #' 
-#' @param Net Object of class NetworkModel (or inherits this type)
+#' @param Net [\code{\link{NetworkModel}} OR \code{\link{NetworkStruct}}] :: Network object
 #' 
-#' @return Character -- type of network model
+#' @return [char] :: type of network object
 #' 
 #' @export
 #' 

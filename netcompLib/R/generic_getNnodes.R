@@ -4,9 +4,9 @@ setGeneric("getNnodes", function(Net) standardGeneric("getNnodes"))
 
 #' Extracts the number of nodes in a network model
 #' 
-#' @param Net NetworkModel or NetworkStruct object
+#' @param Net [\code{\link{NetworkModel}} OR \code{\link{NetworkStruct}}] :: Network object
 #' 
-#' @return Numeric -- Number of nodes in network model
+#' @return [int] :: Number nodes in network
 #' 
 #' @export
 #' 
@@ -14,19 +14,16 @@ getNnodes = function(Net) { NULL }
 
 
 getNnodes.NetworkModel = function(Net) {
-  # Net should be object of type NetworkModel
   return(Net@Nnodes)
 }
 
 
 getNnodes.NetworkStruct = function(Net) {
-  # Net should be object of type NetworkStruct
   return(Net@Nnodes)
 }
 
 
 getNnodes.NetworkModelPair = function(Net) {
-  # Net should be object of type NetworkModelPair
   return(Net@Nnodes)
 }
 
