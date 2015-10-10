@@ -37,12 +37,14 @@ computeLik.NetworkModel = function(NetM, adja, by_node = FALSE, by_group = FALSE
     stop("Invalid input 'adja' (not a 2D or 3D array)")
   }
   
+  ## Compute log-likelihoods by dyad
   epmat = getEdgeProbMat(NetM)
   ll_dyad = adjm * log(epmat) + (Nobs - adjm) * log(1 - epmat)
   diag(ll_dyad) = 0
+  
   ll_node = apply(ll_dyad, 1, sum, na.rm = na.rm)/2
   
-    
+  ## Process output, computing other quantities as needed
   res$sum = sum(ll_node, na.rm = na.rm)
   if (by_node) { res$bynode = ll_node }
   if (by_group) {
@@ -70,6 +72,7 @@ computeLik.NetworkModelPair = function(NetM, adja, by_node = FALSE, by_group = F
     res$sum = sum(ll_node, na.rm = na.rm)
     
   } else { 
+    ## Run computeLik separately and add results
     l1 = computeLik(NetM@m1, adja[,,1], loglik, by_node, na.rm)
     l2 = computeLik(NetM@m2, adja[,,2], loglik, by_node, na.rm)
     for(s in names(res)) { res[s] = l1[s] + l2[s] }
