@@ -17,9 +17,9 @@
 #' }
 #' @param pairtype [char] :: This corresponds to model_type. If NULL, this is not a model pair. If non-null, it should be one of: 
 #' \itemize{
-#' \item 'densitydiff' :: Model with logit-odds additive difference in density
-#' \item 'correlated-null' :: Model with same marginal distribution but correlated
-#' \item 'correlated' :: Model with possibly different marginals but correlated
+#' \item 'densitydiff' -- Model with logit-odds additive difference in density
+#' \item 'correlated-null' -- Model with same marginal distribution but correlated
+#' \item 'correlated' -- Model with possibly different marginals but correlated
 #' }
 #' @param pmin [double] :: Minimal possible edge probability
 #' @param pmax [double] :: Maximal possible edge probability
