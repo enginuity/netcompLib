@@ -382,13 +382,11 @@ NetworkStruct = function(model_params = set_model_param()) {
 }
 
 
-
-
 #' Constructor for class NetworkStructList -- a list of network model structure information. 
 #' 
 #' These are the random edge partitions used in the network hypothesis testing. 
 #' 
-#' @param Nmodels Number of random edge partitions to generate
+#' @param Nmodels [int] :: Number of random edge partitions to generate
 #' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
 #' 
 #' @return [NetworkStructList] :: A representation of the generated model structure
@@ -396,7 +394,6 @@ NetworkStruct = function(model_params = set_model_param()) {
 #' @export
 #' 
 NetworkStructList = function(Nmodels = 10, model_params = set_model_param()) {
-  # TODO: [Improvement] 'type' can be a vector, and call it vectorized => resulting network list has multiple types
   
   res = replicate(n = Nmodels, expr = NetworkStruct(model_params))
   netsl = new("NetworkStructList", Nnodes = model_params$Nnodes, models = res)
@@ -415,7 +412,7 @@ NetworkStructList = function(Nmodels = 10, model_params = set_model_param()) {
 #' 
 #' @export
 #' 
-NetworkStructRND = function(model_params = set_model_param()) {
+NetworkStructRND = function(model_params = set_model_param(), NetM = NULL) {
   # Just generate a model and then lose the probability information. 
   NetM = NetworkModelRND(model_params)
   return(extractStruct(NetM))
@@ -432,7 +429,7 @@ NetworkStructRND = function(model_params = set_model_param()) {
 #' 
 #' @export
 #' 
-NetworkStructHRG = function(model_params = set_model_param()) {
+NetworkStructHRG = function(model_params = set_model_param(), NetM = NULL) {
   # Just generate a model and then lose the probability information. 
   NetM = NetworkModelHRG(model_params)
   return(extractStruct(NetM))
@@ -449,7 +446,7 @@ NetworkStructHRG = function(model_params = set_model_param()) {
 #' 
 #' @export
 #' 
-NetworkStructSBM = function(model_params = set_model_param()) {
+NetworkStructSBM = function(model_params = set_model_param(), NetM = NULL) {
   # Just generate a model and then lose the probability information. 
   NetM = NetworkModelSBM(model_params)
   return(extractStruct(NetM))
