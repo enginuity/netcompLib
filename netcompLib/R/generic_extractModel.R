@@ -5,10 +5,10 @@ setGeneric("extractModel", function(NetS, model_param) standardGeneric("extractM
 
 #' Generates a random network model from a fixed structure
 #' 
-#' @param NetS temp
-#' @param model_param temp
+#' @param NetS [\code{\link{NetworkStruct}}] :: Input network structure
+#' @param model_param [list] :: Parameters generated from \code{\link{set_model_param}}
 #' 
-#' @return temp
+#' @return [\code{\link{NetworkModel}}] :: Network Model extracted from input structure
 #' 
 #' @export
 #' 

@@ -2,7 +2,6 @@
 
 ## TODO: [Examine Default Parameters]
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (set_model_param)
 #' Set network model parameters
 #' 
 #' This function sets up the (list of) model parameters to be passed into model generation functions (eg. sets the max number of blocks in a SBM). There are default parameters that are used if this function is called with no arguments. 
@@ -16,7 +15,12 @@
 #'  \item latent -- Latent Space Model. Note that this type of model CANNOT generate random edge partitions since edge groups will be size 1 each (almost surely)
 #'  \item random -- A model where each edge belongs to one of a number of classes, and the edge probability depends solely on this assignment. Should really only be used to generate random edge partitions. 
 #' }
-#' @param pairtype temp
+#' @param pairtype [char] :: This corresponds to model_type. If NULL, this is not a model pair. If non-null, it should be one of: 
+#' \itemize{
+#' \item 'densitydiff' :: Model with logit-odds additive difference in density
+#' \item 'correlated-null' :: Model with same marginal distribution but correlated
+#' \item 'correlated' :: Model with possibly different marginals but correlated
+#' }
 #' @param pmin [double] :: Minimal possible edge probability
 #' @param pmax [double] :: Maximal possible edge probability
 #' @param block_nclass [int] :: Number of blocks in block model
@@ -34,18 +38,14 @@
 #' @param latent_nclass [int] :: Number of clusters in latent space model
 #' @param latent_sdcenter [double] :: SD on centers of latent space model
 #' @param latent_isgennorm [logical] :: If TRUE: Uses normal distribution for latent locations. Otherwise, uses uniform distribution. 
-#' @param dd_param_add temp
-#' @param c_param_corr temp
+#' @param dd_param_add [double] :: Additive value of parameter in density-difference model
+#' @param c_param_corr [double] :: Correlation parameter in correlated model
 #' 
 #' @return [list] :: A list of parameters
 #' 
 #' @export
 #' 
 set_model_param = function(Nnodes = 30, type = 'block', pairtype = NULL, pmin = 0.03, pmax = 0.97, block_nclass = 3, block_avgdensity = NULL, block_assign = NULL, block_probs = NULL, random_ngroups = 10, tree_type = "random", latent_dim = 3, latent_nclass = 3, latent_sdcenter = 5, latent_isgennorm = TRUE, dd_param_add =0.2, c_param_corr = 0.2) {
-  
-  # pairtype -- this is model_type. IF NULL, this is NOT a model pair. 
-  ## non-null choices: densitydiff, correlated-null, correlated
-  # dd_param_add, c_param_corr = model params. c_param_a, b should be obtained from the models themselves..
   
   return(list(Nnodes = Nnodes, type = type, pairtype = pairtype, pmin = pmin, pmax = pmax, block_nclass = block_nclass, block_avgdensity = block_avgdensity, block_assign = block_assign, block_probs = block_probs, random_ngroups = random_ngroups, tree_type = tree_type, latent_dim = latent_dim, latent_nclass = latent_nclass, latent_sdcenter = latent_sdcenter, latent_isgennorm = latent_isgennorm, dd_param_add = dd_param_add, c_param_corr = c_param_corr))
 }
@@ -62,7 +62,12 @@ set_model_param = function(Nnodes = 30, type = 'block', pairtype = NULL, pmin = 
 #' @param n_structs [vector-int] :: Number(s) of edge partitions to use for testing
 #' @param pval_fx_names [vector-char] :: Names of functions that do p-value adjustment
 #' @param pval_sim_null [vector-logical] :: Is simulation of the null distribution necessary?
-#' @param fitstruct_method temp
+#' @param fitstruct_method [char] :: Determines how to use/reuse the fitting structures: 
+#' \itemize{
+#' \item 'random' -- Take a random subset at different sizes
+#' \item 'recycle' -- Reuse fixed structures in a fixed manner
+#' \item 'single' -- Do not reuse structures; generate much more
+#' }
 #' 
 #' @return [list] :: A list of parameters, structured as follows
 #' \itemize{
@@ -83,10 +88,6 @@ set_model_param = function(Nnodes = 30, type = 'block', pairtype = NULL, pmin = 
 #' 
 set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_structs = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE), fitstruct_method = "random") {
   
-  ## fitstruct method -- 'random', 'recycle', 'single'
-  ## 'random' means random subset -- take ordered random subset
-  ## 'recycle' means re-use structures in a fixed manner -- 
-  ## 'single' means use each structure a single time. 
   # TODO: [Improve] 'random' and 'recycle' to use more structures for small n_structs
   
   ## Extract appropriate information from function inputs
