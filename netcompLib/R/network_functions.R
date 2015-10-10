@@ -52,7 +52,6 @@ computeDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 #' @export
 #' 
 computeDist = function(NetM1, NetM2, type = "KLsym") {
-  ## TODO: Change NetM1,NetM2 into NetM1, NetM2. 
   p1 = getEdgeProbMat(NetM1); p2 = getEdgeProbMat(NetM2)
   
   h_kldist = function(p1, p2) {
