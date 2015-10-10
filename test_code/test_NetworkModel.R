@@ -16,6 +16,7 @@ getNetType(test2)
 getEdgeProbMat(test2)
 sampleNetwork(test2)
 extractStruct(test2)
+#|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
 
 test2@assign
 #|----##Maybe fix -- 'assign' field in NetworkModelSBM is edited --Sat Oct 10 19:33:04 2015--
@@ -28,6 +29,7 @@ getNetType(test3)
 test3
 getEdgeProbMat(test3)
 extractStruct(test3)
+#|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
 
 test4 = NetworkModel(Nnodes = 10, type = "latent")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
@@ -41,6 +43,7 @@ getNnodes(test5)
 getNetType(test5)
 round(getEdgeProbMat(test5),2)
 extractStruct(test5)
+#|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
 
 NetworkStruct(Nnodes = 15, type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:31 2015--
@@ -53,9 +56,13 @@ NetworkStruct(Nnodes = 15, type = "random")
 pl = list(cc_adj = c(1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
 #|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+#|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+#|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+#|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+#|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
 
 netsl = NetworkStructList(type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
