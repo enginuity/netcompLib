@@ -10,7 +10,7 @@
 #' @param NetS [\code{\link{NetworkStruct}}] :: Testing model structure
 #' @param hidden_edges [matrix-logical] :: Entries of matrix are 'true' if they are hidden in the inference process. (so default would be a matrix of falses)
 #' 
-#' @return [vector] :: Theoretical df adjustments for each edge group
+#' @return [vector-double] :: Theoretical df adjustments for each edge group
 #' 
 #' @export
 #' 
@@ -39,8 +39,8 @@ computeDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 
 #' Computes a distance between two network models
 #' 
-#' @param x [\code{\link{NetworkModel}}] :: First network model
-#' @param y [\code{\link{NetworkModel}}] :: Second network model
+#' @param NetM1 [\code{\link{NetworkModel}}] :: First network model
+#' @param NetM2 [\code{\link{NetworkModel}}] :: Second network model
 #' @param type [char; ALLOWED = c("KL", "KLsym")] :: What distance measure to use? \cr
 #' \itemize{
 #'   \item KL -- KL distance 
@@ -51,9 +51,9 @@ computeDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 #' 
 #' @export
 #' 
-computeDist = function(x, y, type = "KLsym") {
-  ## TODO: Change x,y into NetM1, NetM2. 
-  p1 = getEdgeProbMat(x); p2 = getEdgeProbMat(y)
+computeDist = function(NetM1, NetM2, type = "KLsym") {
+  ## TODO: Change NetM1,NetM2 into NetM1, NetM2. 
+  p1 = getEdgeProbMat(NetM1); p2 = getEdgeProbMat(NetM2)
   
   h_kldist = function(p1, p2) {
     diag(p1) <- 0.5; diag(p2) <- 0.5
