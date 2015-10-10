@@ -58,6 +58,8 @@ computeLik.NetworkModel = function(NetM, adja, by_node = FALSE, by_group = FALSE
 
 computeLik.NetworkModelPair = function(NetM, adja, by_node = FALSE, by_group = FALSE, na.rm = TRUE) {
   ## TODO: apply for general cases -- right now, ASSUMES adja is dimension 2. 
+  ## TODO: Allow this to work for the case by_group = TRUE! 
+  
   res = list(sum = NULL, bynode = NULL, group_ll = NULL, group_size = NULL)
   
   if (NetM@model_type == "correlated") {
