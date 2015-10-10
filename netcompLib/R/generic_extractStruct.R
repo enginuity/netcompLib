@@ -21,9 +21,10 @@ extractStruct.NetworkModel = function(NetM) {
 
 
 extractStruct.NetworkModelPair = function(NetM) {
-  netsl = new("NetworkStructList", Nnodes = getNnodes(NetM), 
-              models = list(extractStruct(NetM@m1), extractStruct(NetM@m2)))
-  return(netsl)
+  netsl = NetworkStructList(Nmodels = 2)
+  netsl@models[[1]] = extractStruct(NetM@m1)
+  netsl@models[[2]] = extractStruct(NetM@m2)
+  return()
 }
 
 
@@ -52,6 +53,7 @@ extractStruct.NetworkModelSBM = function(NetM) {
   }}
   
   nets = new("NetworkStructSBM", Nnodes = getNnodes(NetM), groups = ga, counts = counts, expand = expanded, correct = correction)
+  
   return(nets)
 }
 
