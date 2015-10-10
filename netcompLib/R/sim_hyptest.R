@@ -12,34 +12,35 @@
 #' @param verbose [logical] :: Output progress?
 #' @param vbset [vector-int] :: passes along to \code{\link{computePval}}
 #' 
-#' @return List of results
+#' @return [list] :: List of results ## TODO: Format of results?
 #' 
 #' @export
 #' 
 sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_model_param(), adjm_list = NULL, 
                        Nobs = 1, Nsim = 100, pl = set_sim_param(), verbose = TRUE, vbset = c(1,0,0)) {
+  
+  ## Set verbose parameters to pass into function calls
   vbset_new = vbset; vbset_new[1] = vbset[1] - 1; vbset_new[2] = vbset[2] - 1; vbset_new[3] = vbset[3] + 2;
   
-  
-  # Check that enough models were generated
+  ## Check that enough models were generated
   if (is.null(fit_NetSList)) { 
     fit_NetSList = NetworkStructList(Nmodels = pl$struct_needed, model_params = fitm_params) 
   }
   if (pl$struct_needed != length(fit_NetSList@models)) { stop("Not enough fitted models generated") }
   
+  ## Generate two lists of adjacency arrays if not provided
+  if (is.null(adjm_list)) { adjm_list = sampleNetwork(gen_NetMPair, Nsim = Nsim) }
+  
   
   ## Setup storage
   result_list = list(); for(f in seq_along(pl$pval_adj$fx)) { result_list[[f]] = list() } 
   pval_reslist = list()  
-  
-  ## Generate two lists of adjacency arrays
-  if (is.null(adjm_list)) { adjm_list = sampleNetwork(gen_NetMPair, Nsim = Nsim) }
-  
+
+  ## Output progress message
+  if (verbose & vbset[1] > 0) { cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Simulating Hypothesis Test") }  
+
   
   ## Do simulations
-  if (verbose & vbset[1] > 0) { cat("\n", stringr::str_pad(string = "", width = vbset[3], pad = "-"), date(), "-- Simulating Hypothesis Test") }
-  
-  
   for(j in 1:Nsim) {  
     ## Output progress
     if (verbose & vbset[1] > 0) { 
