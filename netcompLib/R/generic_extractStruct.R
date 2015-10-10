@@ -24,7 +24,7 @@ extractStruct.NetworkModelPair = function(NetM) {
   netsl = NetworkStructList(Nmodels = 2)
   netsl@models[[1]] = extractStruct(NetM@m1)
   netsl@models[[2]] = extractStruct(NetM@m2)
-  return()
+  return(netsl)
 }
 
 
