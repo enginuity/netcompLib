@@ -22,3 +22,4 @@ NetS = NetworkStructSBM(set_model_param(Nnodes = 30, block_nclass = 3))
 
 
 computePval(NetS, ta, te, pl = pl, mode = 'chisq')
+computePval(NetworkStructList(Nmodels = 10, set_model_param()), ta, te, pl = pl, mode = 'chisq')
