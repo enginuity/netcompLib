@@ -7,10 +7,10 @@
 extractStruct(NetM)
 }
 \arguments{
-\item{NetM}{NetworkModel object}
+\item{NetM}{[\code{\link{NetworkModel}}] :: Model to extract edge partition of}
 }
 \value{
-NetworkStruct object that corresponds with the input model
+[\code{\link{NetworkStruct}}] :: Structure corresponding to input model
 }
 \description{
 Extracts the Edge Partition from a Network Model

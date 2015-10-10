@@ -23,7 +23,12 @@ set_model_param(Nnodes = 30, type = "block", pairtype = NULL,
  \item random -- A model where each edge belongs to one of a number of classes, and the edge probability depends solely on this assignment. Should really only be used to generate random edge partitions.
 }}
 
-\item{pairtype}{temp}
+\item{pairtype}{[char] :: This corresponds to model_type. If NULL, this is not a model pair. If non-null, it should be one of:
+\itemize{
+\item 'densitydiff' -- Model with logit-odds additive difference in density
+\item 'correlated-null' -- Model with same marginal distribution but correlated
+\item 'correlated' -- Model with possibly different marginals but correlated
+}}
 
 \item{pmin}{[double] :: Minimal possible edge probability}
 
@@ -54,9 +59,9 @@ set_model_param(Nnodes = 30, type = "block", pairtype = NULL,
 
 \item{latent_isgennorm}{[logical] :: If TRUE: Uses normal distribution for latent locations. Otherwise, uses uniform distribution.}
 
-\item{dd_param_add}{temp}
+\item{dd_param_add}{[double] :: Additive value of parameter in density-difference model}
 
-\item{c_param_corr}{temp}
+\item{c_param_corr}{[double] :: Correlation parameter in correlated model}
 }
 \value{
 [list] :: A list of parameters

@@ -7,10 +7,10 @@
 getNetType(Net)
 }
 \arguments{
-\item{Net}{Object of class NetworkModel (or inherits this type)}
+\item{Net}{[\code{\link{NetworkModel}} OR \code{\link{NetworkStruct}}] :: Network object}
 }
 \value{
-Character -- type of network model
+[char] :: type of network object
 }
 \description{
 Allowable types are currently: "block", "tree", "latent", "random"

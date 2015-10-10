@@ -4,7 +4,7 @@
 \alias{computePval}
 \title{Computes p-value for likelihood ratio test}
 \usage{
-computePval(NetS, adja1, adja2, Nobs = 1, pl, mode = "default",
+computePval(NetS, adja1, adja2, Nobs = 1, pl, mode = "chisq",
   model_type = "default", verbose = TRUE, vbset = c(1, 0, 0))
 }
 \arguments{
@@ -18,9 +18,19 @@ computePval(NetS, adja1, adja2, Nobs = 1, pl, mode = "default",
 
 \item{pl}{[list] :: Simulation/Testing parameters, set by set_sim_param}
 
-\item{mode}{[char] :: How to output results? 'default' gives the standard p-values; 'nodewise' gives the chi-square contributions per node; 'chisq' gives the chi-square test statistic, other modes: 'fast', 'fast-densitydiff', 'fast-corr'}
+\item{mode}{[char] :: How to output results? Options are:
+\itemize{
+\item 'chisq' :: Only gives the asymptotically chi-square test statistic
+\item 'nodal' :: Outputs break down of test statistic into each vertex
+\item 'pval' :: Outputs p-value based on chi-square distribution
+}}
 
-\item{model_type}{temp}
+\item{model_type}{[char] :: What model type to fit? Options are:
+\itemize{
+\item 'default' :: Uses the standard hypothesis test
+\item 'densitydiff' :: Uses version where null allows for a global additive parameter in probability difference
+\item 'correlated' :: Uses version where null allows for correlated models
+}}
 
 \item{verbose}{[logical] :: Prints progress if TRUE}
 

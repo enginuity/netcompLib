@@ -4,10 +4,12 @@
 \alias{NetworkStructSBM}
 \title{Constructor for RND network structure}
 \usage{
-NetworkStructSBM(model_params = set_model_param())
+NetworkStructSBM(model_params = set_model_param(), NetM = NULL)
 }
 \arguments{
 \item{model_params}{[list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters}
+
+\item{NetM}{temp}
 }
 \value{
 [NetworkStructSBM] :: A representation of the generated model structure

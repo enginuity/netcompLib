@@ -7,10 +7,10 @@
 getNnodes(Net)
 }
 \arguments{
-\item{Net}{NetworkModel or NetworkStruct object}
+\item{Net}{[\code{\link{NetworkModel}} OR \code{\link{NetworkStruct}}] :: Network object}
 }
 \value{
-Numeric -- Number of nodes in network model
+[int] :: Number nodes in network
 }
 \description{
 Extracts the number of nodes in a network model

@@ -13,7 +13,7 @@ computeLik(NetM, adja, by_node = FALSE, by_group = FALSE, na.rm = TRUE)
 
 \item{by_node}{[logical] :: If TRUE, returns by_node breakdown of log-likelihood}
 
-\item{by_group}{temp}
+\item{by_group}{[logical] :: If TRUE, returns breakdown of log-likelihood by edge groups}
 
 \item{na.rm}{[logical] :: If TRUE, ignores NAs in the adjacency matrix}
 }

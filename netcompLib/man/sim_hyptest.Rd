@@ -28,7 +28,7 @@ sim_hyptest(gen_NetMPair, fit_NetSList = NULL,
 \item{vbset}{[vector-int] :: passes along to \code{\link{computePval}}}
 }
 \value{
-List of results
+[list] :: List of results ## TODO: Format of results?
 }
 \description{
 Do simulations for the hypothesis testing, using the new code.

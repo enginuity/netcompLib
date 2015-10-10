@@ -17,7 +17,7 @@ sampleNetwork(NetM, Nobs = 1, Nsim = 1)
 [array OR list-array] :: List or array of adjacency matrices
 }
 \description{
-Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is bad (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases:
+Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is slow (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases:
 If Nsim = 1 -> Result is an array (with third dimension equal to Nobs)
 If Nsim > 1 -> Result is a list of arrays
 }

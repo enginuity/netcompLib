@@ -7,12 +7,12 @@
 extractModel(NetS, model_param = set_model_param())
 }
 \arguments{
-\item{NetS}{temp}
+\item{NetS}{[\code{\link{NetworkStruct}}] :: Input network structure}
 
-\item{model_param}{temp}
+\item{model_param}{[list] :: Parameters generated from \code{\link{set_model_param}}}
 }
 \value{
-temp
+[\code{\link{NetworkModel}}] :: Network Model extracted from input structure
 }
 \description{
 Generates a random network model from a fixed structure

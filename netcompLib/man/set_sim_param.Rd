@@ -22,7 +22,12 @@ set_sim_param(cc_adj = c(0, 2), thres_ignore = c(5, 10), alphas = 0.05,
 
 \item{pval_sim_null}{[vector-logical] :: Is simulation of the null distribution necessary?}
 
-\item{fitstruct_method}{temp}
+\item{fitstruct_method}{[char] :: Determines how to use/reuse the fitting structures:
+\itemize{
+\item 'random' -- Take a random subset at different sizes
+\item 'recycle' -- Reuse fixed structures in a fixed manner
+\item 'single' -- Do not reuse structures; generate much more
+}}
 }
 \value{
 [list] :: A list of parameters, structured as follows

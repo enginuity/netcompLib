@@ -4,10 +4,12 @@
 \alias{NetworkStructRND}
 \title{Constructor for RND network structure}
 \usage{
-NetworkStructRND(model_params = set_model_param())
+NetworkStructRND(model_params = set_model_param(), NetM = NULL)
 }
 \arguments{
 \item{model_params}{[list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters}
+
+\item{NetM}{temp}
 }
 \value{
 [NetworkStructRND] :: A representation of the generated model structure

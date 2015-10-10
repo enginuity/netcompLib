@@ -7,7 +7,7 @@
 NetworkStructList(Nmodels = 10, model_params = set_model_param())
 }
 \arguments{
-\item{Nmodels}{Number of random edge partitions to generate}
+\item{Nmodels}{[int] :: Number of random edge partitions to generate}
 
 \item{model_params}{[list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters}
 }

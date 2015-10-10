@@ -4,10 +4,12 @@
 \alias{NetworkStructHRG}
 \title{Constructor for RND network structure}
 \usage{
-NetworkStructHRG(model_params = set_model_param())
+NetworkStructHRG(model_params = set_model_param(), NetM = NULL)
 }
 \arguments{
 \item{model_params}{[list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters}
+
+\item{NetM}{temp}
 }
 \value{
 [NetworkStructHRG] :: A representation of the generated model structure

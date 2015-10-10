@@ -7,12 +7,12 @@
 getEdgeProbMat(NetM, mode = "prob")
 }
 \arguments{
-\item{NetM}{Network model object}
+\item{NetM}{[\code{\link{NetworkModel}}] :: Network Model}
 
-\item{mode}{Either "prob" or "group": if "prob", this function returns an edge probability matrix. Else, it returns a matrix where each cell gets a group id number}
+\item{mode}{[char] :: Either "prob" or "group": if "prob", this function returns an edge probability matrix. Else, it returns a matrix where each cell gets a group id number}
 }
 \value{
-Matrix: Edge Probability Matrix given by the model
+[matrix] :: Edge probability matrix (or group index matrix)
 }
 \description{
 Extracts the edge probability matrix for a network model

@@ -4,12 +4,12 @@
 \alias{computeDist}
 \title{Computes a distance between two network models}
 \usage{
-computeDist(x, y, type = "KLsym")
+computeDist(NetM1, NetM2, type = "KLsym")
 }
 \arguments{
-\item{x}{[\code{\link{NetworkModel}}] :: First network model}
+\item{NetM1}{[\code{\link{NetworkModel}}] :: First network model}
 
-\item{y}{[\code{\link{NetworkModel}}] :: Second network model}
+\item{NetM2}{[\code{\link{NetworkModel}}] :: Second network model}
 
 \item{type}{[char; ALLOWED = c("KL", "KLsym")] :: What distance measure to use? \cr
 \itemize{
