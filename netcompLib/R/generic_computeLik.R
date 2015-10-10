@@ -37,14 +37,20 @@ computeLik.NetworkModel = function(NetM, adja, by_node = FALSE, by_group = FALSE
     stop("Invalid input 'adja' (not a 2D or 3D array)")
   }
   
-  eps = getEdgeProbMat(NetM)
-  ll_dyad = adjm * log(eps) + (Nobs - adjm) * log(1 - eps)
+  epmat = getEdgeProbMat(NetM)
+  ll_dyad = adjm * log(epmat) + (Nobs - adjm) * log(1 - epmat)
   diag(ll_dyad) = 0
   ll_node = apply(ll_dyad, 1, sum, na.rm = na.rm)/2
   
-  if (by_node) { res$bynode = ll_node }
-  res$sum = sum(ll_node, na.rm = na.rm)
     
+  res$sum = sum(ll_node, na.rm = na.rm)
+  if (by_node) { res$bynode = ll_node }
+  if (by_group) {
+    ll_dyad_lower = ll_dyad[lower.tri(ll_dyad, diag = FALSE)]
+    egmat = getEdgeProbMat(NetM, 'group')[lower.tri(ll_dyad, diag = FALSE)]
+    res$group_ll = unname(tapply(ll_dyad_lower, egmat, sum))
+    res$group_size = unname(tapply(ll_dyad_lower, egmat, function(x) { sum(x != 0, na.rm = na.rm)}))
+  }
   return(res) 
 }
 
