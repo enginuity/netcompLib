@@ -4,10 +4,10 @@ setGeneric("getEdgeProbMat", function(NetM, mode) standardGeneric("getEdgeProbMa
 
 #' Extracts the edge probability matrix for a network model
 #' 
-#' @param NetM Network model object
-#' @param mode Either "prob" or "group": if "prob", this function returns an edge probability matrix. Else, it returns a matrix where each cell gets a group id number
+#' @param NetM [\code{\link{NetworkModel}}] :: Network Model
+#' @param mode [char] :: Either "prob" or "group": if "prob", this function returns an edge probability matrix. Else, it returns a matrix where each cell gets a group id number
 #' 
-#' @return Matrix: Edge Probability Matrix given by the model
+#' @return [matrix] :: Edge probability matrix (or group index matrix)
 #' 
 #' @export
 #' 

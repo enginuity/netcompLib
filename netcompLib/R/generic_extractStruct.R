@@ -4,9 +4,9 @@ setGeneric("extractStruct", function(NetM) standardGeneric("extractStruct"))
 
 #' Extracts the Edge Partition from a Network Model
 #' 
-#' @param NetM NetworkModel object
+#' @param NetM [\code{\link{NetworkModel}}] :: Model to extract edge partition of
 #' 
-#' @return NetworkStruct object that corresponds with the input model
+#' @return [\code{\link{NetworkStruct}}] :: Structure corresponding to input model
 #' 
 #' @export
 #' 
@@ -22,7 +22,6 @@ extractStruct.NetworkModel = function(NetM) {
 
 extractStruct.NetworkModelPair = function(NetM) {
   netsl = new("NetworkStructList", Nnodes = getNnodes(NetM), 
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
               models = list(extractStruct(NetM@m1), extractStruct(NetM@m2)))
   return(netsl)
 }
@@ -53,7 +52,6 @@ extractStruct.NetworkModelSBM = function(NetM) {
   }}
   
   nets = new("NetworkStructSBM", Nnodes = getNnodes(NetM), groups = ga, counts = counts, expand = expanded, correct = correction)
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
   return(nets)
 }
 
@@ -63,7 +61,6 @@ extractStruct.NetworkModelHRG = function(NetM) {
   expc = expanded_children_from_tree(tr)
   
   nets = new("NetworkStructHRG", Nnodes = getNnodes(NetM), tree_list = tr, expand = expc, 
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:33 2015--
              counts = sapply(expc, function(x) {length(x[[1]]) * length(x[[2]]) }))
   return(nets)
 }
@@ -71,7 +68,6 @@ extractStruct.NetworkModelHRG = function(NetM) {
 
 extractStruct.NetworkModelRND = function(NetM) {
   nets = new("NetworkStructRND", Nnodes = getNnodes(NetM), counts = NetM@counts, ids = NetM@ids)
-#|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
   return(nets)
 }
 
