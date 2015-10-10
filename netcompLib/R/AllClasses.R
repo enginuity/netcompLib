@@ -401,12 +401,12 @@ NetworkStructList = function(Nmodels = 10, model_params = set_model_param()) {
 }
 
 
-
 #' Constructor for RND network structure
 #' 
 #' This will generate a network model with random class assignments and class probabilities (unless otherwise specified)
 #' 
 #' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
+#' @param NetM [\code{\link{NetworkModelRND}}] :: If not NULL, this model is used, and its structure extracted
 #' 
 #' @return [NetworkStructRND] :: A representation of the generated model structure
 #' 
@@ -419,11 +419,12 @@ NetworkStructRND = function(model_params = set_model_param(), NetM = NULL) {
 }
 
 
-#' Constructor for RND network structure
+#' Constructor for HRG network structure
 #' 
 #' This will generate a network model with random class assignments and class probabilities (unless otherwise specified)
 #' 
 #' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
+#' @param NetM [\code{\link{NetworkModelHRG}}] :: If not NULL, this model is used, and its structure extracted
 #' 
 #' @return [NetworkStructHRG] :: A representation of the generated model structure
 #' 
@@ -441,6 +442,7 @@ NetworkStructHRG = function(model_params = set_model_param(), NetM = NULL) {
 #' This will generate a network model with random class assignments and class probabilities (unless otherwise specified)
 #' 
 #' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
+#' @param NetM [\code{\link{NetworkModelSBM}}] :: If not NULL, this model is used, and its structure extracted
 #' 
 #' @return [NetworkStructSBM] :: A representation of the generated model structure
 #' 
