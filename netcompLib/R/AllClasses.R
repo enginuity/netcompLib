@@ -202,7 +202,7 @@ NetworkModelHRG = function(model_params = set_model_param()) {
       clist[[z[1] - Nnodes]][z[2]] = j
     }
     
-
+    
     ## fill remaining children :
     for(j in sample(1:Nnodes, size = Nnodes)) {
       z = find_first_empty(clist)
@@ -331,8 +331,8 @@ NetworkModelRND = function(model_params = set_model_param()) {
 #' @param m1 [\code{\link{NetworkModel}} OR list] :: This can either be a model object, or a list containing model parameters
 #' @param m2 [\code{\link{NetworkModel}} OR list] :: This can either be a model object, or a list containing model parameters
 #' @param is_null [logical] :: If TRUE, m2 is ignored (since the null hypothesis means that both models are identical)
-#' @param model_type temp
-#' @param addl_param temp
+#' @param model_type [char] :: Can be 'default', 'correlated', or 'densitydiff'
+#' @param addl_param [list] :: Additional parameters for correlated or densitydiff models
 #' 
 #' @return [NetworkModelPair] :: An object containing information about two network models. 
 #' 
@@ -349,9 +349,31 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
     
     if (model_type == "densitydiff") {
       ## Adjust second model here! add the adjustment parameter
+      if (!(dd_param_add %in% names(addl_param))) { addl_param$dd_param_add = rnorm(1) }
       m2 = m1
-      m2@probmat = faraway::ilogit(faraway::logit(m2@probmat) + addl_param$dd_param_add)
+      origprobs = get_dyadgroup_prob(m1)
+      m2 = reassign_edgegroup_prob(
+        m2, origprobs$names, faraway::ilogit(faraway::logit(origprobs$probs) + addl_param$dd_param_add))
     }
+    
+    if (model_type == 'correlated') {
+      if (!(c_param_corr %in% names(addl_param))) { addl_param$c_param_corr = rnorm(1) }
+      
+      if (!(c_param_a %in% names(addl_param))) { 
+        temp = aggstat_single(m1, getEdgeProbMat(m1)) 
+        addl_params$c_param_a = temp$x / temp$n
+      }
+      
+      if (!(c_param_b %in% names(addl_param))) { 
+        temp = aggstat_single(m2, getEdgeProbMat(m2)) 
+        addl_params$c_param_b = temp$x / temp$n
+      }
+      
+      if (!(c_names %in% names(addl_param))) {
+        addl_param$c_names = aggstat_single(m1, getEdgeProbMat(m1))$names
+      }
+    }
+    
     netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m2, is_null = FALSE, model_type = model_type, addl_param = addl_param)
   }
   return(netmp)
@@ -396,7 +418,7 @@ NetworkStruct = function(model_params = set_model_param(), NetM = NULL) {
 #' @export
 #' 
 NetworkStructList = function(Nmodels = 10, model_params = set_model_param(), NetMPair = NULL) {
-
+  
   if (is.null(NetMPair)) {
     res = replicate(n = Nmodels, expr = NetworkStruct(model_params))
   } else {
@@ -404,7 +426,7 @@ NetworkStructList = function(Nmodels = 10, model_params = set_model_param(), Net
     res@models[[1]] = NetworkStruct(NetM = NetM@m1)
     res@models[[2]] = extractStruct(NetM = NetM@m2)
   }
-
+  
   return(new("NetworkStructList", Nnodes = model_params$Nnodes, models = res))
 }
 
