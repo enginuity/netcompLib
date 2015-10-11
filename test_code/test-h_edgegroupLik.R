@@ -19,3 +19,7 @@ aggstat_corr(NetM, adja1, adja2)
 
 aggstat_single(NetworkModelHRG(set_model_param(Nnodes = 6)), adja1)
 aggstat_single(NetworkModelRND(set_model_param(Nnodes = 6)), adja1)
+
+
+aggstat_single(NetM, getEdgeProbMat(NetM))
+getEdgeProbMat(NetM)

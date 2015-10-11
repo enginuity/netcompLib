@@ -66,7 +66,7 @@ computeLik.NetworkModelPair = function(NetM, adja, by_node = FALSE, by_group = F
     pt = hCorr_paramToProb(NetM@addl_param$c_param_corr, NetM@addl_param$c_param_a, NetM@addl_param$c_param_b)
     adjm = adja[,,1] * 10 + adja[,,2]
     matches_x = matrix(match(adjm, as.numeric(colnames(pt))), nrow = nrow(adjm))
-    matches_group = matrix(match(getEdgeProbMat(NetM, "group")[[1]], as.numeric(NetM@addl_param$c_names)), nrow = nrow(adjm))
+    matches_group = matrix(match(getEdgeProbMat(NetM, "group")[[1]], as.numeric(NetM@addl_param$c_names)), nrow = nrow(adjm)) ## Fix c_names call here. 
     
     ll_node = sapply(seq_len(nrow(adjm)), function(i) { sum(log(mapply(function(x,y) {pt[x,y]}, y=matches_x[i,],x=matches_group[i,])[-i]))/2 })
     
