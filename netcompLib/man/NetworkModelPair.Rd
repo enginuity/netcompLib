@@ -14,9 +14,9 @@ NetworkModelPair(m1, m2 = NULL, is_null = FALSE, model_type = "default",
 
 \item{is_null}{[logical] :: If TRUE, m2 is ignored (since the null hypothesis means that both models are identical)}
 
-\item{model_type}{temp}
+\item{model_type}{[char] :: Can be 'default', 'correlated', or 'densitydiff'}
 
-\item{addl_param}{temp}
+\item{addl_param}{[list] :: Additional parameters for correlated or densitydiff models}
 }
 \value{
 [NetworkModelPair] :: An object containing information about two network models.

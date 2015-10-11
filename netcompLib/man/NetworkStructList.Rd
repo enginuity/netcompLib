@@ -4,12 +4,15 @@
 \alias{NetworkStructList}
 \title{Constructor for class NetworkStructList -- a list of network model structure information.}
 \usage{
-NetworkStructList(Nmodels = 10, model_params = set_model_param())
+NetworkStructList(Nmodels = 10, model_params = set_model_param(),
+  NetMPair = NULL)
 }
 \arguments{
 \item{Nmodels}{[int] :: Number of random edge partitions to generate}
 
 \item{model_params}{[list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters}
+
+\item{NetMPair}{[\code{\link{NetworkModelPair}}] :: If not NULL, these models are used, and its structures extracted}
 }
 \value{
 [NetworkStructList] :: A representation of the generated model structure

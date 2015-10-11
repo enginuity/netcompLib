@@ -9,7 +9,7 @@ NetworkStructSBM(model_params = set_model_param(), NetM = NULL)
 \arguments{
 \item{model_params}{[list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters}
 
-\item{NetM}{temp}
+\item{NetM}{[\code{\link{NetworkModelSBM}}] :: If not NULL, this model is used, and its structure extracted}
 }
 \value{
 [NetworkStructSBM] :: A representation of the generated model structure

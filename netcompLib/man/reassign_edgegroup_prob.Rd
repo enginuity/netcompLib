@@ -2,21 +2,21 @@
 % Please edit documentation in R/h_edgegroupLik.R
 \name{reassign_edgegroup_prob}
 \alias{reassign_edgegroup_prob}
-\title{<What does this function do>}
+\title{Reassign dyad group probabilities}
 \usage{
 reassign_edgegroup_prob(NetM, ids, probs)
 }
 \arguments{
-\item{NetM}{temp}
+\item{NetM}{[\code{\link{NetworkModel}}] :: Model to reassign probabilities of}
 
-\item{ids}{temp}
+\item{ids}{[vector-char OR vector-int] :: Dyad group IDs}
 
-\item{probs}{temp}
+\item{probs}{[vector-double] :: Probabilities to assign to dyad groups}
 }
 \value{
-temp
+[\code{\link{NetworkModel}}] :: Adjusted network model with reassigned probabilities
 }
 \description{
-<What does this function do>
+Reassign dyad group probabilities
 }
 

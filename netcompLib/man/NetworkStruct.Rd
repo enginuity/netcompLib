@@ -4,10 +4,12 @@
 \alias{NetworkStruct}
 \title{Instantiates an object of class NetworkStruct}
 \usage{
-NetworkStruct(model_params = set_model_param())
+NetworkStruct(model_params = set_model_param(), NetM = NULL)
 }
 \arguments{
 \item{model_params}{[list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters}
+
+\item{NetM}{[\code{\link{NetworkModel}}] :: If not NULL, this model is used, and its structure extracted}
 }
 \value{
 [NetworkStruct] :: A representation of the generated model structure
