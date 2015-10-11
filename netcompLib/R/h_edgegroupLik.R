@@ -100,14 +100,19 @@ aggstat_corr = function(NetM, adja1, adja2) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (reassign_edgegroup_prob)
-#' <What does this function do>
+get_dyadgroup_prob = function(NetM) {
+  temp = aggstat_single(NetM, getEdgeProbMat(NetM))
+  return(list(probs = temp$x / temp$n, names = temp$names))
+}
+
+
+#' Reassign dyad group probabilities
 #' 
-#' @param NetM temp
-#' @param ids temp
-#' @param probs temp
+#' @param NetM [\code{\link{NetworkModel}}] :: Model to reassign probabilities of
+#' @param ids [vector-char OR vector-int] :: Dyad group IDs
+#' @param probs [vector-double] :: Probabilities to assign to dyad groups
 #' 
-#' @return temp
+#' @return [\code{\link{NetworkModel}}] :: Adjusted network model with reassigned probabilities
 #' 
 #' @export
 #' 
