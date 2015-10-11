@@ -421,13 +421,10 @@ NetworkStructList = function(Nmodels = 10, model_params = set_model_param(), Net
 #' @export
 #' 
 NetworkStructRND = function(model_params = set_model_param(), NetM = NULL) {
-#   nets = new("NetworkStructRND", Nnodes = getNnodes(NetM), counts = NetM@counts, ids = NetM@ids)
-#   return(nets)
-#   
-  # Just generate a model and then lose the probability information. 
-  NetM = NetworkModelRND(model_params)
-  return(extractStruct(NetM))
-#|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
+  if (is.null(NetM)) { NetM = NetworkModelRND(model_params) }
+  
+  nets = new("NetworkStructRND", Nnodes = getNnodes(NetM), counts = NetM@counts, ids = NetM@ids)
+  return(nets)
 }
 
 
@@ -443,19 +440,14 @@ NetworkStructRND = function(model_params = set_model_param(), NetM = NULL) {
 #' @export
 #' 
 NetworkStructHRG = function(model_params = set_model_param(), NetM = NULL) {
-#   tr = list(prob = NetM@prob, children = NetM@children, parents = NetM@parents, nodes = getNnodes(NetM))
-#   expc = expanded_children_from_tree(tr)
-#   
-#   nets = new("NetworkStructHRG", Nnodes = getNnodes(NetM), tree_list = tr, expand = expc, 
-#              counts = sapply(expc, function(x) {length(x[[1]]) * length(x[[2]]) }))
-#   return(nets)
-#   
-#   
-#   
-  # Just generate a model and then lose the probability information. 
-  NetM = NetworkModelHRG(model_params)
-  return(extractStruct(NetM))
-#|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
+  if (is.null(NetM)) { NetM = NetworkModelHRG(model_params) }
+  
+  tr = list(prob = NetM@prob, children = NetM@children, parents = NetM@parents, nodes = getNnodes(NetM))
+  expc = expanded_children_from_tree(tr)
+  
+  nets = new("NetworkStructHRG", Nnodes = getNnodes(NetM), tree_list = tr, expand = expc, 
+             counts = sapply(expc, function(x) {length(x[[1]]) * length(x[[2]]) }))
+  return(nets)
 }
 
 
@@ -471,36 +463,32 @@ NetworkStructHRG = function(model_params = set_model_param(), NetM = NULL) {
 #' @export
 #' 
 NetworkStructSBM = function(model_params = set_model_param(), NetM = NULL) {
-#   
-#   # group assignments
-#   ga = NetM@groups
-#   NClass = length(unique(ga))
-#   
-#   counts = rep(0, times = NClass + NClass * (NClass - 1) / 2)
-#   correction = rep(0, times = NClass + NClass * (NClass - 1) / 2)
-#   
-#   expanded = list()
-#   cur = 1
-#   for(k in 1:NClass) { for(m in 1:NClass) {
-#     if (k >= m) {
-#       if (k == m) { 
-#         counts[cur] = sum(ga == k) * (sum(ga == k) - 1) / 2 
-#         correction[cur] = 2
-#       } else {
-#         counts[cur] = sum(ga == k) * sum(ga == m)
-#         correction[cur] = 1
-#       }
-#       expanded[[cur]] = list(which(ga == k), which(ga == m))
-#       cur = cur + 1
-#     }
-#   }}
-#   
-#   nets = new("NetworkStructSBM", Nnodes = getNnodes(NetM), groups = ga, counts = counts, expand = expanded, correct = correction)
-#   
+  if (is.null(NetM)) { NetM = NetworkModelSBM(model_params) }
   
-  # Just generate a model and then lose the probability information. 
-  NetM = NetworkModelSBM(model_params)
-  return(extractStruct(NetM))
-#|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
+  # group assignments
+  ga = NetM@groups
+  NClass = length(unique(ga))
+  
+  counts = rep(0, times = NClass + NClass * (NClass - 1) / 2)
+  correction = rep(0, times = NClass + NClass * (NClass - 1) / 2)
+  
+  expanded = list()
+  cur = 1
+  for(k in 1:NClass) { for(m in 1:NClass) {
+    if (k >= m) {
+      if (k == m) { 
+        counts[cur] = sum(ga == k) * (sum(ga == k) - 1) / 2 
+        correction[cur] = 2
+      } else {
+        counts[cur] = sum(ga == k) * sum(ga == m)
+        correction[cur] = 1
+      }
+      expanded[[cur]] = list(which(ga == k), which(ga == m))
+      cur = cur + 1
+    }
+  }}
+  
+  nets = new("NetworkStructSBM", Nnodes = getNnodes(NetM), groups = ga, counts = counts, expand = expanded, correct = correction)
+  return(nets)
 }
 
