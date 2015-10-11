@@ -365,19 +365,20 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
 #' Instantiates an object of class NetworkStruct
 #' 
 #' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
+#' @param NetM [\code{\link{NetworkModel}}] :: If not NULL, this model is used, and its structure extracted
 #' 
 #' @return [NetworkStruct] :: A representation of the generated model structure
 #' 
 #' @export
 #' 
-NetworkStruct = function(model_params = set_model_param()) {
+NetworkStruct = function(model_params = set_model_param(), NetM = NULL) {
   type = model_params$type
   
   if (type == "none") { return(new("NetworkStruct")) }
-  if (type == "block") { return(NetworkStructSBM(model_params)) }
-  if (type == "tree") { return(NetworkStructHRG(model_params)) }
+  if (type == "block") { return(NetworkStructSBM(model_params, NetM)) }
+  if (type == "tree") { return(NetworkStructHRG(model_params, NetM)) }
   if (type == "latent") { stop("Not valid with latent space models") }
-  if (type == "random") { return(NetworkStructRND(model_params)) }
+  if (type == "random") { return(NetworkStructRND(model_params, NetM)) }
   stop("Invalid 'type' specified")
 }
 
@@ -388,24 +389,23 @@ NetworkStruct = function(model_params = set_model_param()) {
 #' 
 #' @param Nmodels [int] :: Number of random edge partitions to generate
 #' @param model_params [list; DEFAULT = \code{\link{set_model_param}}()] :: Model parameters
+#' @param NetMPair [\code{\link{NetworkModelPair}}] :: If not NULL, these models are used, and its structures extracted
 #' 
 #' @return [NetworkStructList] :: A representation of the generated model structure
 #' 
 #' @export
 #' 
-NetworkStructList = function(Nmodels = 10, model_params = set_model_param()) {
-#   #|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
-#   netsl = NetworkStructList(Nmodels = 2)
-#   netsl@models[[1]] = extractStruct(NetM@m1)
-#   #|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
-#   netsl@models[[2]] = extractStruct(NetM@m2)
-#   #|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
-#   return(netsl)
-#   
-  
-  res = replicate(n = Nmodels, expr = NetworkStruct(model_params))
-  netsl = new("NetworkStructList", Nnodes = model_params$Nnodes, models = res)
-  return(netsl)
+NetworkStructList = function(Nmodels = 10, model_params = set_model_param(), NetMPair = NULL) {
+
+  if (is.null(NetMPair)) {
+    res = replicate(n = Nmodels, expr = NetworkStruct(model_params))
+  } else {
+    res = replicate(n = 2, expr = NetworkStruct(model_params))
+    res@models[[1]] = NetworkStruct(NetM = NetM@m1)
+    res@models[[2]] = extractStruct(NetM = NetM@m2)
+  }
+
+  return(new("NetworkStructList", Nnodes = model_params$Nnodes, models = res))
 }
 
 
