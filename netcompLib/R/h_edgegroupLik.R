@@ -6,7 +6,7 @@
 
 #' Compute sufficient statstics for a single network
 #' 
-#' @param NetM [NetworkModel] :: Model with respect to which structure would be computed
+#' @param NetM [\code{\link{NetworkModel}}] :: Model with respect to which structure would be computed
 #' @param adja [array-int] :: Adjacency matrix or arrays
 #' 
 #' @return [list] :: List with following entries
@@ -43,11 +43,17 @@ aggstat_single = function(NetM, adja) {
 
 #' Compute sufficient statistics for density-difference estimation
 #' 
-#' @param NetM [] :: model
-#' @param adja1 [] :: adjm 1
-#' @param adja2 [] :: adjm 2
+#' @param NetM [\code{\link{NetworkModel}}] :: Model with respect to which structure would be computed
+#' @param adja1 [array-int] :: Adjacency matrix or arrays 1
+#' @param adja2 [array-int] :: Adjacency matrix or arrays 2
 #' 
-#' @return [] :: list of statistics: n, x, y -- n = total edges in edge group, x,y = edge appearance count in each edge group
+#' @return [list] :: List with following entries
+#' \itemize{
+#'  \item n -- [vector-int] :: Edge group sizes
+#'  \item x -- [vector-int] :: Dyad group edge presence counts in input 1
+#'  \item y -- [vector-int] :: Dyad group edge presence counts in input 2
+#'  \item names -- [vector-char] :: Dyad group IDs
+#' }
 #' 
 #' @export
 #' 
@@ -67,14 +73,19 @@ aggstat_dendiff = function(NetM, adja1, adja2) {
   ), unname))
 }
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (aggstat_corr)
-#' <What does this function do>
+
+#' Compute sufficient statistics for correlated-model estimation
 #' 
-#' @param NetM temp
-#' @param adja1 temp
-#' @param adja2 temp
+#' @param NetM [\code{\link{NetworkModel}}] :: Model with respect to which structure would be computed
+#' @param adja1 [array-int] :: Adjacency matrix or arrays 1
+#' @param adja2 [array-int] :: Adjacency matrix or arrays 2
 #' 
-#' @return temp
+#' @return [list] :: List with following entries
+#' \itemize{
+#'  \item n -- [vector-int] :: Edge group sizes
+#'  \item names -- [vector-char] :: Dyad group IDs
+#'  \item C - [matrix-int] :: columns are counts of 11, 10, 01, 00 cases respectively
+#' }
 #' 
 #' @export
 #' 
@@ -100,13 +111,27 @@ aggstat_corr = function(NetM, adja1, adja2) {
 }
 
 
+#' Get dyad group probabilities
+#' 
+#' @param NetM [\code{\link{NetworkModel}}] :: Model to get group probabilities of
+#' 
+#' @return [list] :: Two elements: 
+#' \itemize{
+#' \item probs -- [vector-double] :: Probabilities for each dyad group
+#' \item names -- [vector-char] :: Names for each dyad group for ID purposes
+#' }
+#' 
+#' @export
+#' 
 get_dyadgroup_prob = function(NetM) {
+  ## TODO: Rename output 'names' by 'ids' in this and all edge group aggregation functions
+  
   temp = aggstat_single(NetM, getEdgeProbMat(NetM))
   return(list(probs = temp$x / temp$n, names = temp$names))
 }
 
 
-#' Reassign dyad group probabilities
+#' Set dyad group probabilities
 #' 
 #' @param NetM [\code{\link{NetworkModel}}] :: Model to reassign probabilities of
 #' @param ids [vector-char OR vector-int] :: Dyad group IDs
