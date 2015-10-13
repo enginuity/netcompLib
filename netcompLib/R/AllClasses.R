@@ -342,40 +342,58 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
   if (!(is(m1, "NetworkModel"))) { m1 = NetworkModel(m1) }
   if (!(is(m2, "NetworkModel")) & !is.null(m2)) { m2 = NetworkModel(m2) }
   
-  if (is_null) {
-    netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m1, is_null = TRUE, model_type = model_type, addl_param = addl_param)
+  if (model_type == "default") {
+    if (is_null) {
+      netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m1, is_null = TRUE, model_type = model_type, addl_param = addl_param)
+    } else {
+      if (is.null(m2)) { stop("---You must provide the second model if the null hypothesis is FALSE.---") }
+      netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m2, is_null = FALSE, model_type = model_type, addl_param = addl_param)
+    }
+    
+  } else if (model_type == "densitydiff") {
+    
+    ## In this case, null hypothesis must be true. 
+    if (!(dd_param_add %in% names(addl_param))) { addl_param$dd_param_add = rnorm(1) }
+    m2 = m1
+    origprobs = get_dyadgroup_prob(m1)
+    m2 = reassign_edgegroup_prob(
+      m2, origprobs$names, faraway::ilogit(faraway::logit(origprobs$probs) + addl_param$dd_param_add))
+    
+  } else if (model_type == "correlated") {
+    
+    
+    #   
+    #     ## Finish fixing this case
+    #     if (model_type == 'correlated') {
+    #       if (!(c_param_corr %in% names(addl_param))) { addl_param$c_param_corr = rnorm(1) }
+    #       
+    #       if (any(getEdgeProbMat(m1, 'group') != getEdgeProbMat(m2, 'group'))) {
+    #         stop("Invalid second model -- dyad partition is not the same.")
+    #       }
+    #       ## Rewrite this section
+    #       
+    #       
+    #       if (!(c_param_a %in% names(addl_param))) { 
+    #         temp = aggstat_single(m1, getEdgeProbMat(m1)) 
+    #         addl_params$c_param_a = temp$x / temp$n
+    #       }
+    #       
+    #       if (!(c_param_b %in% names(addl_param))) { 
+    #         temp = aggstat_single(m2, getEdgeProbMat(m2)) 
+    #         addl_params$c_param_b = temp$x / temp$n
+    #       }
+    #       
+    #       if (!(c_names %in% names(addl_param))) {
+    #         addl_param$c_names = aggstat_single(m1, getEdgeProbMat(m1))$names
+    #       }
+    #     }
+    #     
+    
+    
   } else {
-    if (is.null(m2)) { stop("---You must provide the second model if the null hypothesis is FALSE.---") }
-    
-    if (model_type == "densitydiff") {
-      ## Adjust second model here! add the adjustment parameter
-      if (!(dd_param_add %in% names(addl_param))) { addl_param$dd_param_add = rnorm(1) }
-      m2 = m1
-      origprobs = get_dyadgroup_prob(m1)
-      m2 = reassign_edgegroup_prob(
-        m2, origprobs$names, faraway::ilogit(faraway::logit(origprobs$probs) + addl_param$dd_param_add))
-    }
-    
-    if (model_type == 'correlated') {
-      if (!(c_param_corr %in% names(addl_param))) { addl_param$c_param_corr = rnorm(1) }
-      
-      if (!(c_param_a %in% names(addl_param))) { 
-        temp = aggstat_single(m1, getEdgeProbMat(m1)) 
-        addl_params$c_param_a = temp$x / temp$n
-      }
-      
-      if (!(c_param_b %in% names(addl_param))) { 
-        temp = aggstat_single(m2, getEdgeProbMat(m2)) 
-        addl_params$c_param_b = temp$x / temp$n
-      }
-      
-      if (!(c_names %in% names(addl_param))) {
-        addl_param$c_names = aggstat_single(m1, getEdgeProbMat(m1))$names
-      }
-    }
-    
-    netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m2, is_null = FALSE, model_type = model_type, addl_param = addl_param)
+    stop("Invalid model_type")
   }
+  
   return(netmp)
 }
 
