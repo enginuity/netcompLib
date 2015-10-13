@@ -2,21 +2,26 @@
 % Please edit documentation in R/h_edgegroupLik.R
 \name{aggstat_corr}
 \alias{aggstat_corr}
-\title{<What does this function do>}
+\title{Compute sufficient statistics for correlated-model estimation}
 \usage{
 aggstat_corr(NetM, adja1, adja2)
 }
 \arguments{
-\item{NetM}{temp}
+\item{NetM}{[\code{\link{NetworkModel}}] :: Model with respect to which structure would be computed}
 
-\item{adja1}{temp}
+\item{adja1}{[array-int] :: Adjacency matrix or arrays 1}
 
-\item{adja2}{temp}
+\item{adja2}{[array-int] :: Adjacency matrix or arrays 2}
 }
 \value{
-temp
+[list] :: List with following entries
+\itemize{
+ \item n -- [vector-int] :: Edge group sizes
+ \item names -- [vector-char] :: Dyad group IDs
+ \item C - [matrix-int] :: columns are counts of 11, 10, 01, 00 cases respectively
+}
 }
 \description{
-<What does this function do>
+Compute sufficient statistics for correlated-model estimation
 }
 

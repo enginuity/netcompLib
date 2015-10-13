@@ -2,17 +2,21 @@
 % Please edit documentation in R/h_edgegroupLik.R
 \name{get_dyadgroup_prob}
 \alias{get_dyadgroup_prob}
-\title{<What does this function do>}
+\title{Get dyad group probabilities}
 \usage{
 get_dyadgroup_prob(NetM)
 }
 \arguments{
-\item{NetM}{temp}
+\item{NetM}{[\code{\link{NetworkModel}}] :: Model to get group probabilities of}
 }
 \value{
-temp
+[list] :: Two elements:
+\itemize{
+\item probs -- [vector-double] :: Probabilities for each dyad group
+\item names -- [vector-char] :: Names for each dyad group for ID purposes
+}
 }
 \description{
-<What does this function do>
+Get dyad group probabilities
 }
 

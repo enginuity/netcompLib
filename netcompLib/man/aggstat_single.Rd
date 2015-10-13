@@ -7,7 +7,7 @@
 aggstat_single(NetM, adja)
 }
 \arguments{
-\item{NetM}{[NetworkModel] :: Model with respect to which structure would be computed}
+\item{NetM}{[\code{\link{NetworkModel}}] :: Model with respect to which structure would be computed}
 
 \item{adja}{[array-int] :: Adjacency matrix or arrays}
 }

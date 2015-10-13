@@ -7,14 +7,20 @@
 aggstat_dendiff(NetM, adja1, adja2)
 }
 \arguments{
-\item{NetM}{[] :: model}
+\item{NetM}{[\code{\link{NetworkModel}}] :: Model with respect to which structure would be computed}
 
-\item{adja1}{[] :: adjm 1}
+\item{adja1}{[array-int] :: Adjacency matrix or arrays 1}
 
-\item{adja2}{[] :: adjm 2}
+\item{adja2}{[array-int] :: Adjacency matrix or arrays 2}
 }
 \value{
-[] :: list of statistics: n, x, y -- n = total edges in edge group, x,y = edge appearance count in each edge group
+[list] :: List with following entries
+\itemize{
+ \item n -- [vector-int] :: Edge group sizes
+ \item x -- [vector-int] :: Dyad group edge presence counts in input 1
+ \item y -- [vector-int] :: Dyad group edge presence counts in input 2
+ \item names -- [vector-char] :: Dyad group IDs
+}
 }
 \description{
 Compute sufficient statistics for density-difference estimation

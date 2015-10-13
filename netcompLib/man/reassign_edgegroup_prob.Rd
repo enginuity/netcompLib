@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_edgegroupLik.R
 \name{reassign_edgegroup_prob}
 \alias{reassign_edgegroup_prob}
-\title{Reassign dyad group probabilities}
+\title{Set dyad group probabilities}
 \usage{
 reassign_edgegroup_prob(NetM, ids, probs)
 }
@@ -17,6 +17,6 @@ reassign_edgegroup_prob(NetM, ids, probs)
 [\code{\link{NetworkModel}}] :: Adjusted network model with reassigned probabilities
 }
 \description{
-Reassign dyad group probabilities
+Set dyad group probabilities
 }
 
