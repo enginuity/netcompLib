@@ -351,8 +351,8 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
     }
     
   } else if (model_type == "densitydiff") {
+    ## In this case, null hypothesis must be true, as the second model must have same structure AND be exactly a fixed density parameter away. 
     
-    ## In this case, null hypothesis must be true. 
     if (!(dd_param_add %in% names(addl_param))) { addl_param$dd_param_add = rnorm(1) }
     m2 = m1
     origprobs = get_dyadgroup_prob(m1)
@@ -360,35 +360,31 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
       m2, origprobs$names, faraway::ilogit(faraway::logit(origprobs$probs) + addl_param$dd_param_add))
     
   } else if (model_type == "correlated") {
+    ## In this case, the structure should be the same, but can either be null or non-null. 
+    ## If null -> model must be the same, so m2 is ignored. 
+    if (is_null) { 
+      m2 = m1 
+    } else if (any(getEdgeProbMat(m1, 'group') != getEdgeProbMat(m2, 'group'))) {
+      stop("Invalid second model -- dyad partition is not the same.")
+    } 
     
+    ## Assign correlation parameter if not inputted
+    if (!(c_param_corr %in% names(addl_param))) { addl_param$c_param_corr = rnorm(1) }
     
-    #   
-    #     ## Finish fixing this case
-    #     if (model_type == 'correlated') {
-    #       if (!(c_param_corr %in% names(addl_param))) { addl_param$c_param_corr = rnorm(1) }
-    #       
-    #       if (any(getEdgeProbMat(m1, 'group') != getEdgeProbMat(m2, 'group'))) {
-    #         stop("Invalid second model -- dyad partition is not the same.")
-    #       }
-    #       ## Rewrite this section
-    #       
-    #       
-    #       if (!(c_param_a %in% names(addl_param))) { 
-    #         temp = aggstat_single(m1, getEdgeProbMat(m1)) 
-    #         addl_params$c_param_a = temp$x / temp$n
-    #       }
-    #       
-    #       if (!(c_param_b %in% names(addl_param))) { 
-    #         temp = aggstat_single(m2, getEdgeProbMat(m2)) 
-    #         addl_params$c_param_b = temp$x / temp$n
-    #       }
-    #       
-    #       if (!(c_names %in% names(addl_param))) {
-    #         addl_param$c_names = aggstat_single(m1, getEdgeProbMat(m1))$names
-    #       }
-    #     }
-    #     
+    ## Check if remaining parameters are already assigned; assign if not. 
+    if (!(c_param_a %in% names(addl_param))) { 
+      temp = aggstat_single(m1, getEdgeProbMat(m1)) 
+      addl_params$c_param_a = temp$x / temp$n
+    }
     
+    if (!(c_param_b %in% names(addl_param))) { 
+      temp = aggstat_single(m2, getEdgeProbMat(m2)) 
+      addl_params$c_param_b = temp$x / temp$n
+    }
+    
+    if (!(c_names %in% names(addl_param))) {
+      addl_param$c_names = aggstat_single(m1, getEdgeProbMat(m1))$names
+    }
     
   } else {
     stop("Invalid model_type")
