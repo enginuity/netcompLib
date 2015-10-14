@@ -114,6 +114,21 @@ NetworkModelSBM = function(model_params = set_model_param()) {
     prob_matrix = model_params$block_probs
   }
   
+  
+  ## Check if there are too many groups. 
+  getGroupReassignments = function(x) {
+    ## Give appropriate re-indexing of group IDs. 
+    
+    ordered = sort(unique(x), decreasing = FALSE)
+    res = match(seq_len(max(x)), ordered)
+    return(res)
+  }
+  ## Reassign group IDs
+  g_reassign = getGroupReassignments(group_assign)
+  group_assign = g_reassign[group_assign]
+  rc_tokeep = which(!is.na(g_reassign))
+  prob_matrix = prob_matrix[rc_tokeep, rc_tokeep]
+  
   netm = new("NetworkModelSBM", Nnodes = Nnodes, groups = group_assign, probmat = prob_matrix)
   return(netm)
 }
