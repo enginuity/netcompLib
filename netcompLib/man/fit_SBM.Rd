@@ -2,19 +2,23 @@
 % Please edit documentation in R/fit_SBM.R
 \name{fit_SBM}
 \alias{fit_SBM}
-\title{<What does this function do>}
+\title{Fit SBM given adjacency matrix}
 \usage{
-fit_SBM(adjm, Nobs)
+fit_SBM(adjm, Nobs = 1, Nclass = 3, Niter = 100)
 }
 \arguments{
 \item{adjm}{temp}
 
 \item{Nobs}{temp}
+
+\item{Nclass}{temp}
+
+\item{Niter}{temp}
 }
 \value{
 temp
 }
 \description{
-<What does this function do>
+Fit SBM given adjacency matrix
 }
 
