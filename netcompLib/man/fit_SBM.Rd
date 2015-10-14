@@ -4,7 +4,8 @@
 \alias{fit_SBM}
 \title{Fit SBM given adjacency matrix}
 \usage{
-fit_SBM(adjm, Nobs = 1, Nclass = 3, Niter = 100)
+fit_SBM(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10,
+  start = "spectral", stop_thres = 1e-05, verbose = 0)
 }
 \arguments{
 \item{adjm}{temp}
@@ -14,6 +15,14 @@ fit_SBM(adjm, Nobs = 1, Nclass = 3, Niter = 100)
 \item{Nclass}{temp}
 
 \item{Niter}{temp}
+
+\item{Ntries}{temp}
+
+\item{start}{temp}
+
+\item{stop_thres}{temp}
+
+\item{verbose}{temp}
 }
 \value{
 temp

@@ -1,6 +1,7 @@
 
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fit_SBM)
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fit_SBM)
 #' Fit SBM given adjacency matrix
 #' 
 #' @param adjm temp
@@ -9,6 +10,8 @@
 #' @param Niter temp
 #' @param Ntries temp
 #' @param start temp
+#' @param stop_thres temp
+#' @param verbose temp
 #' 
 #' @return temp
 #' 
