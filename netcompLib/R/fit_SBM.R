@@ -24,7 +24,7 @@ fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start =
   # method 'mf' for mean field EM approach, 'spectral' for just doing spectral clustering
   
   if (method == "spectral") {
-    return(specClust(adjm, Nclass))
+    return(specClust(adjm, Nclass, Ntries))
     
   } else if (method == "mf") {
     for(j in 1:Ntries) {
@@ -43,7 +43,7 @@ fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start =
       } else if (start == 'spectral') {
         
         ## Do spectral clustering once to give a rough start
-        res = specClust(adjm, Nclass)
+        res = specClust(adjm, Nclass, 2)
         
         nodeps = res@groups
         edgeps = res@probmat
@@ -78,16 +78,18 @@ fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start =
 
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (specClust)
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (specClust)
 #' <What does this function do>
 #' 
 #' @param adjm temp
 #' @param Nclass temp
+#' @param Ntries temp
 #' 
 #' @return temp
 #' 
 #' @export
 #' 
-specClust = function(adjm, Nclass) {
+specClust = function(adjm, Nclass, Ntries) {
   diag(adjm) = 0 # Should be 0 already, but this won't hurt. 
   
   ## IF there is missing data, use cheap algorithm to do matrix completing
