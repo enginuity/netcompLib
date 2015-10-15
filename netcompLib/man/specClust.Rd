@@ -4,12 +4,14 @@
 \alias{specClust}
 \title{<What does this function do>}
 \usage{
-specClust(adjm, Nclass)
+specClust(adjm, Nclass, Ntries)
 }
 \arguments{
 \item{adjm}{temp}
 
 \item{Nclass}{temp}
+
+\item{Ntries}{temp}
 }
 \value{
 temp

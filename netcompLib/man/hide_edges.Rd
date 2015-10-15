@@ -4,12 +4,16 @@
 \alias{hide_edges}
 \title{Hides a random set of edges}
 \usage{
-hide_edges(adjm, frac = 0.1)
+hide_edges(adjm, frac = 0.1, template = NULL, invert_template = FALSE)
 }
 \arguments{
 \item{adjm}{[matrix-int] :: Input adjacency matrix}
 
 \item{frac}{[double] :: Fraction of edges to hide}
+
+\item{template}{temp}
+
+\item{invert_template}{temp}
 }
 \value{
 [matrix-int] :: Adjacency matrix with hidden edges
