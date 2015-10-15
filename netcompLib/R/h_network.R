@@ -10,14 +10,24 @@
 #' 
 #' @export
 #' 
-hide_edges = function(adjm, frac = 0.1) {
+hide_edges = function(adjm, frac = 0.1, template = NULL, invert_template = FALSE) {
   ## TODO: Make this work for arrays
   ## copied from netcompSBM
-  tm = matrix(1:(nrow(adjm)^2), nrow = nrow(adjm))
-  vals = tm[upper.tri(tm)]
-  vals = sample(vals, size = floor(length(vals) * frac))
-  adjm[vals] = NA
-  return(symmetrize_mat(adjm))
+  if (is.null(template)) {
+    tm = matrix(1:(nrow(adjm)^2), nrow = nrow(adjm))
+    vals = tm[upper.tri(tm)]
+    vals = sample(vals, size = floor(length(vals) * frac))
+    adjm[vals] = NA
+    adjm = symmetrize_mat(adjm)
+  } else {
+    if (invert_template) {
+      adjm[!is.na(template)] = NA
+    } else {
+      adjm[is.na(template)] = NA
+    }
+    diag(adjm) = 0
+  }
+  return(adjm)
 }
 
 
