@@ -44,8 +44,9 @@ fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start =
         
         ## Do spectral clustering once to give a rough start
         res = specClust(adjm, Nclass, 2)
+        clusts = res@groups
         
-        nodeps = res@groups
+        nodeps = sapply(1:Nclass, function(x) {mean(clusts == x)})
         edgeps = res@probmat
         
         H = matrix(0, nrow = N, ncol = Nclass)
