@@ -1,10 +1,13 @@
 ## Network helper functions
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (hide_edges)
 #' Hides a random set of edges
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param frac [double] :: Fraction of edges to hide
+#' @param template temp
+#' @param invert_template temp
 #' 
 #' @return [matrix-int] :: Adjacency matrix with hidden edges
 #' 
