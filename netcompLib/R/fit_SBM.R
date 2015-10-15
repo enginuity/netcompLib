@@ -2,6 +2,7 @@
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fit_SBM)
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fit_SBM)
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fit_SBM)
 #' Fit SBM given adjacency matrix
 #' 
 #' @param adjm temp
@@ -12,47 +13,79 @@
 #' @param start temp
 #' @param stop_thres temp
 #' @param verbose temp
+#' @param method temp
 #' 
 #' @return temp
 #' 
 #' @export
 #' 
-fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start = "spectral", stop_thres = 0.00001, verbose = 0) { 
+fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start = "spectral", stop_thres = 0.00001, verbose = 0, method = "mf") { 
   # start = 'spectral' or 'random'
+  # method 'mf' for mean field EM approach, 'spectral' for just doing spectral clustering
   
-  for(j in 1:Ntries) {
-    N = nrow(adjm) ## This is the number of nodes
-    
-    best_loglik = -Inf
+  if (method == "spectral") {
     best_res = NULL
-    if (start == 'random') {
-      ## Random start
-      nodeps = rep(1/Nclass, length = Nclass)
-      edgeps = symmetrize_mat(matrix(sum(adjm, na.rm = TRUE) / (Nobs * N * (N-1) / 2) * runif(n = Nclass * Nclass, min = 0.1, max = 0.9), nrow = Nclass))
+    best_loglik = -Inf
+    
+    for(j in 1:Ntries) {
       
-    } else if (start == 'spectral') {
-      
-      ## Do spectral clustering once to give a rough start
       clusts = kmeans(scale(eigen(adjm)$vectors[,1:Nclass]), centers = Nclass, nstart = 10)$cluster
-      
       nodeps = sapply(1:Nclass, function(x) { sum(x == clusts) }) / length(clusts)
-      edgeps = fitModel(NetworkStruct(set_model_param(Nnodes = length(clusts), block_nclass = Nclass, block_assign = clusts)), adjm)@probmat
+      nets = NetworkStruct(set_model_param(Nnodes = length(clusts), type = 'block', block_nclass = Nclass, block_assign = clusts))
+      model = fitModel(nets, adjm)
+      loglik = computeLik(model, adja = adjm)$sum
+      if (loglik > best_loglik) {
+        best_loglik = loglik
+        best_res = model
+      }
     }
-    H = matrix(0, nrow = N, ncol = Nclass)
-    PHI = matrix(runif(Nclass*N, min = 0.1, max = 0.9), nrow = N)
-    PHI = PHI / rowSums(PHI)
-    
-    results = EM_SBM_mf(adjm = adjm, Nobs = Nobs, nodeps = nodeps, edgeps = edgeps, H = H, PHI = PHI, 
-                        Niter = Niter, stop_thres = stop_thres, verbose = verbose)
-    
-    loglik = computeLik(results$model, adja = adjm)$sum
-    if (loglik > best_loglik) {
-      best_loglik = loglik
-      best_res = results
+    return(best_res)
+  } else if (method == "mf") {
+    for(j in 1:Ntries) {
+      N = nrow(adjm) ## This is the number of nodes
+      
+      best_loglik = -Inf
+      best_res = NULL
+      if (start == 'random') {
+        ## Random start
+        nodeps = rep(1/Nclass, length = Nclass)
+        edgeps = symmetrize_mat(matrix(sum(adjm, na.rm = TRUE) / (Nobs * N * (N-1) / 2) * runif(n = Nclass * Nclass, min = 0.1, max = 0.9), nrow = Nclass))
+        
+        H = matrix(0, nrow = N, ncol = Nclass)
+        PHI = matrix(runif(Nclass*N, min = 0.1, max = 0.9), nrow = N)
+        PHI = PHI / rowSums(PHI)
+      } else if (start == 'spectral') {
+        
+        ## Do spectral clustering once to give a rough start
+        clusts = kmeans(scale(eigen(adjm)$vectors[,1:Nclass]), centers = Nclass, nstart = 10)$cluster
+        
+        nodeps = sapply(1:Nclass, function(x) { sum(x == clusts) }) / length(clusts)
+        edgeps = fitModel(NetworkStruct(set_model_param(Nnodes = length(clusts), block_nclass = Nclass, block_assign = clusts)), adjm)@probmat
+        
+        H = matrix(0, nrow = N, ncol = Nclass)
+        PHI = matrix(runif(Nclass*N, min = 0.1, max = 0.9), nrow = N)
+        for(j in 1:Nclass) {
+          PHI[which(j == clusts),j] = PHI[which(j == clusts),j] + 2
+        }
+        PHI = PHI / rowSums(PHI)
+      }
+      
+      
+      results = EM_SBM_mf(adjm = adjm, Nobs = Nobs, nodeps = nodeps, edgeps = edgeps, H = H, PHI = PHI, 
+                          Niter = Niter, stop_thres = stop_thres, verbose = verbose)
+      # newm = NetworkModel(set_model_param(Nnodes = 30, block_assign = clusts, block_probs = edgeps))
+      # computeLik(newm, adjm)$sum
+      loglik = computeLik(results$model, adja = adjm)$sum
+      if (verbose > 0) { print(loglik) }
+      
+      if (loglik > best_loglik) {
+        best_loglik = loglik
+        best_res = results
+      }
     }
+    
+    return(best_res)
   }
-  
-  return(best_res)
 }
 
 
@@ -106,7 +139,7 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
     H = H + abs(max(H)) #rescale to prevent exponentiation errors
     peH = t(nodeps * t(exp(H)))
     PHI = peH / rowSums(peH)
-    if (verbose > 2) { print(compute_objfx()) }
+    if (verbose > 3) { print(compute_objfx()) }
     
     ## M step
     nodeps_new = apply(PHI, 2, sum) / N
@@ -125,7 +158,7 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
     ## Check for convergence
     ## Compute change in parameter estimates
     delta = sum(abs(edgeps_new - edgeps)) + sum(abs(nodeps_new - nodeps))
-    if (verbose > 0) { cat("Iteration ", I, " ----- change in edgeps and nodeps = ", delta, "\n", sep = "") }
+    if (verbose > 1) { cat("Iteration ", I, " ----- change in edgeps and nodeps = ", delta, "\n", sep = "") }
     #if (verbose > 1) { cat("\t\t Log-likelihood: ", compute_sbm_loglik(class_assign = sapply(1:N, function(x) { order(PHI[x,], decreasing = TRUE)[1] }), adjm = adjm, nodeps = nodeps_new, edgeps = edgeps_new, Nobs = Nobs), "\n") }
     
     ## Update old parameters
