@@ -127,7 +127,7 @@ NetworkModelSBM = function(model_params = set_model_param()) {
   g_reassign = getGroupReassignments(group_assign)
   group_assign = g_reassign[group_assign]
   rc_tokeep = which(!is.na(g_reassign))
-  prob_matrix = prob_matrix[rc_tokeep, rc_tokeep]
+  prob_matrix = prob_matrix[rc_tokeep, rc_tokeep, drop = FALSE]
   
   netm = new("NetworkModelSBM", Nnodes = Nnodes, groups = group_assign, probmat = prob_matrix)
   return(netm)
