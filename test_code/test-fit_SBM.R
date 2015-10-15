@@ -34,4 +34,29 @@ computeLik(z$model, adjm)$sum
 
 
 
+nm1 = NetworkModel(set_model_param(Nnodes = 50, block_assign = rep(c(1,2), each = 25), block_probs = matrix(c(.5, .1, .1, .5), nrow = 2) ))
+nm2 = NetworkModel(set_model_param(Nnodes = 50, block_assign = rep(c(1,2), each = 25), block_probs = matrix(c(.1, .5, .5, .1), nrow = 2) ))
 
+
+## nulldist
+adjm = sampleNetwork(nm1)[,,1]
+fit_SBM(adjm, start = 'spectral', Nclass = 2)
+
+plot_probmatrix(pm = adjm, add_legend = FALSE, colors = c(0,1))
+
+
+
+NETSIZE = 30
+GL = NetworkModelPair(
+  m1 = set_model_param(type = "block", Nnodes = NETSIZE, 
+                       block_assign = rep(1:3, each = ceiling(NETSIZE/3))[1:NETSIZE], 
+                       block_probs = matrix(c(.5, .1, .1,
+                                              .1, .5, .2,
+                                              .1, .2, .5), nrow = 3)), 
+  m2 = set_model_param(type = 'block', Nnodes = NETSIZE, 
+                       block_assign = rep(1:3, each = ceiling(NETSIZE/3))[1:NETSIZE], 
+                       block_probs = matrix(c(.1, .5, .1,
+                                              .5, .1, .2,
+                                              .1, .2, .5), nrow = 3)), 
+  is_null = FALSE)
+adjm = sampleNetwork(GL@m1)[,,1]
