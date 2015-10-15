@@ -91,7 +91,57 @@ fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start =
 
 
 
-
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (specClust)
+#' <What does this function do>
+#' 
+#' @param adjm temp
+#' @param Nclass temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
+specClust = function(adjm, Nclass) {
+  diag(adjm) = 0 # Should be 0 already, but this won't hurt. 
+  
+  ## IF there is missing data, use cheap algorithm to do matrix completing
+  if (any(is.na(adjm))) {
+    ## Fill with row average if available, if not, fill with global average. 
+    N = nrow(adjm)
+    below_thres = NULL
+    for(j in seq_len(N)) {
+      r = which(is.na(adjm[j,]))
+      if (length(r) > N * .8) {
+        below_thres = c(below_thres, r)
+      } else {
+        adjm[j,r] = sum(adjm[j,], na.rm = TRUE)/(N-1)
+      }
+    } 
+    
+    overall_density = sum(adjm[-r,-r], na.rm = TRUE) / ((N-r) * (N-r-1))
+    for(j in below_thres) {
+      adjm[j,] = overall_density
+    }
+    diag(adjm) = 0 # Should be 0 already, but this won't hurt. 
+  }
+  
+  best_res = NULL
+  best_loglik = -Inf
+  
+  for(j in 1:Ntries) {
+    
+    clusts = kmeans(scale(eigen(adjm)$vectors[,1:Nclass]), centers = Nclass, nstart = 10)$cluster
+    nodeps = sapply(1:Nclass, function(x) { sum(x == clusts) }) / length(clusts)
+    nets = NetworkStruct(set_model_param(Nnodes = length(clusts), type = 'block', block_nclass = Nclass, block_assign = clusts))
+    model = fitModel(nets, adjm)
+    loglik = computeLik(model, adja = adjm)$sum
+    if (loglik > best_loglik) {
+      best_loglik = loglik
+      best_res = model
+    }
+  }
+  return(best_res)
+}
 
 
 #' Fit SBM using mean field approx
