@@ -60,3 +60,6 @@ GL = NetworkModelPair(
                                               .1, .2, .5), nrow = 3)), 
   is_null = FALSE)
 adjm = sampleNetwork(GL@m1)[,,1]
+
+
+specClust(hide_edges(adjm, frac = .1), 3)

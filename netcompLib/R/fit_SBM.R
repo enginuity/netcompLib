@@ -24,22 +24,8 @@ fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start =
   # method 'mf' for mean field EM approach, 'spectral' for just doing spectral clustering
   
   if (method == "spectral") {
-    best_res = NULL
-    best_loglik = -Inf
+    return(specClust(adjm, Nclass))
     
-    for(j in 1:Ntries) {
-      
-      clusts = kmeans(scale(eigen(adjm)$vectors[,1:Nclass]), centers = Nclass, nstart = 10)$cluster
-      nodeps = sapply(1:Nclass, function(x) { sum(x == clusts) }) / length(clusts)
-      nets = NetworkStruct(set_model_param(Nnodes = length(clusts), type = 'block', block_nclass = Nclass, block_assign = clusts))
-      model = fitModel(nets, adjm)
-      loglik = computeLik(model, adja = adjm)$sum
-      if (loglik > best_loglik) {
-        best_loglik = loglik
-        best_res = model
-      }
-    }
-    return(best_res)
   } else if (method == "mf") {
     for(j in 1:Ntries) {
       N = nrow(adjm) ## This is the number of nodes
@@ -57,10 +43,10 @@ fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start =
       } else if (start == 'spectral') {
         
         ## Do spectral clustering once to give a rough start
-        clusts = kmeans(scale(eigen(adjm)$vectors[,1:Nclass]), centers = Nclass, nstart = 10)$cluster
+        res = specClust(adjm, Nclass)
         
-        nodeps = sapply(1:Nclass, function(x) { sum(x == clusts) }) / length(clusts)
-        edgeps = fitModel(NetworkStruct(set_model_param(Nnodes = length(clusts), block_nclass = Nclass, block_assign = clusts)), adjm)@probmat
+        nodeps = res@groups
+        edgeps = res@probmat
         
         H = matrix(0, nrow = N, ncol = Nclass)
         PHI = matrix(runif(Nclass*N, min = 0.1, max = 0.9), nrow = N)
