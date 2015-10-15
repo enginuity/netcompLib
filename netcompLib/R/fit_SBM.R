@@ -57,7 +57,7 @@ fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start =
         PHI = PHI / rowSums(PHI)
       }
       
-      
+      edgeps[edgeps < 0.01] = .01; edgeps[edgeps > 0.99] = .99
       results = EM_SBM_mf(adjm = adjm, Nobs = Nobs, nodeps = nodeps, edgeps = edgeps, H = H, PHI = PHI, 
                           Niter = Niter, stop_thres = stop_thres, verbose = verbose)
       # newm = NetworkModel(set_model_param(Nnodes = 30, block_assign = clusts, block_probs = edgeps))
@@ -160,10 +160,10 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
       s1 = adjm * log(edgeps[r,s]) + (Nobs - adjm) * log(1 - edgeps[r,s])
       s1 = s1 * (PHI[,r] %*% t(PHI[,s]))
       diag(s1) = 0
-      runsum = runsum + sum(s1)
+      runsum = runsum + sum(s1, na.rm = TRUE)
     }}
     for(r in 1:Nclass) {
-      runsum = runsum + sum(PHI[,r] * (log(nodeps[r]) - log(PHI[,r])))
+      runsum = runsum + sum(PHI[,r] * (log(nodeps[r]) - log(PHI[,r])), na.rm = TRUE)
     }
     return(runsum)
   }
@@ -181,14 +181,15 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
     if (verbose > 3) { print(compute_objfx()) }
     
     ## M step
-    nodeps_new = apply(PHI, 2, sum) / N
+    nodeps_new = apply(PHI, 2, sum, na.rm = TRUE) / N
     edgeps_new = edgeps * 0
     for(r in 1:Nclass) {
       for(s in r:Nclass) {
         Psq = PHI[,r,drop = FALSE] %*% t(PHI[,s,drop = FALSE])
         num = adjm * Psq
         den = matrix(as.numeric(!is.na(adjm)), nrow = N) * Nobs * Psq
-        edgeps_new[r,s] = max(min(sum(num[lower.tri(num)], na.rm = TRUE) / sum(den[lower.tri(den)]), 0.999), 0.001) ## bound the prob by 0.999 and 0.001 to prevent weird stuff?
+        edgeps_new[r,s] = max(min(sum(num[lower.tri(num)], na.rm = TRUE) / sum(den[lower.tri(den)], na.rm = TRUE), 0.999), 0.001) ## bound the prob by 0.999 and 0.001 to prevent weird stuff?
+        edgeps_new[!is.finite(edgeps_new)] = .999
       }
     }
     edgeps_new = symmetrize_mat(edgeps_new)    
@@ -196,7 +197,9 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
     
     ## Check for convergence
     ## Compute change in parameter estimates
-    delta = sum(abs(edgeps_new - edgeps)) + sum(abs(nodeps_new - nodeps))
+    #print(edgeps_new)
+    #print(nodeps_new)
+    delta = sum(abs(edgeps_new - edgeps)) + sum(abs(nodeps_new - nodeps), na.rm = TRUE)
     if (verbose > 1) { cat("Iteration ", I, " ----- change in edgeps and nodeps = ", delta, "\n", sep = "") }
     #if (verbose > 1) { cat("\t\t Log-likelihood: ", compute_sbm_loglik(class_assign = sapply(1:N, function(x) { order(PHI[x,], decreasing = TRUE)[1] }), adjm = adjm, nodeps = nodeps_new, edgeps = edgeps_new, Nobs = Nobs), "\n") }
     
@@ -205,6 +208,7 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
     nodeps = nodeps_new
     
     ## Stop if threshold is met
+    # print(delta)
     if (delta < stop_thres) { break }
   }
   

@@ -4,10 +4,10 @@ library(igraph)
 
 ## For running fit_SBM
 if (FALSE) {
-  nm = NetworkModel(set_model_param(Nnodes = 100, block_assign = rep(c(1,2), each = 50)))
+  nm = NetworkModel(set_model_param(Nnodes = 50, block_assign = rep(c(1,2), each = 25)))
   adjm = sampleNetwork(nm)[,,1]
   Nobs = 1
-  Nclass = 3
+  Nclass = 2
   Niter = 100
   Ntries = 10
 } 
@@ -25,6 +25,8 @@ if (FALSE) {
   stop_thres = 0.00005
   verbose = TRUE
 }
+
+adjm = hide_edges(adjm, frac = .5)
 
 
 nm = NetworkModel(set_model_param(Nnodes = 100, block_assign = rep(c(1,2), each = 50)))
@@ -63,3 +65,5 @@ adjm = sampleNetwork(GL@m1)[,,1]
 
 
 specClust(hide_edges(adjm, frac = .1), 3)
+
+adjm = hide_edges(adjm, frac = .2)
