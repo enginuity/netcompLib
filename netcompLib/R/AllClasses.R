@@ -1,5 +1,4 @@
 # Class Definitions -------------------------------------------------------
-## TODO: Get default print/summary methods
 
 setClass("NetworkModel", representation(Nnodes = "numeric"))
 setClass("NetworkModelSBM", representation(groups = "numeric", probmat = "matrix"), contains = "NetworkModel")
@@ -49,86 +48,90 @@ NetworkModel = function(model_params = set_model_param()) {
 #' @export
 #' 
 NetworkModelSBM = function(model_params = set_model_param()) {
-  ## TODO: [Rewrite] this
+  ########## Helper Functions ##########
   
-  Nnodes = model_params$Nnodes
-  
-  ## Helper function for adjusting block model probabilities  
-  adjust_blockprobs = function(mod, avgden = 0.4, plimit = c(0.05, 0.95)) {
-    classct = table(mod$groups)
-    params = length(classct) * (length(classct) - 1 ) / 2 + length(classct)
-    coordmat = matrix(NA, nrow = params, ncol = 4)
-    colnames(coordmat) = c("row", "col", "ID", "count")
+  ## Helper function to do group reassignments 
+  doGroupReassignment = function(groups, pmat) {
+    ## Given input group IDs and probability matrix, reindex group IDs if necessary. 
     
-    ct = 1
-    for(j in 1:length(classct)) { for(k in j:length(classct)) {
-      coordmat[ct,] = c(j,k,ct, ifelse(j == k, classct[j] * (classct[j]-1)/2, classct[j] * classct[k]))
-      ct = ct + 1
+    ## Compute new group assignments
+    ordered = sort(unique(groups), decreasing = FALSE)
+    reassignment = match(seq_len(max(groups)), ordered)
+    
+    ## Reassign group IDs
+    new_groups = reassignment[groups]
+    rc_keep = which(!is.na(reassignment))
+    new_pmat = pmat[rc_keep, rc_keep, drop = FALSE]
+    
+    return(list(groups = new_groups, pmat = new_pmat))
+  }
+  
+  ## Helper function for generating/adjusting block model probabilities  
+  generateBlockProbs = function(groups, avgden = 0.4, plims = c(0.05, 0.95)) {
+    ## This function, when given class assignments in 'groups', forces the probability matrix to take on values within 'plims' AND keep an average overall density given by 'avgden'. 
+    
+    classct = table(groups)
+    NC = max(groups) # Number of classes (NC)
+    if (NC < 1) { stop("Bad group assigments -- max group assignment < 1") }
+    Nparams = NC * (NC - 1) / 2 + NC
+    
+    ## Stores assigned probabilities
+    coordmat = matrix(NA, nrow = params, ncol = 5)
+    colnames(coordmat) = c("row", "col", "count", "prob")
+    
+    ## Fill out dyad group counts
+    II = 1
+    for(j in 1:NC) { for(k in j:NC) {
+      coordmat[II,] = c(j, k, ifelse(j==k, classct[j] * (classct[j]-1)/2, classct[j] * classct[k]))
+      II = II + 1
     }}
     
-    samp_probvec = function(counts, avgden, plimit) {
-      notvalid = TRUE
-      while(notvalid) {
-        test = runif(n = length(counts), min = plimit[1], max = plimit[2])
-        test[1] = (sum(counts) * avgden - sum(counts[-1] * test[-1]))/counts[1]
-        if (test[1] > plimit[1] & test[1] < plimit[2]) { notvalid = FALSE }
+    ## Assign probabilities
+    sampProbVec = function(counts, avgden, plims) {
+      ## samples vectors so that the average density matches 'avgden'. 
+      valid = FALSE
+      while(!valid) {
+        testvec = runif(length(counts), plims[1], plims[2])
+        j = sample(seq_along(counts), size = 1) ## Pick random index of dyad group to change probability of
+        testvec[j] = (sum(counts) * avgden - sum(counts[-j] * testvec[-j]))/counts[j]
+        if (testvec[j] > plims[1] & testvec[j] < plims[2]) { valid = TRUE }
       }
-      return(test)
+      return(testvec)
     }
-    probvec = samp_probvec(counts = coordmat[,4], avgden = avgden, plimit = plimit)
     
-    pmat = matrix(NA, ncol = length(classct), nrow = length(classct))
-    ct = 1
-    for(j in 1:length(classct)) { for(k in j:length(classct)) {
-      pmat[j,k] = probvec[ct]
-      if (j != k) { pmat[k,j] = probvec[ct] }
-      ct = ct + 1
-    }}
+    coordmat[,4] = ifelse(is.null(avgden), 
+                          runif(n = Nparams, min = plims[1], max = plims[2]), 
+                          sampProbVec(coordmat[,3], avgden, plims))
+    
+    ## Fill out in matrix form
+    pmat = matrix(NA, ncol = NC, nrow = NC)
+    for(i in 1:Nparams) {
+      pmat[coordmat[i,1], coordmat[i,2]] = coordmat[i,4]
+      pmat[coordmat[i,2], coordmat[i,1]] = coordmat[i,4]
+    }
+    
     return(pmat)
   }
   
-  # if block assignments are not pre-specified: 
-  K = model_params$block_nclass
-  if (is.null(model_params$block_assign)) {
-    group_assign = sample(1:K, size = Nnodes, replace = TRUE)
-  } else { # Use prespecified block assignments
-    group_assign = model_params$block_assign
-  }
+  ########## Beginning of constructor function ##########
+  Nnodes = model_params$Nnodes
   
-  # if block probability matrix is not pre-specified: 
-  if (is.null(model_params$block_probs)) {
-    # If we want to control average density: 
-    if (!is.null(model_params$block_avgdensity)) {
-      ## broken? TODO - fix this
-      prob_matrix = adjust_blockprobs(mod = res, avgden = model_params$block_avgdensity, plimit = c(model_params$pmin, model_params$pmax))
-    } else {
-      prob_matrix = matrix(0, nrow = K, ncol = K)
-      for(j in 1:K) { for(i in 1:K) {
-        if (i <= j) {
-          prob_matrix[i,j] = runif(1, model_params$pmin, model_params$pmax)
-          if (i != j) {prob_matrix[j,i] = prob_matrix[i,j]}
-        }
-      }}
-    }
-  } else { # Use prespecified block probabilities
-    prob_matrix = model_params$block_probs
-  }
+  ## Figure out group assignment - uniform sample or use input assignment
+  group_assign = ifelse(test = is.null(model_params$block_assign), 
+                        yes = sample(1:model_params$block_nclass, size = Nnodes, replace = TRUE),
+                        no = model_params$block_assign)
   
+  ## Specify block probability matrix
+  prob_matrix = ifelse(
+    test = is.null(model_params$block_probs), 
+    yes = generateBlockProbs(grp_assign, model_params$block_avgdensity, c(model_params$pmin, model_params$pmax)), 
+    no = model_params$block_probs)
   
-  ## Check if there are too many groups. 
-  getGroupReassignments = function(x) {
-    ## Give appropriate re-indexing of group IDs. 
-    
-    ordered = sort(unique(x), decreasing = FALSE)
-    res = match(seq_len(max(x)), ordered)
-    return(res)
-  }
-  ## Reassign group IDs
-  g_reassign = getGroupReassignments(group_assign)
-  group_assign = g_reassign[group_assign]
-  rc_tokeep = which(!is.na(g_reassign))
-  prob_matrix = prob_matrix[rc_tokeep, rc_tokeep, drop = FALSE]
+  ## Remove any empty group assignments and relabel groups as necessary
+  temp = doGroupReassignment(group_assign, prob_matrix)
+  group_assign = temp$groups; prob_matrix = temp$pmat
   
+  ## Create network model object
   netm = new("NetworkModelSBM", Nnodes = Nnodes, groups = group_assign, probmat = prob_matrix)
   return(netm)
 }
