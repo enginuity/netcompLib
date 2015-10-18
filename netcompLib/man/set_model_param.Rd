@@ -34,7 +34,7 @@ set_model_param(Nnodes = 30, type = "block", pairtype = NULL,
 
 \item{pmax}{[double] :: Maximal possible edge probability}
 
-\item{block_nclass}{[int] :: Number of blocks in block model}
+\item{block_nclass}{[int] :: Number of blocks in block model. This value is ignored IF 'block_assign' is provided. Also, it's possible that this value is not met by randomization: Group assigns are assigned at random with replacement, so there is a small (but nonzero) probability that one group is never picked. This is a non-issue if the network is at least size 30 or so.}
 
 \item{block_avgdensity}{[double] :: Set average density in block model (ignored if NULL)}
 

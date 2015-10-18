@@ -2,21 +2,21 @@
 % Please edit documentation in R/fit_SBM.R
 \name{specClust}
 \alias{specClust}
-\title{<What does this function do>}
+\title{Runs spectral clustering on an input matrix}
 \usage{
 specClust(adjm, Nclass, Ntries)
 }
 \arguments{
-\item{adjm}{temp}
+\item{adjm}{[matrix-int] :: Input adjacency matrix}
 
-\item{Nclass}{temp}
+\item{Nclass}{[int] :: Number of clusters}
 
-\item{Ntries}{temp}
+\item{Ntries}{[int] :: Number of attempts}
 }
 \value{
-temp
+[\code{\link{NetworkModel}}] :: Output bestfit model
 }
 \description{
-<What does this function do>
+Runs spectral clustering on an input matrix
 }
 
