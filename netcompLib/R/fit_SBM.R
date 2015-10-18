@@ -1,21 +1,18 @@
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fit_SBM)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fit_SBM)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fit_SBM)
 #' Fit SBM given adjacency matrix
 #' 
-#' @param adjm temp
-#' @param Nobs temp
-#' @param Nclass temp
-#' @param Niter temp
-#' @param Ntries temp
-#' @param start temp
-#' @param stop_thres temp
-#' @param verbose temp
-#' @param method temp
+#' @param adjm [matrix-int] :: Input adjacency matrix
+#' @param Nobs [int] :: Number of observations
+#' @param Nclass [int] :: Number of classes in SBM
+#' @param Niter [int] :: Number of maximum iterations in EM
+#' @param Ntries [int] :: Number of EM runs to optimize over
+#' @param start [char] :: 'spectral' or 'random -- method to initialize starting state of EM algorithm
+#' @param stop_thres [double] :: Threshold to declare convergence
+#' @param verbose [int] :: Verbosity level -- higher = more output
+#' @param method [char] :: 'spectral' or 'mf' -- method to fit SBM: spectral does spectral clustering; mf does EM algo
 #' 
-#' @return temp
+#' @return [\code{\link{NetworkModel}}] :: Best found fitted model
 #' 
 #' @export
 #' 
@@ -76,17 +73,13 @@ fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start =
 }
 
 
-
-
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (specClust)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (specClust)
-#' <What does this function do>
+#' Runs spectral clustering on an input matrix
 #' 
-#' @param adjm temp
-#' @param Nclass temp
-#' @param Ntries temp
+#' @param adjm [matrix-int] :: Input adjacency matrix
+#' @param Nclass [int] :: Number of clusters
+#' @param Ntries [int] :: Number of attempts
 #' 
-#' @return temp
+#' @return [\code{\link{NetworkModel}}] :: Output bestfit model
 #' 
 #' @export
 #' 
