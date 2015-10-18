@@ -23,7 +23,7 @@
 #' }
 #' @param pmin [double] :: Minimal possible edge probability
 #' @param pmax [double] :: Maximal possible edge probability
-#' @param block_nclass [int] :: Number of blocks in block model
+#' @param block_nclass [int] :: Number of blocks in block model. This value is ignored IF 'block_assign' is provided. Also, it's possible that this value is not met by randomization: Group assigns are assigned at random with replacement, so there is a small (but nonzero) probability that one group is never picked. This is a non-issue if the network is at least size 30 or so. 
 #' @param block_avgdensity [double] :: Set average density in block model (ignored if NULL)
 #' @param block_assign [vector-int] :: block assignments
 #' @param block_probs [matrix-double] :: block model probabilities
