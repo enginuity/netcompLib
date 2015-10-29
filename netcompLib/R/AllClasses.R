@@ -76,13 +76,13 @@ NetworkModelSBM = function(model_params = set_model_param()) {
     Nparams = NC * (NC - 1) / 2 + NC
     
     ## Stores assigned probabilities
-    coordmat = matrix(NA, nrow = params, ncol = 5)
+    coordmat = matrix(NA, nrow = Nparams, ncol = 4)
     colnames(coordmat) = c("row", "col", "count", "prob")
     
     ## Fill out dyad group counts
     II = 1
     for(j in 1:NC) { for(k in j:NC) {
-      coordmat[II,] = c(j, k, ifelse(j==k, classct[j] * (classct[j]-1)/2, classct[j] * classct[k]))
+      coordmat[II,1:3] = c(j, k, ifelse(j==k, classct[j] * (classct[j]-1)/2, classct[j] * classct[k]))
       II = II + 1
     }}
     
@@ -117,15 +117,18 @@ NetworkModelSBM = function(model_params = set_model_param()) {
   Nnodes = model_params$Nnodes
   
   ## Figure out group assignment - uniform sample or use input assignment
-  group_assign = ifelse(test = is.null(model_params$block_assign), 
-                        yes = sample(1:model_params$block_nclass, size = Nnodes, replace = TRUE),
-                        no = model_params$block_assign)
+  if (is.null(model_params$block_assign)) {
+    group_assign = sample(1:model_params$block_nclass, size = Nnodes, replace = TRUE)
+  } else {
+    group_assign = model_params$block_assign
+  }
   
   ## Specify block probability matrix
-  prob_matrix = ifelse(
-    test = is.null(model_params$block_probs), 
-    yes = generateBlockProbs(grp_assign, model_params$block_avgdensity, c(model_params$pmin, model_params$pmax)), 
-    no = model_params$block_probs)
+  if (is.null(model_params$block_probs)) {
+    prob_matrix = generateBlockProbs(group_assign, model_params$block_avgdensity, c(model_params$pmin, model_params$pmax))
+  } else {
+    prob_matrix = model_params$block_probs
+  }
   
   ## Remove any empty group assignments and relabel groups as necessary
   temp = doGroupReassignment(group_assign, prob_matrix)
