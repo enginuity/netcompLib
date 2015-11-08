@@ -197,37 +197,33 @@ h_optim = function(nparam, optim_tries, fn, gn, ...) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (hCorr_paramToProb)
 #' Converts parameters to probabilities in correlation model
 #' 
 #' @param rho [double] :: correlation parameter
 #' @param a [vector-double] :: network1 parameters
 #' @param b [vector-double] :: network2 parameters
 #' 
-#' @return [matrix] :: 
+#' @return [matrix-double] :: table with 4 columns -- probs of 11, 10, 01, 00
 #' 
 #' @export
 #' 
 hCorr_paramToProb = function(rho, a, b = a) {
-  # rho is scalar, a, b can be vectors
-  # returns table of probs: 11, 10, 01, 00
   lambda = -log(exp(a+b+rho) + exp(a) + exp(b) + 1)
   df = cbind(exp(a+b+rho+lambda), exp(a+lambda), exp(b+lambda), exp(lambda))
   colnames(df) = c("11", "10", "01", "00")
   return(df)
 }
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (hCorr_probToParam)
+
 #' Converts probabilities to parameters in correlation model
 #' 
-#' @param pt [] :: 
+#' @param pt [matrix-double] :: table with 4 columns -- probs of 11, 10, 01, 00
 #' 
-#' @return [] :: 
+#' @return [list] :: Named list of parameters in correlation model -- names are: 'a', 'b', 'lambda', 'rho'
 #' 
 #' @export
 #' 
 hCorr_probToParam = function(pt) {
-  # pt should be a table with 4 columns -- probs of 11, 10, 01, 00
   lambda = log(pt[,4])
   b = log(pt[,3]) - lambda
   a = log(pt[,2]) - lambda
@@ -235,14 +231,15 @@ hCorr_probToParam = function(pt) {
   return(list(a = a, b = b, lambda = lambda, rho = rho))
 }
 
+
 #' Compute log-likelihood function for density-difference
 #' 
-#' @param t [] :: c(b,a) - b is single value; a is vector
-#' @param x [] :: edge counts in net 1
-#' @param y [] :: edge counts in net 2
-#' @param n [] :: total edge group size
+#' @param t [vector-double] :: c(b,a) - b is single value; a is vector
+#' @param x [vector-int] :: edge counts in net 1
+#' @param y [vector-int] :: edge counts in net 2
+#' @param n [vector-int] :: total edge group size
 #' 
-#' @return [] :: value of log-likelihood
+#' @return [double] :: value of log-likelihood
 #' 
 #' @export
 #' 
@@ -254,12 +251,12 @@ llFx_dendiff = function(t,x,y,n) {
 
 #' Compute gradient vector of log-likelihood in density-difference model
 #' 
-#' @param t [] :: c(b,a) - b is single value; a is vector
-#' @param x [] :: edge counts in net 1
-#' @param y [] :: edge counts in net 2
-#' @param n [] :: total edge group size
+#' @param t [vector-double] :: c(b,a) - b is single value; a is vector
+#' @param x [vector-int] :: edge counts in net 1
+#' @param y [vector-int] :: edge counts in net 2
+#' @param n [vector-int] :: total edge group size
 #' 
-#' @return [] :: gradient vector
+#' @return [vector-double] :: gradient vector
 #' 
 #' @export
 #' 
@@ -270,19 +267,17 @@ llGrFx_dendiff = function(t,x,y,n) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (llFx_cnull)
-#' <What does this function do>
+#' Computes Log-likelihood for null-hypothesis correlation case
 #' 
-#' @param t temp
-#' @param C temp
-#' @param n temp
+#' @param t [vector-double] :: c(rho, a_v)
+#' @param C [matrix-int] :: Dyad group counts, in format: cbind(c11, c10, c01, c00)
+#' @param n [vector-int] :: Dyad group sizes
 #' 
-#' @return temp
+#' @return [double] :: Log-likelihood at current point
 #' 
 #' @export
 #' 
 llFx_cnull = function(t, C, n) {
-  # C = cbind(c11, c10, c01, c00); n = vector of total counts; t = c(rho, theta_v)
   N = nrow(C)
   
   rho = t[1]
@@ -293,17 +288,13 @@ llFx_cnull = function(t, C, n) {
 }
 
 
-
-
-
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (llGrFx_cnull)
-#' <What does this function do>
+#' Computes gradient of log-likelihood for null-hypothesis correlation case
 #' 
-#' @param t temp
-#' @param C temp
-#' @param n temp
+#' @param t [vector-double] :: c(rho, a_v)
+#' @param C [matrix-int] :: Dyad group counts, in format: cbind(c11, c10, c01, c00)
+#' @param n [vector-int] :: Dyad group sizes
 #' 
-#' @return temp
+#' @return [vector-double] :: Gradient at current point
 #' 
 #' @export
 #' 
@@ -323,19 +314,17 @@ llGrFx_cnull = function(t,C,n) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (llFx_calt)
-#' <What does this function do>
+#' Computes Log-likelihood for alternate-hypothesis correlation case
 #' 
-#' @param t temp
-#' @param C temp
-#' @param n temp
+#' @param t [vector-double] :: c(rho, a_v, b_v)
+#' @param C [matrix-int] :: Dyad group counts, in format: cbind(c11, c10, c01, c00)
+#' @param n [vector-int] :: Dyad group sizes
 #' 
-#' @return temp
+#' @return [double] :: Log-likelihood at current point
 #' 
 #' @export
 #' 
 llFx_calt = function(t,C,n) {
-  # t  = c(rho, a_v, b_v)
   N = nrow(C)
   rho = t[1]; rt = t[-1]
   a = rt[seq_len(N)]; rt = rt[-seq_len(N)]
@@ -345,14 +334,14 @@ llFx_calt = function(t,C,n) {
   return(sum(C[,1]*(a+b+rho) + C[,2]*a + C[,3]*b + n*lambda))
 }
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (llGrFx_calt)
-#' <What does this function do>
+
+#' Computes gradient of log-likelihood for alternate-hypothesis correlation case
 #' 
-#' @param t temp
-#' @param C temp
-#' @param n temp
+#' @param t [vector-double] :: c(rho, a_v, b_v)
+#' @param C [matrix-int] :: Dyad group counts, in format: cbind(c11, c10, c01, c00)
+#' @param n [vector-int] :: Dyad group sizes
 #' 
-#' @return temp
+#' @return [vector-double] :: Gradient at current point
 #' 
 #' @export
 #' 

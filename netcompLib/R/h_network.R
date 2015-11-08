@@ -1,13 +1,12 @@
 ## Network helper functions
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (hide_edges)
 #' Hides a random set of edges
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param frac [double] :: Fraction of edges to hide
-#' @param template temp
-#' @param invert_template temp
+#' @param template [matrix] :: Matrix with NA's -- If this is provided, then the NA's in this matrix are copied into 'adjm'
+#' @param invert_template  [matrix] :: Matrix with NA's -- If this is provided, then the NA's in this matrix are inverted: NA cells are NOT hidden in 'adjm', whereas non-NA cells ARE hidden in 'adjm'. 
 #' 
 #' @return [matrix-int] :: Adjacency matrix with hidden edges
 #' 
