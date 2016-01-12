@@ -92,24 +92,24 @@ Not implemented -- perhaps write a faster version of this (using global variable
 FIELD -- Nnodes : numeric
 \begin{itemize}
 \item NetworkModelSBM\\
-FIELD -- assign : numeric \\
+FIELD -- groups : numeric-vec \\
 FIELD -- probmat : matrix\\
 \item NetworkModelHRG\\
-FIELD -- parents : numeric\\
-FIELD -- children : list\\
-FIELD -- prob : numeric\\
+FIELD -- parents : numeric-vec\\
+FIELD -- children : list[2]:vec-int\\
+FIELD -- prob : numeric-vec\\
 \item NetworkModelLSM\\
-FIELD -- locs : matrix\\
-FIELD -- alpha : numeric\\
+FIELD -- locs : matrix-double\\
+FIELD -- alpha : numeric-vec\\
 \item NetworkModelRND\\
-FIELD -- counts : numeric\\
-FIELD -- prob : numeric\\
+FIELD -- counts : numeric-vec\\
+FIELD -- prob : numeric-vec\\
 FIELD -- ids : list\\
 \item NetworkModelPair\\
 FIELD -- m1 : NetworkModel\\
 FIELD -- m2 : NetworkModel\\
 FIELD -- is\_null : logical\\
-FIELD -- model\_type : character -- Allowed values:
+FIELD -- model\_type : character -- Allowed values: (note these must have same edge partition)
 \begin{itemize}
 \item `default'
 \item `densitydiff'
@@ -138,7 +138,7 @@ FIELD -- counts : numeric\\
 FIELD -- expand : list\\
 FIELD -- correct : numeric\\
 \item NetworkStructHRG\\
-FIELD -- tree\_list : list\\
+FIELD -- tree\_list : list [[want to change this implementation]] \\
 FIELD -- expand : list\\
 FIELD -- counts : numeric\\
 \item NetworkStructRND\\
@@ -162,6 +162,7 @@ FIELD -- models : list\\
 \subsection{Version Information}
 \subsubsection{v0.1}
 This version should have all functions working and well-documented
+(for undirected networks)
 
 \subsubsection{v0.2}
 Features to potentially add: 
@@ -230,7 +231,25 @@ Verbose logfile? -- so can output to file instead of terminal
 \subsubsection*{Issue 22}
 Runtime estimation -- run 1\% of the process, and then estimate total runtime
 
-%% \subsection*{Issue }
+\subsubsection*{Issue 23}
+Implement computing likelihood and p-values by edge groups
+
+\subsubsection*{Issue 24}
+Allow passing in adjms/adjas with multiple dimensions
+
+\subsubsection*{Issue 25}
+Rewrite HRG functions
+
+\subsubsection*{Issue 27}
+Rename reassignedgegroupprob
+
+\subsubsection*{Issue 28}
+Only use lower-tri links (ones where rownum $<$ colnum)
+
+\subsubsection*{Issue 29}
+Add igraph dependency?
+
+%% \subsubsection*{Issue }
 
 
 
@@ -265,7 +284,8 @@ int, double, char, logical
 For documentation of classes: (S3 classes)
 an \itemize with items as follows: 
 \item <name> -- [<mode description as above>] :: <documentation>
-
+OR 
+<name> -- (or ::) <documentation>
 \end{verbatim}
 
 
