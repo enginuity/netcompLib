@@ -6,15 +6,17 @@
 #' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param frac [double] :: Fraction of edges to hide
 #' @param template [matrix] :: Matrix with NA's -- If this is provided, then the NA's in this matrix are copied into 'adjm'
-#' @param invert_template  [matrix] :: Matrix with NA's -- If this is provided, then the NA's in this matrix are inverted: NA cells are NOT hidden in 'adjm', whereas non-NA cells ARE hidden in 'adjm'. 
+#' @param invert_template [logical] :: If TRUE, the input template is inverted. 
 #' 
 #' @return [matrix-int] :: Adjacency matrix with hidden edges
 #' 
 #' @export
 #' 
 hide_edges = function(adjm, frac = 0.1, template = NULL, invert_template = FALSE) {
+  
   ## TODO: Make this work for arrays
   ## copied from netcompSBM
+  
   if (is.null(template)) {
     tm = matrix(1:(nrow(adjm)^2), nrow = nrow(adjm))
     vals = tm[upper.tri(tm)]
