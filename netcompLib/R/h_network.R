@@ -4,7 +4,7 @@
 #' Hides a random set of edges
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
-#' @param frac [double] :: Fraction of edges to hide
+#' @param frac [double] :: Proportion of dyads to hide, rounded down to nearest number of dyads. 
 #' @param template [matrix] :: Matrix with NA's -- If this is provided, then the NA's in this matrix are copied into 'adjm'
 #' @param invert_template [logical] :: If TRUE, the input template is inverted. 
 #' 
