@@ -7,7 +7,7 @@
 tree_from_parents(parents)
 }
 \arguments{
-\item{parents}{[vector-int] :: Indices of parents}
+\item{parents}{[vector-int] :: Index location of parent node. Value of 0 indicates that this is the root node.}
 }
 \value{
 [list] :: A tree in list format (left child index, right child index)

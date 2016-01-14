@@ -7,16 +7,16 @@
 llGrFx_dendiff(t, x, y, n)
 }
 \arguments{
-\item{t}{[] :: c(b,a) - b is single value; a is vector}
+\item{t}{[vector-double] :: c(b,a) - b is single value; a is vector}
 
-\item{x}{[] :: edge counts in net 1}
+\item{x}{[vector-int] :: edge counts in net 1}
 
-\item{y}{[] :: edge counts in net 2}
+\item{y}{[vector-int] :: edge counts in net 2}
 
-\item{n}{[] :: total edge group size}
+\item{n}{[vector-int] :: total edge group size}
 }
 \value{
-[] :: gradient vector
+[vector-double] :: gradient vector
 }
 \description{
 Compute gradient vector of log-likelihood in density-difference model

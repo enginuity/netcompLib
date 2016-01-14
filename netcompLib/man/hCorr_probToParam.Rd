@@ -7,10 +7,10 @@
 hCorr_probToParam(pt)
 }
 \arguments{
-\item{pt}{[] ::}
+\item{pt}{[matrix-double] :: table with 4 columns -- probs of 11, 10, 01, 00}
 }
 \value{
-[] ::
+[list] :: Named list of parameters in correlation model -- names are: 'a', 'b', 'lambda', 'rho'
 }
 \description{
 Converts probabilities to parameters in correlation model

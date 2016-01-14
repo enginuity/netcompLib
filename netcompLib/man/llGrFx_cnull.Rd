@@ -2,21 +2,21 @@
 % Please edit documentation in R/h_edgegroupLik.R
 \name{llGrFx_cnull}
 \alias{llGrFx_cnull}
-\title{<What does this function do>}
+\title{Computes gradient of log-likelihood for null-hypothesis correlation case}
 \usage{
 llGrFx_cnull(t, C, n)
 }
 \arguments{
-\item{t}{temp}
+\item{t}{[vector-double] :: c(rho, a_v)}
 
-\item{C}{temp}
+\item{C}{[matrix-int] :: Dyad group counts, in format: cbind(c11, c10, c01, c00)}
 
-\item{n}{temp}
+\item{n}{[vector-int] :: Dyad group sizes}
 }
 \value{
-temp
+[vector-double] :: Gradient at current point
 }
 \description{
-<What does this function do>
+Computes gradient of log-likelihood for null-hypothesis correlation case
 }
 

@@ -2,21 +2,21 @@
 % Please edit documentation in R/h_edgegroupLik.R
 \name{llFx_cnull}
 \alias{llFx_cnull}
-\title{<What does this function do>}
+\title{Computes Log-likelihood for null-hypothesis correlation case}
 \usage{
 llFx_cnull(t, C, n)
 }
 \arguments{
-\item{t}{temp}
+\item{t}{[vector-double] :: c(rho, a_v)}
 
-\item{C}{temp}
+\item{C}{[matrix-int] :: Dyad group counts, in format: cbind(c11, c10, c01, c00)}
 
-\item{n}{temp}
+\item{n}{[vector-int] :: Dyad group sizes}
 }
 \value{
-temp
+[double] :: Log-likelihood at current point
 }
 \description{
-<What does this function do>
+Computes Log-likelihood for null-hypothesis correlation case
 }
 

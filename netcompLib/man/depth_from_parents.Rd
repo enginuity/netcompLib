@@ -7,10 +7,10 @@
 depth_from_parents(parents)
 }
 \arguments{
-\item{parents}{[vector-int] :: Valued from 0 to length; these indicate which index the parent node is at}
+\item{parents}{[vector-int] :: Index location of parent node. Value of 0 indicates that this is the root node.}
 }
 \value{
-[vector-int] :: Depth of each node
+[vector-int] :: Depth of each node (root node has depth 1)
 }
 \description{
 Compute depths of each node

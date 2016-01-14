@@ -14,7 +14,7 @@ hCorr_paramToProb(rho, a, b = a)
 \item{b}{[vector-double] :: network2 parameters}
 }
 \value{
-[matrix] ::
+[matrix-double] :: table with 4 columns -- probs of 11, 10, 01, 00
 }
 \description{
 Converts parameters to probabilities in correlation model

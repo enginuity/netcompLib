@@ -7,26 +7,32 @@
 EM_SBM_mf(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verbose)
 }
 \arguments{
-\item{adjm}{temp}
+\item{adjm}{[matrix-int] :: Input adjacency matrix}
 
-\item{Nobs}{temp}
+\item{Nobs}{[int] :: Number of observations per dyad}
 
-\item{nodeps}{temp}
+\item{nodeps}{[vec-double] :: Initial node probabilities}
 
-\item{edgeps}{temp}
+\item{edgeps}{[matrix-double] :: Initial between-block probabilities}
 
-\item{H}{temp}
+\item{H}{[matrix-double] :: Initial value of H}
 
-\item{PHI}{temp}
+\item{PHI}{[matrix-double] :: Initial value of PHI}
 
-\item{Niter}{temp}
+\item{Niter}{[int] :: Number of iterations max}
 
-\item{stop_thres}{temp}
+\item{stop_thres}{[double] :: Stop condition}
 
-\item{verbose}{temp}
+\item{verbose}{[logical] :: Output stuff?}
 }
 \value{
-temp
+[list] :: EM algorithm output, with the following elements:
+\itemize{
+\item nodeps -- [vec-double] :: Estimated class probabilities
+\item edgeps -- [matrix-double] :: Estimated between-class edge probabilities
+\item classes -- [vec-int] :: Estimated class assignments
+\item model -- [\link{\code{NetworkModel}}] :: Estimated Network Model
+}
 }
 \description{
 Fit SBM using mean field approx

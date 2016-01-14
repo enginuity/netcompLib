@@ -9,11 +9,11 @@ hide_edges(adjm, frac = 0.1, template = NULL, invert_template = FALSE)
 \arguments{
 \item{adjm}{[matrix-int] :: Input adjacency matrix}
 
-\item{frac}{[double] :: Fraction of edges to hide}
+\item{frac}{[double] :: Proportion of dyads to hide, rounded down to nearest number of dyads.}
 
-\item{template}{temp}
+\item{template}{[matrix] :: Matrix with NA's -- If this is provided, then the NA's in this matrix are copied into 'adjm'}
 
-\item{invert_template}{temp}
+\item{invert_template}{[logical] :: If TRUE, the input template is inverted.}
 }
 \value{
 [matrix-int] :: Adjacency matrix with hidden edges
