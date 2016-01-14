@@ -4,15 +4,12 @@
 \alias{anc_table_from_expanded_children}
 \title{Compute ancestor table}
 \usage{
-anc_table_from_expanded_children(expanded.children, nn,
-  nodes.to.update = NULL)
+anc_table_from_expanded_children(expanded.children, nn)
 }
 \arguments{
 \item{expanded.children}{List of expanded children}
 
 \item{nn}{Number nodes in tree}
-
-\item{nodes.to.update}{Only update a subset of nodes}
 }
 \value{
 Ancestor table (matrix)

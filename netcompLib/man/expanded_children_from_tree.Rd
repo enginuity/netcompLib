@@ -7,7 +7,7 @@
 expanded_children_from_tree(tree)
 }
 \arguments{
-\item{tree}{[list] :: CMN tree object}
+\item{tree}{[\code{\link{NetworkModelHRG}}] :: Input network model}
 }
 \value{
 [list] :: A tree in list format (left child index, right child index)
