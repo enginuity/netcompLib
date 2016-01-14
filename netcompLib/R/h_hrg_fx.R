@@ -65,32 +65,29 @@ tree_from_parents = function(parents) {
 
 #' Extract expanded children for a tree
 #' 
-#' @param tree [list] :: CMN tree object
+#' @param tree [\list{\code{NetworkModelHRG}}] :: Input network model
 #' 
 #' @return [list] :: A tree in list format (left child index, right child index)
 #' 
 #' @export
 #' 
 expanded_children_from_tree = function(tree) {
-  ## TODO: Modify this for different tree format?
+  res = lapply(tree@children, as.list)
+  n = (length(tree@parents)+1)/2
   
-  expanded.children <- lapply(tree$children, as.list)
-  #put them in order.
-  depths <- depth_from_parents(tree$parents)[-(1:tree$nodes)]
-  
-  #from the bottom up, replace entries greater than nn with their (unlisted) children.
-  for (pick in rev(order(depths))) {
-    
-    for (kk in 1:length(expanded.children[[pick]])) { # lists.
-      keeper <- expanded.children[[pick]][[kk]][expanded.children[[pick]][[kk]] <= tree$nodes]
-      repl <- expanded.children[[pick]][[kk]][which(expanded.children[[pick]][[kk]] > tree$nodes)]
-      if (length(repl)>0) for (jj in 1:length(repl))
-        keeper <- c(keeper, unlist(expanded.children[[repl[jj]-tree$nodes]]))
-      expanded.children[[pick]][[kk]] <- keeper
+  ## Replace children with their unlisted leaf children, starting with deepest nodes. 
+  depths = depth_from_parents(tree@parents)
+  for (i in order(depths, decreasing = TRUE)) {
+    if (i > n) {
+      parentIndex = tree@parents[i] - n
+      if (parentIndex > 0) {
+        childSide = (i == tree@children[[parentIndex]][2]) + 1 ## Left child or Right child? Left child = 1, Right = 2
+        removeIndex = which(i == res[[parentIndex]][[childSide]])
+        res[[parentIndex]][[childSide]] = c(res[[parentIndex]][[childSide]][-removeIndex], c(res[[i-n]], recursive = TRUE))
+      }
     }
   }
-  
-  return(expanded.children)  
+  return(res)
 }
 
 
