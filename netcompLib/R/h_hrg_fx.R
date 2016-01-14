@@ -65,7 +65,7 @@ tree_from_parents = function(parents) {
 
 #' Extract expanded children for a tree
 #' 
-#' @param tree [\list{\code{NetworkModelHRG}}] :: Input network model
+#' @param tree [\code{\link{NetworkModelHRG}}] :: Input network model
 #' 
 #' @return [list] :: A tree in list format (left child index, right child index)
 #' 
@@ -91,51 +91,23 @@ expanded_children_from_tree = function(tree) {
 }
 
 
-#' Compute ancestor table
-#' 
-#' @param expanded.children List of expanded children
-#' @param nn Number nodes in tree
-#' 
-#' @return Ancestor table (matrix)
-#' 
-#' @export
-#' 
-anc_table_from_expanded_children = function(expanded.children, nn) {
-  
-  anc.table <- array(NA, rep(nn, 2))
-  diag(anc.table) <- 1:nn
-  int.nodes <- length(expanded.children)
-  
-  #build the p matrix.
-  for (kk in 1:int.nodes) {
-    for (ii in 1:(length(expanded.children[[kk]])-1))
-      for (jj in (ii+1):length(expanded.children[[kk]])) {
-        anc.table[expanded.children[[kk]][[ii]],
-                  expanded.children[[kk]][[jj]]] <-
-          anc.table[expanded.children[[kk]][[jj]],
-                    expanded.children[[kk]][[ii]]] <- kk+nn
-      }
-  }
-  
-  return(anc.table)
-}
-
-
 #' Compute ancestor_table from a tree
 #' 
-#' @param tree [list] :: CMN tree model object
+#' @param tree [\code{\link{NetworkModelHRG}}] :: Input tree
 #' 
 #' @return [list] :: expanded_children & ancestor_table
 #' 
 #' @export
 #' 
 closest_ancestor = function(tree) {
-  nn = tree$nodes
-  int_nodes = length(tree$prob)
-  tot_nodes = nn + int_nodes
-  
-  expanded_children = expanded_children_from_tree(tree)
-  anc_table = anc_table_from_expanded_children(expanded_children, nn)
-  
-  return(list(expanded_children=expanded_children, anc_table=anc_table))
+  N = tree@Nnodes
+  expCdn = expanded_children_from_tree(tree)
+  anc_table = matrix(NA, N, N)
+  diag(anc_table) = seq_len(N)
+  for(k in seq_along(expCdn)) {
+    anc_table[expCdn[[k]][[1]], expCdn[[k]][[2]]] = k + N
+    anc_table[expCdn[[k]][[2]], expCdn[[k]][[1]]] = k + N
+  }
+  return(list(expanded_children=expCdn, anc_table=anc_table))  
 }
+
