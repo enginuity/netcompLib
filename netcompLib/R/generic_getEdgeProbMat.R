@@ -58,9 +58,9 @@ getEdgeProbMat.NetworkModelHRG = function(NetM, mode) {
   
   anc_table = HRG_closestAncestor(NetM)$anc_table
   
-  series = lower_diag(nn)
+  series = lower_diag(N)
   if (mode == "prob") {
-    res[series] = NetM@prob[anc_table[series]-nn]
+    res[series] = NetM@prob[anc_table[series]-N]
   } else if (mode == "group") {
     res[series] = anc_table[series]
   }  
