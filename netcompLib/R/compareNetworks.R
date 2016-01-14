@@ -2,6 +2,8 @@
 
 
 compareNetworks = function() {
+  ## Also -- allow for random partitions? 
+  
   ## Step 0 -- Clean / check input data
   
   ## Step 1 -- Hide part of the input adjacency arrays
