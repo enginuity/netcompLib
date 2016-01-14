@@ -56,8 +56,9 @@ extractModel.NetworkStructHRG = function(NetS, model_param = set_model_param()) 
   model_param$type = "tree"
   
   res = NetworkModel(model_param)
-  res@parents = NetS@tree_list$parents
-  res@children = NetS@tree_list$children
+  res@parents = NetS@parents
+  res@children = NetS@children
+
   
   return(res)
 }
