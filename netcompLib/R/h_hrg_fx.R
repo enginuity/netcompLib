@@ -7,7 +7,7 @@
 #' 
 #' @export
 #' 
-depth_from_parents = function(parents) {
+HRG_depthFromParents = function(parents) {
   n = (length(parents)+1)/2
   
   depths = rep(NA, times = n)
@@ -22,7 +22,6 @@ depth_from_parents = function(parents) {
   
   return(depths)
 }
-
 
 
 #' Obtains the lower diagonal area of a square matrix
@@ -47,8 +46,8 @@ lower_diag = function(nn) {
 #' 
 #' @export
 #' 
-tree_from_parents = function(parents) {
-  ## Asume internal nodes have indeices greater than the leaf nodes' indices
+HRG_treeFromParents = function(parents) {
+  ## Asume internal nodes have indices greater than the leaf nodes' indices
   ## Eg. parents=c(6,6,7,7,0,5,5)
   
   n = (length(parents) + 1)/2
@@ -71,12 +70,12 @@ tree_from_parents = function(parents) {
 #' 
 #' @export
 #' 
-expanded_children_from_tree = function(tree) {
+HRG_expandedChildren = function(tree) {
   res = lapply(tree@children, as.list)
   n = (length(tree@parents)+1)/2
   
   ## Replace children with their unlisted leaf children, starting with deepest nodes. 
-  depths = depth_from_parents(tree@parents)
+  depths = HRG_depthFromParents(tree@parents)
   for (i in order(depths, decreasing = TRUE)) {
     if (i > n) {
       parentIndex = tree@parents[i] - n
@@ -99,9 +98,9 @@ expanded_children_from_tree = function(tree) {
 #' 
 #' @export
 #' 
-closest_ancestor = function(tree) {
+HRG_closestAncestor = function(tree) {
   N = tree@Nnodes
-  expCdn = expanded_children_from_tree(tree)
+  expCdn = HRG_expandedChildren(tree)
   anc_table = matrix(NA, N, N)
   diag(anc_table) = seq_len(N)
   for(k in seq_along(expCdn)) {
