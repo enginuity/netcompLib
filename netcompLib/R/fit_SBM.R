@@ -128,17 +128,23 @@ specClust = function(adjm, Nclass, Ntries) {
 
 #' Fit SBM using mean field approx
 #' 
-#' @param adjm temp
-#' @param Nobs temp
-#' @param nodeps temp
-#' @param edgeps temp
-#' @param H temp
-#' @param PHI temp
-#' @param Niter temp
-#' @param stop_thres temp
-#' @param verbose temp
+#' @param adjm [matrix-int] :: Input adjacency matrix
+#' @param Nobs [int] :: Number of observations per dyad
+#' @param nodeps [vec-double] :: Initial node probabilities
+#' @param edgeps [matrix-double] :: Initial between-block probabilities
+#' @param H [matrix-double] :: Initial value of H
+#' @param PHI [matrix-double] :: Initial value of PHI
+#' @param Niter [int] :: Number of iterations max
+#' @param stop_thres [double] :: Stop condition
+#' @param verbose [logical] :: Output stuff?
 #' 
-#' @return temp
+#' @return [list] :: EM algorithm output, with the following elements: 
+#' \itemize{
+#' \item nodeps -- [vec-double] :: Estimated class probabilities
+#' \item edgeps -- [matrix-double] :: Estimated between-class edge probabilities
+#' \item classes -- [vec-int] :: Estimated class assignments
+#' \item model -- [\link{\code{NetworkModel}}] :: Estimated Network Model
+#' }
 #' 
 #' @export
 #' 
