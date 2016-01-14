@@ -1,16 +1,16 @@
 
 #' Compute depths of each node
 #' 
-#' @param parents [vector-int] :: Valued from 0 to length; these indicate which index the parent node is at
+#' @param parents [vector-int] :: Index location of parent node. Value of 0 indicates that this is the root node.
 #' 
-#' @return [vector-int] :: Depth of each node
+#' @return [vector-int] :: Depth of each node (root node has depth 1)
 #' 
 #' @export
 #' 
 depth_from_parents = function(parents) {
-  nn = (length(parents)+1)/2
+  n = (length(parents)+1)/2
   
-  depths = rep(NA, times = nn)
+  depths = rep(NA, times = n)
   cur_depth = 0
   cur_nodes = 0
   
@@ -19,6 +19,7 @@ depth_from_parents = function(parents) {
     cur_nodes = which(parents %in% cur_nodes)
     depths[cur_nodes] = cur_depth
   }
+  
   return(depths)
 }
 
@@ -40,22 +41,23 @@ lower_diag = function(nn) {
 
 #' Generate tree object from parent vector
 #' 
-#' @param parents [vector-int] :: Indices of parents
+#' @param parents [vector-int] :: Index location of parent node. Value of 0 indicates that this is the root node.
 #' 
 #' @return [list] :: A tree in list format (left child index, right child index)
 #' 
 #' @export
 #' 
 tree_from_parents = function(parents) {
-  #Assume internal nodes are greater than leaves.
-  # parents=c(6,6,7,7,0,5,5)
-  total_nn = length(parents)
-  nn = (total_nn+1)/2
-  if (any(parents %in% 1:nn)) stop("Improper tree form.")
+  ## Asume internal nodes have indeices greater than the leaf nodes' indices
+  ## Eg. parents=c(6,6,7,7,0,5,5)
+  
+  n = (length(parents) + 1)/2
+  if (any(parents %in% seq_len(n))) { stop("Improper tree form.") }
   children = list()
-  for (kk in 1:(nn-1)) children[[kk]] = numeric(0)
-  for (kk in 1:total_nn) {
-    if (parents[kk]>nn) children[[parents[kk]-nn]] = c(children[[parents[kk]-nn]], kk)
+  for (k in seq_len(n-1)) { children[[k]] = numeric(0) }
+  for (k in seq_along(parents)) { 
+    ## Iterate through all nodes -- if the node's parents are appropriate, add children
+    if (parents[k] > n) { children[[parents[k] - n]] = c(children[[parents[k] - n]], k)}
   }
   return(children)
 }
@@ -87,7 +89,7 @@ expanded_children_from_tree = function(tree) {
       expanded.children[[pick]][[kk]] <- keeper
     }
   }
-
+  
   return(expanded.children)  
 }
 
