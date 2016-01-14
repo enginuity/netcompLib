@@ -67,7 +67,7 @@ NetworkModelSBM = function(model_params = set_model_param()) {
   }
   
   ## Helper function -- Generates/adjusts block model probabilities  
-  generateBlockProbs = function(groups, avgden = 0.4, plims = c(0.05, 0.95)) {
+  generateBlockProbs = function(groups, avgden = NULL, plims = c(0,1)) {
     ## This function, when given class assignments in 'groups', forces the probability matrix to take on values within 'plims' AND keep an average overall density given by 'avgden'. 
     
     classct = table(groups)
@@ -99,9 +99,11 @@ NetworkModelSBM = function(model_params = set_model_param()) {
       return(testvec)
     }
     
-    coordmat[,4] = ifelse(is.null(avgden), 
-                          runif(n = Nparams, min = plims[1], max = plims[2]), 
-                          sampProbVec(coordmat[,3], avgden, plims))
+    if (is.null(avgden)) {
+      coordmat[,4] = runif(n = Nparams, min = plims[1], max = plims[2])
+    } else {
+      coordmat[,4] = sampProbVec(coordmat[,3], avgden, plims)
+    }
     
     ## Fill out in matrix form
     pmat = matrix(NA, ncol = NC, nrow = NC)
