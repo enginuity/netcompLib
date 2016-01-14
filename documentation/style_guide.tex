@@ -150,7 +150,21 @@ FIELD -- models : list\\
 \end{itemize}
 
 
+\subsubsection{Standard Group Ordering}
 
+For models with dyad groups (HRG, RND, SBM), it's necessary to provide standard dyad group ID's, which are needed in the code to test the more complicated hypotheses. \\
+
+\begin{itemize}
+\item RND models: \\
+The group number is the index of dyad in mod\$ids, which is the list of indices of the vectorized version of adjacency matrix. 
+
+\item HRG models: \\
+The group number is the ancestor number in original format. (ie. index in the parent vector). To get the probability, take \texttt{group number - Num.Nodes}, to find the index for the probability vector. For example, if a network has 15 nodes, the group ID numbers go from 16 to 29 (or 30?). 
+
+\item SBM models: \\
+Let $N$ = number of nodes. The group IDs for a dyad from class $i$ to $j$ would then be given by $\max(i + jN, j + iN)$. This is invertible by taking the remainder when dividing by $N$, and by division ignoring remainder. 
+
+\end{itemize}
 
 
 
