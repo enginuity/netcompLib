@@ -50,7 +50,7 @@ NetworkModel = function(model_params = set_model_param()) {
 NetworkModelSBM = function(model_params = set_model_param()) {
   ########## Helper Functions ##########
   
-  ## Helper function to do group reassignments 
+  ## Helper function -- Reindexes group assignments to remove empty groups! 
   doGroupReassignment = function(groups, pmat) {
     ## Given input group IDs and probability matrix, reindex group IDs if necessary. 
     
@@ -66,7 +66,7 @@ NetworkModelSBM = function(model_params = set_model_param()) {
     return(list(groups = new_groups, pmat = new_pmat))
   }
   
-  ## Helper function for generating/adjusting block model probabilities  
+  ## Helper function -- Generates/adjusts block model probabilities  
   generateBlockProbs = function(groups, avgden = 0.4, plims = c(0.05, 0.95)) {
     ## This function, when given class assignments in 'groups', forces the probability matrix to take on values within 'plims' AND keep an average overall density given by 'avgden'. 
     
