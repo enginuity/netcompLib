@@ -1,6 +1,13 @@
 ##@S This file contains the main network comparison function. 
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (compareNetworks)
+#' <What does this function do>
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 compareNetworks = function() {
   ## Also -- allow for random partitions? 
   
