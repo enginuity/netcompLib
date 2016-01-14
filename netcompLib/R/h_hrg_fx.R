@@ -95,21 +95,16 @@ expanded_children_from_tree = function(tree) {
 #' 
 #' @param expanded.children List of expanded children
 #' @param nn Number nodes in tree
-#' @param nodes.to.update Only update a subset of nodes 
 #' 
 #' @return Ancestor table (matrix)
 #' 
 #' @export
 #' 
-anc_table_from_expanded_children = function(expanded.children, nn, nodes.to.update=NULL) {
-  # Written by Andrew Thomas
-  
+anc_table_from_expanded_children = function(expanded.children, nn) {
   
   anc.table <- array(NA, rep(nn, 2))
   diag(anc.table) <- 1:nn
   int.nodes <- length(expanded.children)
-  
-  if (is.null(nodes.to.update)) nodes.to.update <- 1:int.nodes
   
   #build the p matrix.
   for (kk in 1:int.nodes) {
