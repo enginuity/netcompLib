@@ -10,7 +10,7 @@ setClass("NetworkModelPair", representation(m1 = "NetworkModel", m2 = "NetworkMo
 setClass("NetworkStruct", representation(Nnodes = "numeric"))
 setClass("NetworkStructSBM", representation(groups = "numeric", counts = "numeric", expand = "list", correct = "numeric"), contains = "NetworkStruct")
 setClass("NetworkStructRND", representation(counts = "numeric", ids = "list"), contains = "NetworkStruct")
-setClass("NetworkStructHRG", representation(tree_list = "list", expand = "list", counts = "numeric"), contains = "NetworkStruct")
+setClass("NetworkStructHRG", representation(parents = "numeric", children = "list", expand = "list", counts = "numeric"), contains = "NetworkStruct")
 setClass("NetworkStructList", representation(models = "list"), contains = "NetworkStruct")
 
 
@@ -245,7 +245,7 @@ NetworkModelHRG = function(model_params = set_model_param()) {
   }
   
   res_tree$parents = pars
-  res_tree$children = tree_from_parents(pars)
+  res_tree$children = HRG_treeFromParents(pars)
   res_tree$prob = runif(Nnodes-1, min = random_plimit[1], max = random_plimit[2])
   
   netm = new("NetworkModelHRG", Nnodes = Nnodes, parents = res_tree$parents, 
@@ -498,12 +498,10 @@ NetworkStructRND = function(model_params = set_model_param(), NetM = NULL) {
 #' 
 NetworkStructHRG = function(model_params = set_model_param(), NetM = NULL) {
   if (is.null(NetM)) { NetM = NetworkModelHRG(model_params) }
+  expc = HRG_expandedChildren(NetM)
   
-  tr = list(prob = NetM@prob, children = NetM@children, parents = NetM@parents, nodes = getNnodes(NetM))
-  expc = expanded_children_from_tree(tr)
-  
-  nets = new("NetworkStructHRG", Nnodes = getNnodes(NetM), tree_list = tr, expand = expc, 
-             counts = sapply(expc, function(x) {length(x[[1]]) * length(x[[2]]) }))
+  nets = new("NetworkStructHRG", Nnodes = getNnodes(NetM), parents = NetM@parents, children = NetM@children, 
+             expand = expc, counts = sapply(expc, function(x) {length(x[[1]]) * length(x[[2]]) }))
   return(nets)
 }
 
