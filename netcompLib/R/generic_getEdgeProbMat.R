@@ -59,12 +59,12 @@ getEdgeProbMat.NetworkModelHRG = function(NetM, mode) {
   tm = list(prob = NetM@prob, children = NetM@children, parents = NetM@parents, nodes = nn)
   clo.anc = closest_ancestor(tm)$anc_table
   
-  out <- matrix(0, nn, nn)
-  series <- lower_diag(nn)
+  out = matrix(0, nn, nn)
+  series = lower_diag(nn)
   if (mode == "prob") {
-    out[series] <- tm$prob[clo.anc[series]-nn]
+    out[series] = tm$prob[clo.anc[series]-nn]
   } else if (mode == "group") {
-    out[series] <- clo.anc[series]
+    out[series] = clo.anc[series]
   }  
   out = out + t(out)
   return(out)
