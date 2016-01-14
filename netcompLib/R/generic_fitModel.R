@@ -35,7 +35,7 @@ fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10
   if (mode == "default") {
     aggstat = aggstat_single(res, adja)
 
-    return(reassign_edgegroup_prob(res, aggstat$names, probs = aggstat$x/aggstat$n))
+    return(set_dyadgroup_prob(res, aggstat$names, probs = aggstat$x/aggstat$n))
   } else if (mode == "densitydiff") {
     ## TODO: Allow fitting when inputting longer adjacency arrays? (or perhaps a pair of them)
     
@@ -44,9 +44,9 @@ fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10
     
     best = h_optim(nparam = length(n) + 1, optim_tries = optim_tries, fn = llFx_dendiff, gn = llGrFx_dendiff, x = x, y = y, n = n)
     
-    m1 = reassign_edgegroup_prob(res, aggstat$names, probs = faraway::ilogit(best$par[-1]))
-    m2 = reassign_edgegroup_prob(res, aggstat$names, probs = faraway::ilogit(best$par[-1] + best$par[1]))
-    return(NetworkModelPair(m1 = m1, m2 = m2, is_null = FALSE, model_type = "densitydiff", addl_param = list(dd_param_add = best$par[1])))
+    m1 = set_dyadgroup_prob(res, aggstat$names, probs = faraway::ilogit(best$par[-1]))
+    m2 = set_dyadgroup_prob(res, aggstat$names, probs = faraway::ilogit(best$par[-1] + best$par[1]))
+        return(NetworkModelPair(m1 = m1, m2 = m2, is_null = FALSE, model_type = "densitydiff", addl_param = list(dd_param_add = best$par[1])))
   }
   
   if (mode == "corr-global-null") {
@@ -57,8 +57,8 @@ fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10
     rho = best$par[1]; a = best$par[-1]
     pt = hCorr_paramToProb(rho, a)
     
-    m1 = reassign_edgegroup_prob(res, aggstat$names, probs = pt[,1] + pt[,2])
-    m2 = reassign_edgegroup_prob(res, aggstat$names, probs = pt[,1] + pt[,3])
+    m1 = set_dyadgroup_prob(res, aggstat$names, probs = pt[,1] + pt[,2])
+    m2 = set_dyadgroup_prob(res, aggstat$names, probs = pt[,1] + pt[,3])
     return(NetworkModelPair(m1 = m1, m2 = m2, is_null = FALSE, model_type = "correlated", addl_param = list(c_param_corr = rho, c_param_a = a, c_param_b = a, c_names = aggstat$names)))
   }
   
@@ -70,8 +70,8 @@ fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10
     rho = best$par[1]; a = best$par[1 + seq_along(n)]; b = best$par[1+length(n)+seq_along(n)]
     pt = hCorr_paramToProb(rho, a, b)
     
-    m1 = reassign_edgegroup_prob(res, aggstat$names, probs = pt[,1] + pt[,2])
-    m2 = reassign_edgegroup_prob(res, aggstat$names, probs = pt[,1] + pt[,3])
+    m1 = set_dyadgroup_prob(res, aggstat$names, probs = pt[,1] + pt[,2])
+    m2 = set_dyadgroup_prob(res, aggstat$names, probs = pt[,1] + pt[,3])
     return(NetworkModelPair(m1 = m1, m2 = m2, is_null = FALSE, model_type = "correlated", addl_param = list(c_param_corr = rho, c_param_a = a, c_param_b = b, c_names = aggstat$names)))
   }
   

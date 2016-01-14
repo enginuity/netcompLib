@@ -377,7 +377,7 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
     if (!(dd_param_add %in% names(addl_param))) { addl_param$dd_param_add = rnorm(1) }
     m2 = m1
     origprobs = get_dyadgroup_prob(m1)
-    m2 = reassign_edgegroup_prob(
+    m2 = set_dyadgroup_prob(
       m2, origprobs$names, faraway::ilogit(faraway::logit(origprobs$probs) + addl_param$dd_param_add))
     
   } else if (model_type == "correlated") {

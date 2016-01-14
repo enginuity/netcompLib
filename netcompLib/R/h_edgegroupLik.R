@@ -141,7 +141,7 @@ get_dyadgroup_prob = function(NetM) {
 #' 
 #' @export
 #' 
-reassign_edgegroup_prob = function(NetM, ids, probs) {
+set_dyadgroup_prob = function(NetM, ids, probs) {
   ids = as.numeric(ids)
   
   if (inherits(NetM, "NetworkModelSBM")) {
