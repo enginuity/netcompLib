@@ -4,19 +4,25 @@
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param Nobs [int] :: Number of observations
-#' @param Nclass [int] :: Number of classes in SBM
-#' @param Niter [int] :: Number of maximum iterations in EM
-#' @param Ntries [int] :: Number of EM runs to optimize over
-#' @param start [char] :: 'spectral' or 'random -- method to initialize starting state of EM algorithm
-#' @param stop_thres [double] :: Threshold to declare convergence
-#' @param verbose [int] :: Verbosity level -- higher = more output
-#' @param method [char] :: 'spectral' or 'mf' -- method to fit SBM: spectral does spectral clustering; mf does EM algo
 #' 
 #' @return [\code{\link{NetworkModel}}] :: Best found fitted model
 #' 
 #' @export
 #' 
-fit_SBM = function(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10, start = "spectral", stop_thres = 0.00001, verbose = 0, method = "mf") { 
+fit_SBM = function(adjm, Nobs = 1, control = set_fit_param()) { 
+  cl = control
+  
+  ## TODO: Fix this part? don't need this part? 
+  Nclass = cl$SBM_Nclass
+  Niter = cl$SBM_EM_Niter
+  start = cl$SBM_start
+  stop_thres = cl$SBM_EM_stopthres
+  verbose = cl$verbose
+  method = cl$SBM_method
+  Ntries = cl$Ntries
+  
+  ## TODO: Make this take multiple inputs? adjacency arrays, multiple observations? Need to alter further arguments to make this work! 
+  
   # start = 'spectral' or 'random'
   # method 'mf' for mean field EM approach, 'spectral' for just doing spectral clustering
   
