@@ -9,18 +9,22 @@
 #' 
 #' @export
 #' 
-fit_SBM = function(adjm, Nobs = 1, control = set_fit_param()) { 
-  cl = control
+fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) { 
+  cl = control_list ## Shorten control_list variable name
   
   ## TODO: Make this take multiple inputs? adjacency arrays, multiple observations? Need to alter further arguments to make this work! 
   
-  # start = 'spectral' or 'random'
-  # method 'mf' for mean field EM approach, 'spectral' for just doing spectral clustering
-  
+  ## method = 'spectral' or 'mf'
+  ## method 'mf' for mean field EM approach, 'spectral' for just doing spectral clustering
   if (cl$SBM_method == "spectral") {
+    ## For spectral clustering, simply apply spectral clustering 
     return(specClust(adjm, cl$SBM_Nclass, cl$Ntries))
     
+    
   } else if (cl$SBM_method == "mf") {
+    ## For EM algo, use 'start' to decide how to initialize! If using spectral clustering to start, don't need to rerun the eigenvector computation part -- only need to rerun the k-means part! 
+    ## start can take on values of 'spectral' or 'random'
+    
     for(j in 1:cl$Ntries) {
       N = nrow(adjm) ## This is the number of nodes
       
