@@ -12,49 +12,40 @@
 fit_SBM = function(adjm, Nobs = 1, control = set_fit_param()) { 
   cl = control
   
-  ## TODO: Fix this part? don't need this part? 
-  Nclass = cl$SBM_Nclass
-  Niter = cl$SBM_EM_Niter
-  start = cl$SBM_start
-  stop_thres = cl$SBM_EM_stopthres
-  verbose = cl$verbose
-  method = cl$SBM_method
-  Ntries = cl$Ntries
-  
   ## TODO: Make this take multiple inputs? adjacency arrays, multiple observations? Need to alter further arguments to make this work! 
   
   # start = 'spectral' or 'random'
   # method 'mf' for mean field EM approach, 'spectral' for just doing spectral clustering
   
-  if (method == "spectral") {
-    return(specClust(adjm, Nclass, Ntries))
+  if (cl$SBM_method == "spectral") {
+    return(specClust(adjm, cl$SBM_Nclass, cl$Ntries))
     
-  } else if (method == "mf") {
-    for(j in 1:Ntries) {
+  } else if (cl$SBM_method == "mf") {
+    for(j in 1:cl$Ntries) {
       N = nrow(adjm) ## This is the number of nodes
       
       best_loglik = -Inf
       best_res = NULL
-      if (start == 'random') {
+      if (cl$SBM_start == 'random') {
         ## Random start
-        nodeps = rep(1/Nclass, length = Nclass)
-        edgeps = symmetrize_mat(matrix(sum(adjm, na.rm = TRUE) / (Nobs * N * (N-1) / 2) * runif(n = Nclass * Nclass, min = 0.1, max = 0.9), nrow = Nclass))
+        nodeps = rep(1/cl$SBM_Nclass, length = cl$SBM_Nclass)
+        edgeps = symmetrize_mat(matrix(sum(adjm, na.rm = TRUE) / (Nobs * N * (N-1) / 2) * runif(n = cl$SBM_Nclass * cl$SBM_Nclass, min = 0.1, max = 0.9), nrow = cl$SBM_Nclass))
         
-        H = matrix(0, nrow = N, ncol = Nclass)
-        PHI = matrix(runif(Nclass*N, min = 0.1, max = 0.9), nrow = N)
+        H = matrix(0, nrow = N, ncol = cl$SBM_Nclass)
+        PHI = matrix(runif(cl$SBM_Nclass*N, min = 0.1, max = 0.9), nrow = N)
         PHI = PHI / rowSums(PHI)
-      } else if (start == 'spectral') {
+      } else if (cl$SBM_start == 'spectral') {
         
         ## Do spectral clustering once to give a rough start
-        res = specClust(adjm, Nclass, 2)
+        res = specClust(adjm, cl$SBM_Nclass, 2)
         clusts = res@groups
         
-        nodeps = sapply(1:Nclass, function(x) {mean(clusts == x)})
+        nodeps = sapply(1:cl$SBM_Nclass, function(x) {mean(clusts == x)})
         edgeps = res@probmat
         
-        H = matrix(0, nrow = N, ncol = Nclass)
-        PHI = matrix(runif(Nclass*N, min = 0.1, max = 0.9), nrow = N)
-        for(j in 1:Nclass) {
+        H = matrix(0, nrow = N, ncol = cl$SBM_Nclass)
+        PHI = matrix(runif(cl$SBM_Nclass*N, min = 0.1, max = 0.9), nrow = N)
+        for(j in 1:cl$SBM_Nclass) {
           PHI[which(j == clusts),j] = PHI[which(j == clusts),j] + 2
         }
         PHI = PHI / rowSums(PHI)
@@ -62,11 +53,11 @@ fit_SBM = function(adjm, Nobs = 1, control = set_fit_param()) {
       
       edgeps[edgeps < 0.01] = .01; edgeps[edgeps > 0.99] = .99
       results = EM_SBM_mf(adjm = adjm, Nobs = Nobs, nodeps = nodeps, edgeps = edgeps, H = H, PHI = PHI, 
-                          Niter = Niter, stop_thres = stop_thres, verbose = verbose)
+                          Niter = cl$SBM_EM_Niter, stop_thres = cl$SBM_EM_stopthres, verbose = cl$verbose)
       # newm = NetworkModel(set_model_param(Nnodes = 30, block_assign = clusts, block_probs = edgeps))
       # computeLik(newm, adjm)$sum
       loglik = computeLik(results$model, adja = adjm)$sum
-      if (verbose > 0) { print(loglik) }
+      if (cl$verbose > 0) { print(loglik) }
       
       if (loglik > best_loglik) {
         best_loglik = loglik
