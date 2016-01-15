@@ -143,6 +143,7 @@ get_dyadgroup_prob = function(NetM) {
 #' 
 set_dyadgroup_prob = function(NetM, ids, probs) {
   ids = as.numeric(ids)
+  ## TODO: Make this repsect standard order (based on ids?), since can be buggy if out of order! 
   
   if (inherits(NetM, "NetworkModelSBM")) {
     for(j in seq_along(ids)) {
