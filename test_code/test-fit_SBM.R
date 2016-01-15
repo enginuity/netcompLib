@@ -3,6 +3,7 @@ library(igraph)
 
 
 ## For running fit_SBM
+#|----##If calling the version from netcompLib, the input parameters have been changed! --Thu Jan 14 20:48:05 2016--
 if (FALSE) {
   nm = NetworkModel(set_model_param(Nnodes = 50, block_assign = rep(c(1,2), each = 25)))
   adjm = sampleNetwork(nm)[,,1]
@@ -32,6 +33,7 @@ adjm = hide_edges(adjm, frac = .5)
 nm = NetworkModel(set_model_param(Nnodes = 100, block_assign = rep(c(1,2), each = 50)))
 adjm = sampleNetwork(nm)[,,1]
 z = fit_SBM(adjm)
+#|----##If calling the version from netcompLib, the input parameters have been changed! --Thu Jan 14 20:48:05 2016--
 computeLik(z$model, adjm)$sum
 
 
@@ -43,6 +45,7 @@ nm2 = NetworkModel(set_model_param(Nnodes = 50, block_assign = rep(c(1,2), each 
 ## nulldist
 adjm = sampleNetwork(nm1)[,,1]
 fit_SBM(adjm, start = 'spectral', Nclass = 2)
+#|----##If calling the version from netcompLib, the input parameters have been changed! --Thu Jan 14 20:48:05 2016--
 
 plot_probmatrix(pm = adjm, add_legend = FALSE, colors = c(0,1))
 
