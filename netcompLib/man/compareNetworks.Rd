@@ -2,14 +2,14 @@
 % Please edit documentation in R/compareNetworks.R
 \name{compareNetworks}
 \alias{compareNetworks}
-\title{<What does this function do>}
+\title{Compares two networks}
 \usage{
 compareNetworks()
 }
 \value{
-temp
+p-value of some sort? FIX THIS
 }
 \description{
-<What does this function do>
+This function compares a pair of networks [add stuff on multiple pairs of networks if implemented properly]
 }
 

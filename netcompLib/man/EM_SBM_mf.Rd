@@ -31,7 +31,7 @@ EM_SBM_mf(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verbose)
 \item nodeps -- [vec-double] :: Estimated class probabilities
 \item edgeps -- [matrix-double] :: Estimated between-class edge probabilities
 \item classes -- [vec-int] :: Estimated class assignments
-\item model -- [\link{\code{NetworkModel}}] :: Estimated Network Model
+\item model -- [\code{\link{NetworkModel}}] :: Estimated Network Model
 }
 }
 \description{

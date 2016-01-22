@@ -9,19 +9,19 @@ set_fit_param(Ntries = 10, verbose = 0, SBM_start = "spectral",
   SBM_EM_stopthres = 1e-05)
 }
 \arguments{
-\item{Ntries}{temp}
+\item{Ntries}{[int] :: Number of EM runs to optimize over}
 
-\item{verbose}{temp}
+\item{verbose}{[int] :: Verbosity level -- higher = more output}
 
-\item{SBM_start}{temp}
+\item{SBM_start}{[char] :: 'spectral' or 'random -- method to initialize starting state of EM algorithm}
 
-\item{SBM_method}{temp}
+\item{SBM_method}{[char] :: 'spectral' or 'mf' -- method to fit SBM: spectral does spectral clustering; mf does EM algo}
 
-\item{SBM_Nclass}{temp}
+\item{SBM_Nclass}{[int] :: Number of classes in SBM}
 
-\item{SBM_EM_Niter}{temp}
+\item{SBM_EM_Niter}{[int] :: Number of maximum iterations in EM}
 
-\item{SBM_EM_stopthres}{temp}
+\item{SBM_EM_stopthres}{[double] :: Threshold to declare convergence}
 }
 \value{
 [list] :: A list of parameters

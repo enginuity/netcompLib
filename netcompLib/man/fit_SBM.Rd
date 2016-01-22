@@ -4,27 +4,14 @@
 \alias{fit_SBM}
 \title{Fit SBM given adjacency matrix}
 \usage{
-fit_SBM(adjm, Nobs = 1, Nclass = 3, Niter = 100, Ntries = 10,
-  start = "spectral", stop_thres = 1e-05, verbose = 0, method = "mf")
+fit_SBM(adjm, Nobs = 1, control_list = set_fit_param())
 }
 \arguments{
 \item{adjm}{[matrix-int] :: Input adjacency matrix}
 
 \item{Nobs}{[int] :: Number of observations}
 
-\item{Nclass}{[int] :: Number of classes in SBM}
-
-\item{Niter}{[int] :: Number of maximum iterations in EM}
-
-\item{Ntries}{[int] :: Number of EM runs to optimize over}
-
-\item{start}{[char] :: 'spectral' or 'random -- method to initialize starting state of EM algorithm}
-
-\item{stop_thres}{[double] :: Threshold to declare convergence}
-
-\item{verbose}{[int] :: Verbosity level -- higher = more output}
-
-\item{method}{[char] :: 'spectral' or 'mf' -- method to fit SBM: spectral does spectral clustering; mf does EM algo}
+\item{control_list}{temp}
 }
 \value{
 [\code{\link{NetworkModel}}] :: Best found fitted model
