@@ -52,3 +52,21 @@ symmetrize_mat = function(mat) {
   return(mat)
 }
 
+graph_laplacian = function(adjm) {
+  ## Given an adjacency matrix, this computes the graph laplacian matrix. 
+  ## Note, this also works with missing data, by estimating the degree of all nodes by scaling up relative to the amount of missing dyads. 
+  
+  ## Zero out the diagonal
+  diag(adjm) = 0
+  N = length(diag(adjm))
+  
+  ## Estimate/compute the degree: 
+  degs = rowSums(adjm, na.rm = TRUE)
+  na_prop = rowSums(is.na(adjm)) / (N-1)
+  
+  ## Get negative of adjacency matrix, and set diagonal appropriately
+  adjm = -adjm
+  diag(adjm) = degs/(1-na_prop)
+  
+  return(adjm)
+}
