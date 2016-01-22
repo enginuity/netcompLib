@@ -57,6 +57,8 @@ graph_laplacian = function(adjm) {
   ## Given an adjacency matrix, this computes the graph laplacian matrix. 
   ## Note, this also works with missing data, by estimating the degree of all nodes by scaling up relative to the amount of missing dyads. 
   
+  ## TODO: Extend this to work for adjacency arrays too? 
+  
   ## Zero out the diagonal
   diag(adjm) = 0
   N = length(diag(adjm))
