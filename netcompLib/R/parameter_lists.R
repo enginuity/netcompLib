@@ -115,32 +115,24 @@ set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (set_fit_param)
 #' Set model fitting parameters
 #' 
 #' This function sets up the (list of) parameters to be passed into model fitting functions. There are default parameters that are used if this function is called with no arguments. 
 #' 
-#' @param Ntries temp
-#' @param verbose temp
-#' @param SBM_start temp
-#' @param SBM_method temp
-#' @param SBM_Nclass temp
-#' @param SBM_EM_Niter temp
-#' @param SBM_EM_stopthres temp
+#' @param Ntries [int] :: Number of EM runs to optimize over
+#' @param verbose [int] :: Verbosity level -- higher = more output
+#' @param SBM_start [char] :: 'spectral' or 'random -- method to initialize starting state of EM algorithm
+#' @param SBM_method [char] :: 'spectral' or 'mf' -- method to fit SBM: spectral does spectral clustering; mf does EM algo
+#' @param SBM_Nclass [int] :: Number of classes in SBM
+#' @param SBM_EM_Niter [int] :: Number of maximum iterations in EM
+#' @param SBM_EM_stopthres [double] :: Threshold to declare convergence
 #' 
 #' @return [list] :: A list of parameters
 #' 
 #' @export
 #' 
 set_fit_param = function(Ntries = 10, verbose = 0, SBM_start = 'spectral', SBM_method = 'mf', SBM_Nclass = 3, SBM_EM_Niter = 100, SBM_EM_stopthres = 0.00001) {
-  #   @param Nclass [int] :: Number of classes in SBM
-  #   @param Niter [int] :: Number of maximum iterations in EM
-  #   @param Ntries [int] :: Number of EM runs to optimize over
-  #   @param start [char] :: 'spectral' or 'random -- method to initialize starting state of EM algorithm
-  #   @param stop_thres [double] :: Threshold to declare convergence
-  #   @param verbose [int] :: Verbosity level -- higher = more output
-  #   @param method [char] :: 'spectral' or 'mf' -- method to fit SBM: spectral does spectral clustering; mf does EM algo
-  #   
+  
   if !(SBM_start %in% c('random', 'spectral-mean', 'spectral-complete')) { stop("Invalid SBM_start value") }
   if !(SBM_method %in% c('mf', 'spectral')) { stop("Invalid SBM_method value") }
   
