@@ -133,8 +133,8 @@ set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05
 #' 
 set_fit_param = function(Ntries = 10, verbose = 0, SBM_start = 'spectral', SBM_method = 'mf', SBM_Nclass = 3, SBM_EM_Niter = 100, SBM_EM_stopthres = 0.00001) {
   
-  if !(SBM_start %in% c('random', 'spectral-mean', 'spectral-complete')) { stop("Invalid SBM_start value") }
-  if !(SBM_method %in% c('mf', 'spectral')) { stop("Invalid SBM_method value") }
+  if (!(SBM_start %in% c('random', 'spectral-mean', 'spectral-complete'))) { stop("Invalid SBM_start value") }
+  if (!(SBM_method %in% c('mf', 'spectral'))) { stop("Invalid SBM_method value") }
   
   return(list(Ntries = Ntries, verbose = verbose, SBM_start = SBM_start, SBM_method = SBM_method, SBM_Nclass = SBM_Nclass, SBM_EM_Niter = SBM_EM_Niter, SBM_EM_stopthres = SBM_EM_stopthres))
 }
