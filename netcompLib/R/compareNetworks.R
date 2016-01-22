@@ -1,10 +1,11 @@
 ##@S This file contains the main network comparison function. 
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (compareNetworks)
-#' <What does this function do>
+#' Compares two networks
 #' 
-#' @return temp
+#' This function compares a pair of networks [add stuff on multiple pairs of networks if implemented properly]
+#' 
+#' @return p-value of some sort? FIX THIS
 #' 
 #' @export
 #' 

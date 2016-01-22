@@ -144,7 +144,7 @@ specClust = function(adjm, Nclass, Ntries) {
 #' \item nodeps -- [vec-double] :: Estimated class probabilities
 #' \item edgeps -- [matrix-double] :: Estimated between-class edge probabilities
 #' \item classes -- [vec-int] :: Estimated class assignments
-#' \item model -- [\link{\code{NetworkModel}}] :: Estimated Network Model
+#' \item model -- [\code{\link{NetworkModel}}] :: Estimated Network Model
 #' }
 #' 
 #' @export
