@@ -52,6 +52,7 @@ symmetrize_mat = function(mat) {
   return(mat)
 }
 
+
 graph_laplacian = function(adjm) {
   ## Given an adjacency matrix, this computes the graph laplacian matrix. 
   ## Note, this also works with missing data, by estimating the degree of all nodes by scaling up relative to the amount of missing dyads. 
@@ -70,3 +71,4 @@ graph_laplacian = function(adjm) {
   
   return(adjm)
 }
+
