@@ -53,6 +53,15 @@ symmetrize_mat = function(mat) {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (graph_laplacian)
+#' <What does this function do>
+#' 
+#' @param adjm temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 graph_laplacian = function(adjm) {
   ## Given an adjacency matrix, this computes the graph laplacian matrix. 
   ## Note, this also works with missing data, by estimating the degree of all nodes by scaling up relative to the amount of missing dyads. 

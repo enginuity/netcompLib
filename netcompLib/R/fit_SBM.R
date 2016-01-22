@@ -1,9 +1,11 @@
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fit_SBM)
 #' Fit SBM given adjacency matrix
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param Nobs [int] :: Number of observations
+#' @param control_list temp
 #' 
 #' @return [\code{\link{NetworkModel}}] :: Best found fitted model
 #' 
