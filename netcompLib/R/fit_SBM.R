@@ -222,3 +222,67 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
                 block_probs = edgeps))))
 }
 
+
+
+
+
+
+completeMatrix = function(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs = 0, softImpute_rank = 5) {
+  require(rARPACK)
+  
+  ## method -- values = "rcmeans", "softImpute"
+  ## softImpute requires the softImpute package
+  ## softImpute_rank = number of SVD vectors to use in the approximation for imputation (be precise in final documentation)
+  
+  ## Note, for a real symmetric matrix with positive eigenvectors, the SVD vectors and eigenvectors are the same! Use this!! 
+  
+  ## If eigenvecs != 0, then return the components of the first 'eigenvecs' eigenvectors instead of returning an adjacency matrix. If positive, it returns the largest eigenvectors; if negatie, it returns the smallest eigenvectors -- explain this better! 
+  
+  
+  ## TODO: Allow more general adjacency arrays / lists?
+  N = nrow(adjm)
+  diag(adjm) = 0
+  
+  if (method == "rcmeans") {
+    ## Compute all row-means (thesee are the same as column means)
+    rowEdgeCount = rowSums(adjm, na.rm = TRUE)
+    rowDyadCount = N - 1 - rowSums(is.na(adjm)) 
+    
+    ## Fill in all missing cells
+    for(j in seq_len(N)) { 
+      for (k in seq_len(N)) {
+        if ((j > k) & is.na(adjm[j,k])) { 
+          val = (rowEdgeCount[j] + rowEdgeCount[k]) / (rowDyadCount[j] + rowDyadCount[k])
+          adjm[j,k] = val; adjm[k,j] = val
+        }
+      }
+    }
+  } else if (method == "softImpute") {
+    require(softImpute)
+    est_svd = softImpute::softImpute(adjm, rank.max = softImpute_rank)
+    if (!laplacian & (eigenvecs > 0) & (eigenvecs <= softImpute_rank)) {
+      ## Special case for speed -- If we want eigenvectors, we can just output results from the softImpute stage, instead of estimating the adjacency matrix and then computing the eigenvectors (SVD) again. 
+      return(est_svd$u[,seq_len(eigenvecs)])
+    }
+    adjm = softImpute::complete(adjm, est_svd)
+  } else {
+    stop("Invalid method choice (function = completeMatrix)")
+  }
+  
+  ## Return the Laplacian instead of so desired, after completing the adjacency matrix
+  if (laplacian) { res = graph_laplacian(adjm) } else { res = adjm }
+  if (eigenvecs != 0) {
+    require(rARPACK)
+    ## requires rARPACK
+    if (eigenvecs > 0) {
+      return(eigs_sym(res, k = eigenvecs, which = "LM")$vectors)
+    } else {
+      return(eigs_sym(res, k = abs(eigenvecs), which = "SM")$vectors)
+    } 
+  } else {
+    return(res) 
+  }
+}
+
+
+
