@@ -243,6 +243,8 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
 #' 
 completeMatrix = function(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs = 0, softImpute_rank = 5) {
   require(rARPACK)
+
+  ## TODO: Allow for rest of parameters to be passed in to softImpute? 
   
   ## method -- values = "rcmeans", "softImpute"
   ## softImpute requires the softImpute package
