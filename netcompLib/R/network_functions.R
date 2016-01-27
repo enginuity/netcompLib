@@ -65,7 +65,7 @@ computeDist = function(NetM1, NetM2, type = "KLsym") {
   if (type == "KL") { 
     return(h_kldist(p1, p2))
   } else if (type == "KLsym") {
-    return( (h_kldist(p1,p2)+h_kl_dist(p2,p1)) / 2)
+    return( (h_kldist(p1,p2)+h_kldist(p2,p1)) / 2)
   }
   stop("Invalid type of distance measure inputted")
   return(NULL)
