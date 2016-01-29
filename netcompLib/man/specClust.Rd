@@ -4,14 +4,18 @@
 \alias{specClust}
 \title{Runs spectral clustering on an input matrix}
 \usage{
-specClust(adjm, Nclass, Ntries)
+specClust(adjm, evs, Ntries, NStartPerTry = 2)
 }
 \arguments{
 \item{adjm}{[matrix-int] :: Input adjacency matrix}
 
-\item{Nclass}{[int] :: Number of clusters}
+\item{evs}{temp}
 
 \item{Ntries}{[int] :: Number of attempts}
+
+\item{NStartPerTry}{temp}
+
+\item{Nclass}{[int] :: Number of clusters}
 }
 \value{
 [\code{\link{NetworkModel}}] :: Output bestfit model
