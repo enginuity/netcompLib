@@ -77,10 +77,12 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
 
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (specClust)
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (specClust)
 #' Runs spectral clustering on an input matrix
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param evs temp
+#' @param Nclass temp
 #' @param Ntries [int] :: Number of attempts
 #' @param NStartPerTry temp
 #' 
@@ -88,10 +90,9 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
 #' 
 #' @export
 #' 
-specClust = function(adjm, evs, Ntries, NStartPerTry = 2) {
+specClust = function(adjm, evs, Nclass, Ntries, NStartPerTry = 2) {
   ## evs should be a matrix of eigenvectors, with the columns as individual eigenvectors
   
-  Nclass = ncol(evs)
   evs = scale(evs)
   
   best_res = NULL
