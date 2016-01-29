@@ -86,43 +86,23 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
 #' 
 #' @export
 #' 
-specClust = function(adjm, Nclass, Ntries) {
-  diag(adjm) = 0 # Should be 0 already, but this won't hurt. 
+specClust = function(adjm, evs, Ntries, NStartPerTry = 2) {
+  ## evs should be a matrix of eigenvectors, with the columns as individual eigenvectors
   
-  ## IF there is missing data, use cheap algorithm to do matrix completing
-  if (any(is.na(adjm))) {
-    ## Fill with row average if available, if not, fill with global average. 
-    N = nrow(adjm)
-    below_thres = NULL
-    for(j in seq_len(N)) {
-      r = which(is.na(adjm[j,]))
-      if (length(r) > N * .8) {
-        below_thres = c(below_thres, r)
-      } else {
-        adjm[j,r] = sum(adjm[j,], na.rm = TRUE)/(N-1)
-      }
-    } 
-    
-    overall_density = sum(adjm[-r,-r], na.rm = TRUE) / ((N-r) * (N-r-1))
-    for(j in below_thres) {
-      adjm[j,] = overall_density
-    }
-    diag(adjm) = 0 # Should be 0 already, but this won't hurt. 
-  }
+  Nclass = ncol(evs)
+  evs = scale(evs)
   
   best_res = NULL
   best_loglik = -Inf
   
   for(j in 1:Ntries) {
-    
-    clusts = kmeans(scale(eigen(adjm)$vectors[,1:Nclass]), centers = Nclass, nstart = 10)$cluster
-    nodeps = sapply(1:Nclass, function(x) { sum(x == clusts) }) / length(clusts)
-    nets = NetworkStruct(set_model_param(Nnodes = length(clusts), type = 'block', block_nclass = Nclass, block_assign = clusts))
-    model = fitModel(nets, adjm)
-    loglik = computeLik(model, adja = adjm)$sum
+    clusts = kmeans(evs, centers = Nclass, nstart = NStartPerTry)$cluster
+    NetS = NetworkStruct(set_model_param(Nnodes = length(clusts), type = 'block', block_nclass = Nclass, block_assign = clusts))
+    FittedModel = fitModel(NetS, adjm)
+    loglik = computeLik(FittedModel, adja = adjm)$sum
     if (loglik > best_loglik) {
       best_loglik = loglik
-      best_res = model
+      best_res = FittedModel
     }
   }
   return(best_res)
