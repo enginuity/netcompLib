@@ -76,15 +76,16 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (specClust)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (specClust)
-#' Runs spectral clustering on an input matrix
+#' Runs spectral clustering
+#' 
+#' This requires input of an adjacency matrix and eigenvectors. The eigenvectors can come from the Laplacian matrix, however. The input adjacency matrix can have missing data (it's only used to find the iteration that provides the highest likelihood)
+#' 
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
-#' @param evs temp
-#' @param Nclass temp
-#' @param Ntries [int] :: Number of attempts
-#' @param NStartPerTry temp
+#' @param evs [matrix-numeric] :: Matrix of eigenvectors, with the columns as individual eigenvectors
+#' @param Nclass [int] :: Number of classes to return for spectral clustering
+#' @param Ntries [int] :: Number of attempts (Number of times to run the k-means algorithm)
+#' @param NStartPerTry [int] :: Number of random starts for the k-means algorithm
 #' 
 #' @return [\code{\link{NetworkModel}}] :: Output bestfit model
 #' 
@@ -206,7 +207,6 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (completeMatrix)
 #' Estimates missing entries of an input matrix
 #' 
 #' This function applies one of two matrix-completion techniques. The cheap version ('rcmeans') simply fills each missing value with the average of all cells in its row/column. This results in a matrix that is still a properly weighted undirected network. The other version ('softImpute') calls the function in the corresponding R package 'softImpute'. Essentially, it looks for entries to fill that matrix such that it preserves low rank. I think the resulting matrix is symmetric if the input is symmetric, but there's no guarantee that it's a proper adjacency matrix (in that the values can possibly be negative...)
@@ -220,9 +220,9 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
 #' @param method [character] :: Two possible values: 'rcmeans' or 'softImpute'
 #' @param laplacian [logical] :: If TRUE, the results are based on the Laplacian matrix
 #' @param eigenvecs [int] :: If nonzero, this function returns eigenvectors instead of a matrix. If this is positive, it returns the 'eigenvecs' largest eigenvectors; if negative, it returns the 'eigenvecs' smallest eigenvectors. 
-#' @param softImpute_rankmax temp
-#' @param softImpute_thresh temp
-#' @param softImpute_maxit temp
+#' @param softImpute_rankmax [int] :: The max rank of the svd approximation, when using softImpute
+#' @param softImpute_thresh [numeric] :: Convergence threshold, when using softImpute
+#' @param softImpute_maxit [int] :: Maximum number of iterations, when using softImpute
 #' 
 #' @return [matrix] :: The returned value is either a square matrix, or a matrix containing the first few eigenvectors. 
 #' 
