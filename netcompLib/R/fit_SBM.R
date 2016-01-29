@@ -79,7 +79,6 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (specClust)
 #' Runs spectral clustering on an input matrix
 #' 
-#' @param Nclass [int] :: Number of clusters
 #' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param evs temp
 #' @param Ntries [int] :: Number of attempts
