@@ -11,7 +11,7 @@ specClust(adjm, evs, Nclass, Ntries, NStartPerTry = 2)
 
 \item{evs}{[matrix-numeric] :: Matrix of eigenvectors, with the columns as individual eigenvectors}
 
-\item{Nclass}{[vector-int] :: Number of classes to return for spectral clustering. If this is a vector, the best model is returned (with AIC penalization)}
+\item{Nclass}{[vector-int] :: Number of classes to return for spectral clustering. If this is a vector, the best model is returned (with BIC penalization)}
 
 \item{Ntries}{[int] :: Number of attempts (Number of times to run the k-means algorithm)}
 
@@ -24,6 +24,6 @@ specClust(adjm, evs, Nclass, Ntries, NStartPerTry = 2)
 This requires input of an adjacency matrix and eigenvectors. The eigenvectors can come from the Laplacian matrix, however. The input adjacency matrix can have missing data (it's only used to find the iteration that provides the highest likelihood)
 }
 \details{
-This is also capable of searching over clusterings with different number of classes -- it picks the best model with respect to AIC.
+This is also capable of searching over clusterings with different number of classes -- it picks the best model with respect to BIC.
 }
 

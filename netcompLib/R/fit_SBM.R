@@ -80,11 +80,11 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
 #' 
 #' This requires input of an adjacency matrix and eigenvectors. The eigenvectors can come from the Laplacian matrix, however. The input adjacency matrix can have missing data (it's only used to find the iteration that provides the highest likelihood)
 #' 
-#' This is also capable of searching over clusterings with different number of classes -- it picks the best model with respect to AIC. 
+#' This is also capable of searching over clusterings with different number of classes -- it picks the best model with respect to BIC. 
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param evs [matrix-numeric] :: Matrix of eigenvectors, with the columns as individual eigenvectors
-#' @param Nclass [vector-int] :: Number of classes to return for spectral clustering. If this is a vector, the best model is returned (with AIC penalization)
+#' @param Nclass [vector-int] :: Number of classes to return for spectral clustering. If this is a vector, the best model is returned (with BIC penalization)
 #' @param Ntries [int] :: Number of attempts (Number of times to run the k-means algorithm)
 #' @param NStartPerTry [int] :: Number of random starts for the k-means algorithm
 #' 
@@ -94,7 +94,7 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
 #' 
 specClust = function(adjm, evs, Nclass, Ntries, NStartPerTry = 2) {
   ## evs should be a matrix of eigenvectors, with the columns as individual eigenvectors
-  
+  diag(adjm) = NA
   evs = scale(evs)
   
   best_res = list()
@@ -113,7 +113,7 @@ specClust = function(adjm, evs, Nclass, Ntries, NStartPerTry = 2) {
     }
   }
   
-  best_loglik = best_loglik - (Nclass * (Nclass-1)) ## n(n-1)/2 parameters * 2 [from AIC]
+  best_loglik = best_loglik - (Nclass*(Nclass-1)/2 + Nclass)*log(sum(!is.na(adjm))) ## (n + n(n-1)/2) [parameters] * log(n) [from BIC]
   best_k = which.max(best_loglik)
   
   return(best_res[best_k])
