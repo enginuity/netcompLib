@@ -17,11 +17,11 @@ completeMatrix(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs = 0,
 
 \item{eigenvecs}{[int] :: If nonzero, this function returns eigenvectors instead of a matrix. If this is positive, it returns the 'eigenvecs' largest eigenvectors; if negative, it returns the 'eigenvecs' smallest eigenvectors.}
 
-\item{softImpute_rankmax}{temp}
+\item{softImpute_rankmax}{[int] :: The max rank of the svd approximation, when using softImpute}
 
-\item{softImpute_thresh}{temp}
+\item{softImpute_thresh}{[numeric] :: Convergence threshold, when using softImpute}
 
-\item{softImpute_maxit}{temp}
+\item{softImpute_maxit}{[int] :: Maximum number of iterations, when using softImpute}
 
 \item{softImpute_rank}{[int] :: If using the 'softImpute method, this sets the maximum rank of the low-rank approximation.}
 }

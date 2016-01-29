@@ -80,10 +80,11 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
 #' 
 #' This requires input of an adjacency matrix and eigenvectors. The eigenvectors can come from the Laplacian matrix, however. The input adjacency matrix can have missing data (it's only used to find the iteration that provides the highest likelihood)
 #' 
+#' This is also capable of searching over clusterings with different number of classes -- it picks the best model with respect to AIC. 
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param evs [matrix-numeric] :: Matrix of eigenvectors, with the columns as individual eigenvectors
-#' @param Nclass [int] :: Number of classes to return for spectral clustering
+#' @param Nclass [vector-int] :: Number of classes to return for spectral clustering. If this is a vector, the best model is returned (with AIC penalization)
 #' @param Ntries [int] :: Number of attempts (Number of times to run the k-means algorithm)
 #' @param NStartPerTry [int] :: Number of random starts for the k-means algorithm
 #' 
@@ -96,20 +97,26 @@ specClust = function(adjm, evs, Nclass, Ntries, NStartPerTry = 2) {
   
   evs = scale(evs)
   
-  best_res = NULL
-  best_loglik = -Inf
+  best_res = list()
+  best_loglik = -Inf * Nclass
   
-  for(j in 1:Ntries) {
-    clusts = kmeans(evs, centers = Nclass, nstart = NStartPerTry)$cluster
-    NetS = NetworkStruct(set_model_param(Nnodes = length(clusts), type = 'block', block_nclass = Nclass, block_assign = clusts))
-    FittedModel = fitModel(NetS, adjm)
-    loglik = computeLik(FittedModel, adja = adjm)$sum
-    if (loglik > best_loglik) {
-      best_loglik = loglik
-      best_res = FittedModel
+  for(i in seq_along(Nclass)) {
+    for(j in 1:Ntries) {
+      clusts = kmeans(evs, centers = Nclass[i], nstart = NStartPerTry)$cluster
+      NetS = NetworkStruct(set_model_param(Nnodes = length(clusts), type = 'block', block_nclass = Nclass[i], block_assign = clusts))
+      FittedModel = fitModel(NetS, adjm)
+      loglik = computeLik(FittedModel, adja = adjm)$sum
+      if (loglik > best_loglik[i]) {
+        best_loglik[i] = loglik
+        best_res[[i]] = FittedModel
+      }
     }
   }
-  return(best_res)
+  
+  best_loglik = best_loglik - (Nclass * (Nclass-1)) ## n(n-1)/2 parameters * 2 [from AIC]
+  best_k = which.max(best_loglik)
+  
+  return(best_res[best_k])
 }
 
 
@@ -230,7 +237,7 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
 #' 
 completeMatrix = function(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs = 0, softImpute_rankmax = 5, softImpute_thresh = 1e-05, softImpute_maxit = 100) {
   require(rARPACK)
-
+  
   ## method -- values = "rcmeans", "softImpute"
   ## softImpute requires the softImpute package
   ## softImpute_rank = number of SVD vectors to use in the approximation for imputation (be precise in final documentation)
@@ -284,6 +291,4 @@ completeMatrix = function(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs
     return(res) 
   }
 }
-
-
 
