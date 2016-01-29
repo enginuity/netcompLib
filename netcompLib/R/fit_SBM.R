@@ -223,6 +223,7 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (completeMatrix)
 #' Estimates missing entries of an input matrix
 #' 
 #' This function applies one of two matrix-completion techniques. The cheap version ('rcmeans') simply fills each missing value with the average of all cells in its row/column. This results in a matrix that is still a properly weighted undirected network. The other version ('softImpute') calls the function in the corresponding R package 'softImpute'. Essentially, it looks for entries to fill that matrix such that it preserves low rank. I think the resulting matrix is symmetric if the input is symmetric, but there's no guarantee that it's a proper adjacency matrix (in that the values can possibly be negative...)
@@ -231,17 +232,20 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
 #' 
 #' This function requires existence of the 'rARPACK' package, since that is used to perfrom eigenvector/eigenvalue computations efficiently. Also, if method is set to 'softImpute', the 'softImpute' package is required. 
 #' 
+#' @param softImpute_rank [int] :: If using the 'softImpute method, this sets the maximum rank of the low-rank approximation. 
 #' @param adjm [matrix-numeric] :: Input matrix
 #' @param method [character] :: Two possible values: 'rcmeans' or 'softImpute'
 #' @param laplacian [logical] :: If TRUE, the results are based on the Laplacian matrix
 #' @param eigenvecs [int] :: If nonzero, this function returns eigenvectors instead of a matrix. If this is positive, it returns the 'eigenvecs' largest eigenvectors; if negative, it returns the 'eigenvecs' smallest eigenvectors. 
-#' @param softImpute_rank [int] :: If using the 'softImpute method, this sets the maximum rank of the low-rank approximation. 
+#' @param softImpute_rankmax temp
+#' @param softImpute_thresh temp
+#' @param softImpute_maxit temp
 #' 
 #' @return [matrix] :: The returned value is either a square matrix, or a matrix containing the first few eigenvectors. 
 #' 
 #' @export
 #' 
-completeMatrix = function(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs = 0, softImpute_rank = 5) {
+completeMatrix = function(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs = 0, softImpute_rankmax = 5, softImpute_thresh = 1e-05, softImpute_maxit = 100) {
   require(rARPACK)
 
   ## TODO: Allow for rest of parameters to be passed in to softImpute? 
@@ -275,8 +279,8 @@ completeMatrix = function(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs
     }
   } else if (method == "softImpute") {
     require(softImpute)
-    est_svd = softImpute::softImpute(adjm, rank.max = softImpute_rank)
-    if (!laplacian & (eigenvecs > 0) & (eigenvecs <= softImpute_rank)) {
+    est_svd = softImpute::softImpute(adjm, rank.max = softImpute_rankmax, thresh = softImpute_thresh, maxit = softImpute_maxit)
+    if (!laplacian & (eigenvecs > 0) & (eigenvecs <= softImpute_rankmax)) {
       ## Special case for speed -- If we want eigenvectors, we can just output results from the softImpute stage, instead of estimating the adjacency matrix and then computing the eigenvectors (SVD) again. 
       return(est_svd$u[,seq_len(eigenvecs)])
     }

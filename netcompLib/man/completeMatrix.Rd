@@ -5,7 +5,8 @@
 \title{Estimates missing entries of an input matrix}
 \usage{
 completeMatrix(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs = 0,
-  softImpute_rank = 5)
+  softImpute_rankmax = 5, softImpute_thresh = 1e-05,
+  softImpute_maxit = 100)
 }
 \arguments{
 \item{adjm}{[matrix-numeric] :: Input matrix}
@@ -15,6 +16,12 @@ completeMatrix(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs = 0,
 \item{laplacian}{[logical] :: If TRUE, the results are based on the Laplacian matrix}
 
 \item{eigenvecs}{[int] :: If nonzero, this function returns eigenvectors instead of a matrix. If this is positive, it returns the 'eigenvecs' largest eigenvectors; if negative, it returns the 'eigenvecs' smallest eigenvectors.}
+
+\item{softImpute_rankmax}{temp}
+
+\item{softImpute_thresh}{temp}
+
+\item{softImpute_maxit}{temp}
 
 \item{softImpute_rank}{[int] :: If using the 'softImpute method, this sets the maximum rank of the low-rank approximation.}
 }
