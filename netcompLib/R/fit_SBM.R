@@ -11,8 +11,14 @@
 #' 
 #' @export
 #' 
-fit_SBM = function(adjm, specClustStart = NULL, Nobs = 1, control_list = set_fit_param()) { 
-  ## specClustStart -- this is input NetworkModel IF spectral clustering was run prior to this. 
+fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) { 
+  
+  # 1. outer loop - do CV iterations if desired? 
+  ## 1. Do matrix completion / spectral clustering if desired
+  
+  ## 2. EM algorithm
+  
+  
   
   
   #   
@@ -29,6 +35,20 @@ fit_SBM = function(adjm, specClustStart = NULL, Nobs = 1, control_list = set_fit
   
   ## For EM algo, use 'start' to decide how to initialize! If using spectral clustering to start, don't need to rerun the eigenvector computation part -- only need to rerun the k-means part! 
   ## start can take on values of 'spectral' or 'random'
+  
+  
+  
+  
+  #   ## method = 'spectral' or 'mf'
+  #   ## method 'mf' for mean field EM approach, 'spectral' for just doing spectral clustering
+  #   if (cl$SBM_method == "spectral") {
+  #     ## For spectral clustering, simply apply spectral clustering 
+  #     return(specClust(adjm, cl$SBM_Nclass, cl$Ntries))
+  #     
+  #   } else 
+  
+  
+  
   
   for(j in 1:cl$Ntries) {
     N = nrow(adjm) ## This is the number of nodes
@@ -81,28 +101,24 @@ fit_SBM = function(adjm, specClustStart = NULL, Nobs = 1, control_list = set_fit
 
 #' Runs spectral clustering
 #' 
-#' This requires input of an adjacency matrix and eigenvectors. The eigenvectors can come from the Laplacian matrix, however. The input adjacency matrix can have missing data (it's only used to find the iteration that provides the highest likelihood)
+#' This requires input of eigenvectors. The eigenvectors can come from the Laplacian matrix, however. 
 #' 
-#' This is also capable of searching over clusterings with different number of classes -- it picks the best model with respect to BIC. 
-#' 
-#' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param evs [matrix-numeric] :: Matrix of eigenvectors, with the columns as individual eigenvectors
 #' @param Nclass [int] :: Number of classes to return for spectral clustering. 
 #' @param NStart [int] :: Number of random starts for the k-means algorithm
 #' 
-#' @return [\code{\link{NetworkModel}}] :: Output bestfit model
+#' @return [\code{\link{NetworkStruct}}] :: Output clustering's network structure
 #' 
 #' @export
 #' 
-specClust = function(adjm, evs, Nclass, NStart = 3) {
+specClust = function(evs, Nclass, NStart = 3) {
   ## evs should be a matrix of eigenvectors, with the columns as individual eigenvectors
-  diag(adjm) = NA
   evs = scale(evs)
   
-  clusts = kmeans(evs, centers = Nclass[i], nstart = NStart)$cluster
+  clusts = kmeans(evs, centers = Nclass, nstart = NStart)$cluster
   NetS = NetworkStruct(set_model_param(Nnodes = length(clusts), type = 'block', block_nclass = Nclass, block_assign = clusts))
 
-  return(fitModel(NetS, adjm))
+  return(NetS)
 }
 
 
