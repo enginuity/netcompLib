@@ -18,6 +18,14 @@ compareNetworks = function() {
   
   ## Step 2 -- Fit appropriate dyad parition to the non-hidden part of the data
   
+#   ## method = 'spectral' or 'mf'
+#   ## method 'mf' for mean field EM approach, 'spectral' for just doing spectral clustering
+#   if (cl$SBM_method == "spectral") {
+#     ## For spectral clustering, simply apply spectral clustering 
+#     return(specClust(adjm, cl$SBM_Nclass, cl$Ntries))
+#     
+#   } else 
+  
   ## Step 3 -- Compute test statistic on the fitted model
   
   ## Step 4 -- Apply multiple comparisons methods if needed for doing multiple data splits

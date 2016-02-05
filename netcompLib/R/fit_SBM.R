@@ -1,78 +1,81 @@
 
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fit_SBM)
-#' Fit SBM given adjacency matrix
+#' Fit a SBM given an input adjacency matrix (pair) and possibly starting model
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param Nobs [int] :: Number of observations
-#' @param control_list temp
+#' @param control_list [list] :: List of control parameters -- see \code{\link{set_fit_param}}
 #' 
 #' @return [\code{\link{NetworkModel}}] :: Best found fitted model
 #' 
 #' @export
 #' 
-fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) { 
+fit_SBM = function(adjm, specClustStart = NULL, Nobs = 1, control_list = set_fit_param()) { 
+  ## specClustStart -- this is input NetworkModel IF spectral clustering was run prior to this. 
+  
+  
+  #   
+  #   best_loglik = best_loglik - (Nclass*(Nclass-1)/2 + Nclass)*log(sum(!is.na(adjm))) ## (n + n(n-1)/2) [parameters] * log(n) [from BIC]
+  #   best_k = which.max(best_loglik)
+  
+  
+  
+  ## TODO: FIX THIS FUNCTION. #&(#$@^#($*@(#$&@*(#&$\)))) CURRENTLY BROKEN. PLAN HOW TO FIX THIS? 
+  
   cl = control_list ## Shorten control_list variable name
   
   ## TODO: Make this take multiple inputs? adjacency arrays, multiple observations? Need to alter further arguments to make this work! 
   
-  ## method = 'spectral' or 'mf'
-  ## method 'mf' for mean field EM approach, 'spectral' for just doing spectral clustering
-  if (cl$SBM_method == "spectral") {
-    ## For spectral clustering, simply apply spectral clustering 
-    return(specClust(adjm, cl$SBM_Nclass, cl$Ntries))
+  ## For EM algo, use 'start' to decide how to initialize! If using spectral clustering to start, don't need to rerun the eigenvector computation part -- only need to rerun the k-means part! 
+  ## start can take on values of 'spectral' or 'random'
+  
+  for(j in 1:cl$Ntries) {
+    N = nrow(adjm) ## This is the number of nodes
     
-    
-  } else if (cl$SBM_method == "mf") {
-    ## For EM algo, use 'start' to decide how to initialize! If using spectral clustering to start, don't need to rerun the eigenvector computation part -- only need to rerun the k-means part! 
-    ## start can take on values of 'spectral' or 'random'
-    
-    for(j in 1:cl$Ntries) {
-      N = nrow(adjm) ## This is the number of nodes
+    best_loglik = -Inf
+    best_res = NULL
+    if (cl$SBM_start == 'random') {
+      ## Random start
+      nodeps = rep(1/cl$SBM_Nclass, length = cl$SBM_Nclass)
+      edgeps = symmetrize_mat(matrix(sum(adjm, na.rm = TRUE) / (Nobs * N * (N-1) / 2) * runif(n = cl$SBM_Nclass * cl$SBM_Nclass, min = 0.1, max = 0.9), nrow = cl$SBM_Nclass))
       
-      best_loglik = -Inf
-      best_res = NULL
-      if (cl$SBM_start == 'random') {
-        ## Random start
-        nodeps = rep(1/cl$SBM_Nclass, length = cl$SBM_Nclass)
-        edgeps = symmetrize_mat(matrix(sum(adjm, na.rm = TRUE) / (Nobs * N * (N-1) / 2) * runif(n = cl$SBM_Nclass * cl$SBM_Nclass, min = 0.1, max = 0.9), nrow = cl$SBM_Nclass))
-        
-        H = matrix(0, nrow = N, ncol = cl$SBM_Nclass)
-        PHI = matrix(runif(cl$SBM_Nclass*N, min = 0.1, max = 0.9), nrow = N)
-        PHI = PHI / rowSums(PHI)
-      } else if (cl$SBM_start == 'spectral') {
-        
-        ## Do spectral clustering once to give a rough start
-        res = specClust(adjm, cl$SBM_Nclass, 2)
-        clusts = res@groups
-        
-        nodeps = sapply(1:cl$SBM_Nclass, function(x) {mean(clusts == x)})
-        edgeps = res@probmat
-        
-        H = matrix(0, nrow = N, ncol = cl$SBM_Nclass)
-        PHI = matrix(runif(cl$SBM_Nclass*N, min = 0.1, max = 0.9), nrow = N)
-        for(j in 1:cl$SBM_Nclass) {
-          PHI[which(j == clusts),j] = PHI[which(j == clusts),j] + 2
-        }
-        PHI = PHI / rowSums(PHI)
+      H = matrix(0, nrow = N, ncol = cl$SBM_Nclass)
+      PHI = matrix(runif(cl$SBM_Nclass*N, min = 0.1, max = 0.9), nrow = N)
+      PHI = PHI / rowSums(PHI)
+    } else if (cl$SBM_start == 'spectral') {
+      
+      ## Do spectral clustering once to give a rough start
+      res = specClust(adjm, cl$SBM_Nclass, 2)
+      clusts = res@groups
+      
+      nodeps = sapply(1:cl$SBM_Nclass, function(x) {mean(clusts == x)})
+      edgeps = res@probmat
+      
+      H = matrix(0, nrow = N, ncol = cl$SBM_Nclass)
+      PHI = matrix(runif(cl$SBM_Nclass*N, min = 0.1, max = 0.9), nrow = N)
+      for(j in 1:cl$SBM_Nclass) {
+        PHI[which(j == clusts),j] = PHI[which(j == clusts),j] + 2
       }
-      
-      edgeps[edgeps < 0.01] = .01; edgeps[edgeps > 0.99] = .99
-      results = EM_SBM_mf(adjm = adjm, Nobs = Nobs, nodeps = nodeps, edgeps = edgeps, H = H, PHI = PHI, 
-                          Niter = cl$SBM_EM_Niter, stop_thres = cl$SBM_EM_stopthres, verbose = cl$verbose)
-      # newm = NetworkModel(set_model_param(Nnodes = 30, block_assign = clusts, block_probs = edgeps))
-      # computeLik(newm, adjm)$sum
-      loglik = computeLik(results$model, adja = adjm)$sum
-      if (cl$verbose > 0) { print(loglik) }
-      
-      if (loglik > best_loglik) {
-        best_loglik = loglik
-        best_res = results
-      }
+      PHI = PHI / rowSums(PHI)
     }
     
-    return(best_res)
+    edgeps[edgeps < 0.01] = .01; edgeps[edgeps > 0.99] = .99
+    results = EM_SBM_mf(adjm = adjm, Nobs = Nobs, nodeps = nodeps, edgeps = edgeps, H = H, PHI = PHI, 
+                        Niter = cl$SBM_EM_Niter, stop_thres = cl$SBM_EM_stopthres, verbose = cl$verbose)
+    # newm = NetworkModel(set_model_param(Nnodes = 30, block_assign = clusts, block_probs = edgeps))
+    # computeLik(newm, adjm)$sum
+    loglik = computeLik(results$model, adja = adjm)$sum
+    if (cl$verbose > 0) { print(loglik) }
+    
+    if (loglik > best_loglik) {
+      best_loglik = loglik
+      best_res = results
+    }
   }
+  
+  return(best_res)
+  
 }
 
 
@@ -84,39 +87,22 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
 #' @param evs [matrix-numeric] :: Matrix of eigenvectors, with the columns as individual eigenvectors
-#' @param Nclass [vector-int] :: Number of classes to return for spectral clustering. If this is a vector, the best model is returned (with BIC penalization)
-#' @param Ntries [int] :: Number of attempts (Number of times to run the k-means algorithm)
-#' @param NStartPerTry [int] :: Number of random starts for the k-means algorithm
+#' @param Nclass [int] :: Number of classes to return for spectral clustering. 
+#' @param NStart [int] :: Number of random starts for the k-means algorithm
 #' 
 #' @return [\code{\link{NetworkModel}}] :: Output bestfit model
 #' 
 #' @export
 #' 
-specClust = function(adjm, evs, Nclass, Ntries, NStartPerTry = 2) {
+specClust = function(adjm, evs, Nclass, NStart = 3) {
   ## evs should be a matrix of eigenvectors, with the columns as individual eigenvectors
   diag(adjm) = NA
   evs = scale(evs)
   
-  best_res = list()
-  best_loglik = -Inf * Nclass
-  
-  for(i in seq_along(Nclass)) {
-    for(j in 1:Ntries) {
-      clusts = kmeans(evs, centers = Nclass[i], nstart = NStartPerTry)$cluster
-      NetS = NetworkStruct(set_model_param(Nnodes = length(clusts), type = 'block', block_nclass = Nclass[i], block_assign = clusts))
-      FittedModel = fitModel(NetS, adjm)
-      loglik = computeLik(FittedModel, adja = adjm)$sum
-      if (loglik > best_loglik[i]) {
-        best_loglik[i] = loglik
-        best_res[[i]] = FittedModel
-      }
-    }
-  }
-  
-  best_loglik = best_loglik - (Nclass*(Nclass-1)/2 + Nclass)*log(sum(!is.na(adjm))) ## (n + n(n-1)/2) [parameters] * log(n) [from BIC]
-  best_k = which.max(best_loglik)
-  
-  return(best_res[best_k])
+  clusts = kmeans(evs, centers = Nclass[i], nstart = NStart)$cluster
+  NetS = NetworkStruct(set_model_param(Nnodes = length(clusts), type = 'block', block_nclass = Nclass, block_assign = clusts))
+
+  return(fitModel(NetS, adjm))
 }
 
 
