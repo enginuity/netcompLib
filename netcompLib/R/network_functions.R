@@ -14,7 +14,7 @@
 #' 
 #' @export
 #' 
-computeDfAdj = function(NetM, NetS, hidden_edges = NULL) {
+computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
   if (getNnodes(NetM) != getNnodes(NetS)) { stop("Number of nodes is not consistent between input NetM and NetS") }
   test_mod = fitModel(NetS, adja = NULL)
   test_nodeids = getEdgeProbMat(NetM = test_mod, mode = "group")
@@ -57,6 +57,7 @@ computeDist = function(NetM1, NetM2, type = "KLsym") {
   h_kldist = function(p1, p2) {
     diag(p1) <- 0.5; diag(p2) <- 0.5
     q1 = 1 - p1; q2 = 1 - p2
+    ## TODO: Check wtf this distance is. 
     res = log(q1) - log(q2) + p1 * (log( (p1 / q1) / (p2 / q2 ) ) )
     diag(res) <- 0
     return(sum(res))
