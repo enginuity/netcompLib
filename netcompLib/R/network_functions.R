@@ -37,15 +37,14 @@ computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeEmpDfAdj)
-#' <What does this function do>
+#' Estimates the degrees of freedom empirically
 #' 
-#' @param adjm1 temp
-#' @param adjm2 temp
-#' @param NetS temp
-#' @param model_type temp
+#' @param adjm1 [matrix-int] :: Input adjacency matrix
+#' @param adjm2 [matrix-int] :: Input adjacency matrix
+#' @param NetS [\code{\link{NetworkStruct}}] :: Structure used for testing
+#' @param model_type [char] :: Model type to compute degrees of freedom for. See ## FIX THIS## for description of model_type. 
 #' 
-#' @return temp
+#' @return [vector-double] :: Degrees of freedom for each parameter in NetS
 #' 
 #' @export
 #' 
