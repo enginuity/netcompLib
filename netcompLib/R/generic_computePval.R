@@ -3,9 +3,11 @@
 setGeneric("computePval", function(NetS, adja1, adja2, Nobs, pl, output_mode, model_type, verbose, vbset) standardGeneric("computePval"))
 
 
-#' Computes p-value for likelihood ratio test
+#' Computes single p-value for likelihood ratio test
 #' 
-#' This function takes the input network structure (or a list of network structures), and computes the likelihood ratio test for the two input adjacency matrices (or arrays). 
+#' This function takes the input network structure (or a list of network structures), and computes test statistics for the likelihood ratio test for the two input adjacency matrices (or arrays). 
+#' 
+#' This function computes a single p-value per network structure (it doesn't do any p-value aggregation). Thus, the only entries in 'pl' it considers are 'cc_adj' and 'thres_ignore'. 
 #' 
 #' @param NetS [\code{\link{NetworkStruct}}] :: Model to compute p-value with
 #' @param adja1 [matrix/array] :: Adjacency matrix/array
@@ -73,7 +75,7 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
     ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
     ## 'pl' not even used here... should it be? -- yes, when computing p-values. 
     ## New implmenetation -- this can be used for all NetworkStruct (as long as its not a list)
-    
+    ## look at cc_adj, thres_ignore. If these are non-vectors, pvals should be returned as a matrix. 
     
     
     ## TODO: Implement pvals case
