@@ -37,6 +37,18 @@ computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (computeEmpDfAdj)
+#' <What does this function do>
+#' 
+#' @param adjm1 temp
+#' @param adjm2 temp
+#' @param NetS temp
+#' @param model_type temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
 computeEmpDfAdj = function(adjm1, adjm2, NetS, model_type = "default") {
   ## Computes empirical df with respect to a specific network structure
   ## TODO: This only works when the input is a single pair of matrices, and also with no missing values. Need to check what happens when there are missing values. 
