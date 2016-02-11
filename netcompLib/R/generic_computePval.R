@@ -72,14 +72,23 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
     return(chisq)
   } else if (output_mode %in% c("pval", "nodal")) {
     
+    ## Setup pval result matrix. 
+    pvals = matrix(0, nrow = length(pl$cc_adj), ncol = length(pl$thres_ignore))
+    dyad_counts = computeLik(fit1, adja1, by_node = TRUE)$group_size
+    
+    dfadj_perdyad = computeEmpDfAdj(adja1[,,1], adja2[,,1], NetS)
+    for(j in seq_along(pl$cc_adj)) {
+      for(k in seq_along(pl$thres_ignore)) {
+        ## TODO Fill in this, using dfadj_perdyad. 
+        
+      }
+    }
+    
     ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
     ## 'pl' not even used here... should it be? -- yes, when computing p-values. 
     ## New implmenetation -- this can be used for all NetworkStruct (as long as its not a list)
     ## look at cc_adj, thres_ignore. If these are non-vectors, pvals should be returned as a matrix. 
     
-    
-    ## TODO: Implement pvals case
-    pvals = 0 ## IMPLEMENT THIS PROPERLY
     if (output_mode == "nodal") {
       
       return(list(chisq = chisq, pvals = pvals, nodecontrib = chisqByNode))
