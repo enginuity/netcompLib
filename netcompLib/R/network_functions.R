@@ -37,6 +37,32 @@ computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 }
 
 
+computeEmpDfAdj = function(adjm1, adjm2, NetS, model_type = "default") {
+  ## Computes empirical df with respect to a specific network structure
+  ## TODO: This only works when the input is a single pair of matrices, and also with no missing values. Need to check what happens when there are missing values. 
+  
+  ## Input adjm1,2 should be matrices. 
+  
+  ##  TODO: Implement (and also calculate) what to do for non-deault model types. 
+  if (model_type == "default") {
+    fit1 = aggstat_single(fitModel(NetS, adjm1), adjm1)
+    fit2 = aggstat_single(fitModel(NetS, adjm2), adjm2)
+    fitc = aggstat_single(fitModel(NetS, adjm1*adjm2), adjm1*adjm2)
+    
+    px = fit1$x / fit1$n
+    py = fit2$x / fit2$n
+    pc = fitc$x / fitc$n
+    
+    nums = pc - px*py
+    dens = sqrt(px * (1-px) * py * (1-py))
+    cor_by_dyadgroup = nums/dens
+    cor_by_dyadgroup[nums == 0] = 0 ## zero out any 0/0. 
+    
+    ## Returns a per-dyad-group adjustment (returns the estimated 'df' for that dyad group)
+    return(1 - cor_by_dyadgroup) ## If correlation = 0, then the df = 1. 
+  }
+}
+
 #' Computes a distance between two network models
 #' 
 #' @param NetM1 [\code{\link{NetworkModel}}] :: First network model
