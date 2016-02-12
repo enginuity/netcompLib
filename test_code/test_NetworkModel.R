@@ -56,17 +56,22 @@ NetworkStruct(Nnodes = 15, type = "random")
 pl = list(cc_adj = c(1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_models = c(1,20))
 #|----##In set_sim_param, n_models is renamed into n_structs --Tue Sep  8 02:23:23 2015--
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+#|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
 #|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+#|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
 #|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+#|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
 #|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
 computePval(extractStruct(test2), sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+#|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
 #|----##Issue #26 -- destroy this function; replace with call to base NetworkStruct function. --Sat Oct 10 19:52:04 2015--
 
 netsl = NetworkStructList(type = "block")
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
 computePval(netsl, sampleNetwork(test2), sampleNetwork(test2), 1, pl)
+#|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
 getNetType(netsl)
 
 NetM = NetworkModel(Nnodes = 30, type = "block")
@@ -85,8 +90,10 @@ m2 = NetworkModel(Nnodes = 50, type = "block", model_param = set_model_param(blo
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:00:51 2015--
 
 computePval(NetworkStructList(Nnodes = 50, type = "tree"), sampleNetwork(m1), sampleNetwork(m2), 1, pl)
+#|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
 computePval(NetworkStructList(Nnodes = 50, type = "random"), sampleNetwork(m1), sampleNetwork(m2), 1, pl)
+#|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
 #|----##Function parameters changed -- only model_params --Thu Jul 30 20:22:32 2015--
 
 
