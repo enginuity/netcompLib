@@ -25,10 +25,17 @@ fitModel = function(NetS, adja, mode = "default", optim_tries = 10) {
 fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10) { 
   ## mode -- default
   ## if mode = densitydiff, then, assume global density difference parameter
-  ## TODO: Re-implement this?!?! the modes may not be the best way to deal with this... 
+  ## TODO: [Issue #33] Re-implement this?!?! the modes may not be the best way to deal with this... 
   
   res = extractModel(NetS)
   
+  ## If adja is NULL, just fill in random probabilities, which extractModel already does! 
+  if (is.null(adja)) {
+    return(res)
+    ## TODO: [Issue #33] This doesn't work when mode is NOT default. Need to handle this properly eventually. 
+  }
+  
+  ## When the adja is not NULL:
   Nobs = dim(adja)[3]
   if (length(dim(adja)) == 2) { Nobs = 1 }
   
