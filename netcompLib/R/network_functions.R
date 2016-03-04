@@ -16,6 +16,8 @@
 #' 
 computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
   if (getNnodes(NetM) != getNnodes(NetS)) { stop("Number of nodes is not consistent between input NetM and NetS") }
+  
+  ## TODO: [Issue #16] Need to handle case when it's not standard hypothesis test...
   test_mod = fitModel(NetS, adja = NULL)
   test_nodeids = getEdgeProbMat(NetM = test_mod, mode = "group")
   fit_nodeprobs = getEdgeProbMat(NetM, mode = "prob")
