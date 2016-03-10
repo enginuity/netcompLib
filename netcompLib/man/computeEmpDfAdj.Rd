@@ -7,9 +7,9 @@
 computeEmpDfAdj(adjm1, adjm2, NetS, model_type = "default")
 }
 \arguments{
-\item{adjm1}{[matrix-int] :: Input adjacency matrix}
+\item{adjm1}{[matrix/array-int] :: Input adjacency matrix}
 
-\item{adjm2}{[matrix-int] :: Input adjacency matrix}
+\item{adjm2}{[matrix/array-int] :: Input adjacency matrix}
 
 \item{NetS}{[\code{\link{NetworkStruct}}] :: Structure used for testing}
 
