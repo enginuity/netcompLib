@@ -5,6 +5,7 @@ library(faraway)
 load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
 
 
+
 ## For SBM version
 NetS = NetworkStruct(set_model_param(Nnodes = 100))
 genmod = NetworkModelSBM(set_model_param(Nnodes = 100))
@@ -31,5 +32,9 @@ optim(par = c(0,0,0,0,0), fn = llFx_calt, gr = llGrFx_calt, method = "BFGS", con
 optim(par = c(0,0,1), fn = llFx_cnull, gr = llGrFx_cnull, method = "BFGS", control = list(fnscale = "-1"), C = C, n = n)
 
 
+## Test cases -- all 0s or all 1s
+NetS = NetworkStruct(set_model_param(Nnodes = 20, block_nclass = 1))
 
+fitModel(NetS, matrix(0, nrow = 20, ncol = 20))@probmat == 0
+fitModel(NetS, matrix(1, nrow = 20, ncol = 20))@probmat == 1
 

@@ -16,5 +16,8 @@ if (FALSE) { ## Case -- correlated network
   NetM = NetworkModelPair(set_model_param(Nnodes = 50, pairtype = "correlated-null"))
 }
 
-
+## Test Code
+NetS = NetworkStruct(set_model_param(Nnodes = 20, block_nclass = 1))
+adjm = matrix(0, nrow = 20, ncol = 20)
+computeLik(fitModel(NetS, adjm), adjm)
 
