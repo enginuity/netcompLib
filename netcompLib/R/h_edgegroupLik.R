@@ -366,5 +366,14 @@ llGrFx_calt = function(t, C, n) {
 
 
 
+# Function to add computeLik outputs --------------------------------------
+
+addComputeLik = function(cl1, cl2) {
+  ## Adds the lists for outputs of computeLik. This is needed for alternate hypotheses... 
+  cl1$sum = cl1$sum + cl2$sum
+  cl1$bynode = cl1$bynode + cl2$bynode
+  cl1$group_ll = cl1$group_ll + cl2$group_ll
+  return(cl1)
+}
 
 
