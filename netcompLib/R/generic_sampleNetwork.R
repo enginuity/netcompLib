@@ -13,7 +13,7 @@ setGeneric("sampleNetwork", function(NetM, Nobs = 1, Nsim = 1) standardGeneric("
 #' @param Nobs [int; DEFAULT = 1] :: Number of network observations to simulate
 #' @param Nsim [int; DEFAULT = 1] :: Number of simulations
 #' 
-#' @return [array OR list-array] :: List or array of adjacency matrices
+#' @return [array OR list-array OR list-(array OR list-array)] :: List or array of adjacency matrices. If calling on a \code{\link{NetworkModelPair}}, the output is a list of output from calling this function on each of the two specific network models. 
 #' 
 #' @export
 #' 
