@@ -29,6 +29,13 @@ fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10
   
   res = extractModel(NetS)
   
+  ## If adja is a list -- call fitModel separately on each entry
+  ## TODO: [Update documentation] document this as an allowable case
+  if (is.list(adja)) {
+    return(lapply(adja, function(x) { fitModel(NetS, x, mode, optim_tries) }))
+  }
+  
+  
   ## If adja is NULL, just fill in random probabilities, which extractModel already does! 
   if (is.null(adja)) {
     return(res)
