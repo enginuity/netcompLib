@@ -44,7 +44,7 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
   
   ## TODO: [Update documentation] to show this case
   if (is.list(adja1) & is.list(adja2) & (length(adja1) == length(adja2))) {
-    return(mapply(function(x,y) { computePval(NetS, x, y, Nobs, pl, output_mode, model_type, verbose, vbset) }, adja1, adja2))
+    return(mapply(function(x,y) { computePval(NetS, x, y, Nobs, pl, output_mode, model_type, verbose, vbset) }, adja1, adja2, SIMPLIFY = FALSE))
     ## TODO: update verbosity settings in this case?
   }
   
@@ -82,7 +82,7 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
     pvals = matrix(0, nrow = length(pl$cc_adj), ncol = length(pl$thres_ignore))
     dyad_counts = computeLik(fit1, adja1, by_node = TRUE)$group_size
     
-    dfadj_perdyad = computeEmpDfAdj(adja1[,,1], adja2[,,1], NetS)
+    dfadj_perdyad = computeEmpDfAdj(adja1, adja2, NetS)
     for(j in seq_along(pl$cc_adj)) {
       for(k in seq_along(pl$thres_ignore)) {
         ## TODO Fill in this, using dfadj_perdyad. 

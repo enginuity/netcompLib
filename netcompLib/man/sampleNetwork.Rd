@@ -14,7 +14,7 @@ sampleNetwork(NetM, Nobs = 1, Nsim = 1)
 \item{Nsim}{[int; DEFAULT = 1] :: Number of simulations}
 }
 \value{
-[array OR list-array] :: List or array of adjacency matrices
+[array OR list-array OR list-(array OR list-array)] :: List or array of adjacency matrices. If calling on a \code{\link{NetworkModelPair}}, the output is a list of output from calling this function on each of the two specific network models.
 }
 \description{
 Nobs is the number of network observations to simulate per simulation. This is built in here since callling sampleNetwork many times is slow (since it requires re-computing the edge probability matrix, which is the same each time given the same network model). There are several cases: 

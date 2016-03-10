@@ -41,8 +41,8 @@ computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 
 #' Estimates the degrees of freedom empirically
 #' 
-#' @param adjm1 [matrix-int] :: Input adjacency matrix
-#' @param adjm2 [matrix-int] :: Input adjacency matrix
+#' @param adjm1 [matrix/array-int] :: Input adjacency matrix
+#' @param adjm2 [matrix/array-int] :: Input adjacency matrix
 #' @param NetS [\code{\link{NetworkStruct}}] :: Structure used for testing
 #' @param model_type [char] :: Model type to compute degrees of freedom for. See ## FIX THIS## for description of model_type. 
 #' 
@@ -53,6 +53,7 @@ computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 computeEmpDfAdj = function(adjm1, adjm2, NetS, model_type = "default") {
   ## Computes empirical df with respect to a specific network structure
   ## TODO: This only works when the input is a single pair of matrices, and also with no missing values. Need to check what happens when there are missing values. 
+  ## TODO: Note that input can be extended to arrays? Same code should work... 
   
   ## Input adjm1,2 should be matrices. 
   

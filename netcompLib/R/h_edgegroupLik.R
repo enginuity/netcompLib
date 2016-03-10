@@ -7,7 +7,7 @@
 #' Compute sufficient statstics for a single network
 #' 
 #' @param NetM [\code{\link{NetworkModel}}] :: Model with respect to which structure would be computed
-#' @param adja [array-int] :: Adjacency matrix or arrays
+#' @param adja [matrix/array-int] :: Adjacency matrix or arrays
 #' 
 #' @return [list] :: List with following entries
 #' \itemize{
