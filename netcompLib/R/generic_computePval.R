@@ -52,39 +52,41 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
   
   ## Compute everything by each node
   adj_abound = abind::abind(adja1, adja2, along = 3)
+  by_group = (output_mode %in% c("nodal", "pval"))
+  by_node = (output_mode == "nodal")
   
-  ## Fit on appropriate model_type
+  ## Fit on appropriate model_type and compute log-likelihood contributions
   if (model_type %in% c("default", "densitydiff")) {
     fitN = fitModel(NetS, adj_abound, mode = model_type)
     fit1 = fitModel(NetS, adja1); fit2 = fitModel(NetS, adja2)
     
-    llN = computeLik(fitN, adj_abound, by_node = TRUE)$bynode
-    llA = computeLik(fit1, adja1, by_node = TRUE)$bynode + 
-      computeLik(fit2, adja2, by_node = TRUE)$bynode
+    llN = computeLik(fitN, adj_abound, by_node, by_group)
+    llA = addComputeLik(computeLik(fit1, adja1, by_node, by_group), 
+                        computeLik(fit2, adja2, by_node, by_group))
   } else if (model_type == "correlated") {
     fitN = fitModel(NetS, adj_abound, mode = "corr-global-null")
     fitA = fitModel(NetS, adj_abound, mode = "corr-global")
     
-    llN = computeLik(fitN, adj_abound, by_node = TRUE)$bynode
-    llA = computeLik(fitA, adj_abound, by_node = TRUE)$bynode
+    llN = computeLik(fitN, adj_abound, by_node, by_group)
+    llA = computeLik(fitA, adj_abound, by_node, by_group)
   }
   
-  ## Compute chi-square test statstic
-  chisqByNode = -2 * (llN - llA)
-  chisq = sum(chisqByNode) 
+  ## Compute chi-square test statistic
+  chisq = -2 * (llN$sum - llA$sum)
   
   ## Compute p-value if desired 
   if (output_mode == "chisq") {
     return(chisq)
+    
   } else if (output_mode %in% c("pval", "nodal")) {
     
     ## Setup pval result matrix. 
     pvals = matrix(0, nrow = length(pl$cc_adj), ncol = length(pl$thres_ignore))
-    dyad_counts = computeLik(fit1, adja1, by_node = TRUE)$group_size
+    dyad_counts = computeLik(fit1, adja1, by_group = TRUE)$group_size
     
     dfadj_perdyad = computeEmpDfAdj(adja1, adja2, NetS)
-    for(j in seq_along(pl$cc_adj)) {
-      for(k in seq_along(pl$thres_ignore)) {
+    for (j in seq_along(pl$cc_adj)) {
+      for (k in seq_along(pl$thres_ignore)) {
         ## TODO Fill in this, using dfadj_perdyad. 
         
       }
@@ -96,6 +98,7 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
     ## look at cc_adj, thres_ignore. If these are non-vectors, pvals should be returned as a matrix. 
     
     if (output_mode == "nodal") {
+      chisqByNode = -2 * (llN$bynode - llA$bynode)
       
       return(list(chisq = chisq, pvals = pvals, nodecontrib = chisqByNode))
     } else {
