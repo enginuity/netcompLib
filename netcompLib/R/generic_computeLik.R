@@ -48,10 +48,11 @@ computeLik.NetworkModel = function(NetM, adja, by_node = FALSE, by_group = FALSE
   res$sum = sum(ll_node, na.rm = na.rm)
   if (by_node) { res$bynode = ll_node }
   if (by_group) {
-    ll_dyad_lower = ll_dyad[lower.tri(ll_dyad, diag = FALSE)]
-    egmat = getEdgeProbMat(NetM, 'group')[lower.tri(ll_dyad, diag = FALSE)]
+    bl_tri = lower.tri(ll_dyad, diag = FALSE)
+    ll_dyad_lower = ll_dyad[bl_tri]
+    egmat = getEdgeProbMat(NetM, 'group')[bl_tri]
     res$group_ll = unname(tapply(ll_dyad_lower, egmat, sum))
-    res$group_size = unname(tapply(ll_dyad_lower, egmat, function(x) { sum(x != 0, na.rm = na.rm)}))
+    res$group_size = unname(tapply(ll_dyad_lower, egmat, function(x) { sum(!is.na(x))}))
   }
   return(res) 
 }
