@@ -4,12 +4,14 @@
 \alias{addComputeLik}
 \title{Adds two likelihood computations}
 \usage{
-addComputeLik(cl1, cl2)
+addComputeLik(cl1, cl2, add_sizes = FALSE)
 }
 \arguments{
 \item{cl1}{[list] :: Output of \code{\link{computeLik}}}
 
 \item{cl2}{[list] :: Output of \code{\link{computeLik}}}
+
+\item{add_sizes}{[logical] :: If TRUE, this also adds the group_size components}
 }
 \value{
 [list] Output with log-likelihood computations added
