@@ -21,7 +21,7 @@ compute_cellwise_loglik = function(x, n, p) {
   
   ## Else, likelihood of data is 0 (so log-lik is -Inf)
   res[bad0s][x[bad0s] != 0] = -Inf
-  res[bad1s][n[bad1s] != x[bad1s]] = -Inf
+  res[bad1s][n != x[bad1s]] = -Inf
   
   return(res)
 }
