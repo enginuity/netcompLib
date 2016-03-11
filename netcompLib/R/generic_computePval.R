@@ -79,23 +79,27 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
     return(chisq)
     
   } else if (output_mode %in% c("pval", "nodal")) {
+    chisqByGroup = -2 * (llN$group_ll - llA$group_ll)
     
     ## Setup pval result matrix. 
     pvals = matrix(0, nrow = length(pl$cc_adj), ncol = length(pl$thres_ignore))
-    dyad_counts = computeLik(fit1, adja1, by_group = TRUE)$group_size
+    dyad_counts = llA$group_size
     
-    dfadj_perdyad = computeEmpDfAdj(adja1, adja2, NetS)
+    dyad_dfEst = computeEmpDfAdj(adja1, adja2, NetS)
     for (j in seq_along(pl$cc_adj)) {
+      ## TODO: Add the computation to paper / thesis document
+      SEs = 1/sqrt(dyad_counts)
+      
+      ## Adjust estimate by some number of SEs (given by cc_adj argument)
+      dyad_dfAdj = sapply(dyad_dfEst + SEs * pl$cc_adj[j], function(x) {min(1, x)})
+      
       for (k in seq_along(pl$thres_ignore)) {
-        ## TODO Fill in this, using dfadj_perdyad. 
+        ## Only keepdyad groups with enough observations (given by thres_ignore argument)
+        inds = which(dyad_counts >= pl$thres_ignore[k])
         
+        pvals[j,k] = pchisq(q = sum(chisqByGroup[inds]), df = sum(dyad_dfAdj[inds]), lower.tail = FALSE)
       }
     }
-    
-    ## TODO: [Update] fix implmenetation of parameter list; since set_sim_param has been updated. 
-    ## 'pl' not even used here... should it be? -- yes, when computing p-values. 
-    ## New implmenetation -- this can be used for all NetworkStruct (as long as its not a list)
-    ## look at cc_adj, thres_ignore. If these are non-vectors, pvals should be returned as a matrix. 
     
     if (output_mode == "nodal") {
       chisqByNode = -2 * (llN$bynode - llA$bynode)
