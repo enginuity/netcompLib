@@ -1,5 +1,30 @@
 ## Helper functions
 
+#' Compute the loglikelihood from probabilities and counts
+#' 
+#' @param x [matrix/array-int] :: observed counts in each cell
+#' @param n [int] :: Number observations
+#' @param p [vector-double] :: Corresponding estimated cell probabilities (is just x / n)
+#' 
+#' @return [vector-double] :: Vectorized version of log-likelihood (per edge group)
+#' 
+#' @export
+#' 
+compute_cellwise_loglik = function(x, n, p) {
+  res = x * log(p) + (n - x) * log(1 - p)
+  diag(res) = NA
+  
+  ## If probability is 0, but also observe no dyad, log-lik = 0. Likewise if probability is 1, but observe all dyads
+  bad0s = which(p == 0)
+  bad1s = which(p == 1)
+  res[c(bad0s, bad1s)] = 0
+  
+  ## Else, likelihood of data is 0 (so log-lik is -Inf)
+  res[bad0s][x[bad0s] != 0] = -Inf
+  res[bad1s][n[bad1s] != x[bad1s]] = -Inf
+  
+  return(res)
+}
 
 #' Compute the loglikelihood from probabilities and counts
 #' 
