@@ -373,15 +373,17 @@ llGrFx_calt = function(t, C, n) {
 #' 
 #' @param cl1 [list] :: Output of \code{\link{computeLik}}
 #' @param cl2 [list] :: Output of \code{\link{computeLik}}
+#' @param add_sizes [logical] :: If TRUE, this also adds the group_size components
 #' 
 #' @return [list] Output with log-likelihood computations added
 #' 
 #' @export
 #' 
-addComputeLik = function(cl1, cl2) {
+addComputeLik = function(cl1, cl2, add_sizes = FALSE) {
   cl1$sum = cl1$sum + cl2$sum
   cl1$bynode = cl1$bynode + cl2$bynode
   cl1$group_ll = cl1$group_ll + cl2$group_ll
+  if (add_sizes) { cl1$group_size = cl1$group_size + cl2$group_size }
   return(cl1)
 }
 
