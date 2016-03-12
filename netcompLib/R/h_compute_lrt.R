@@ -26,6 +26,28 @@ compute_cellwise_loglik = function(x, n, p) {
   return(res)
 }
 
+
+compute_small_samp_dfadj = function(n, p) {
+  
+  compute_exp1 = function(n, p) {
+    x = 1:n # Ignore x = 0 since that gives a log-likelihood of 0 (likelihood of 1)
+    exp_split = dbinom(x, n, p) * x * log(x/n)
+    return(sum(exp_split))
+  }
+  
+  compute_expsym = function(n,p) { return(compute_exp1(n,p) + compute_exp1(n, 1-p)) }  
+  
+  compute_expLLR = function(n, p) {
+    Enull_ll = compute_expsym(2*n, p) 
+    Ealt_ll = 2*compute_expsym(n, p) 
+    Ellr = -2 * (Enull_ll - Ealt_ll)
+    return(Ellr)
+  }
+  
+  return(compute_expLLR(n,p))
+}
+
+
 #' Compute the loglikelihood from probabilities and counts
 #' 
 #' @param x [vector-int] :: observed counts in each edge group
