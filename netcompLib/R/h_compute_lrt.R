@@ -27,6 +27,17 @@ compute_cellwise_loglik = function(x, n, p) {
 }
 
 
+#' Computes Expected Value of test statistic under small-sample regime
+#' 
+#' Computes the expected likelihood ratio test statistic for dyad group of size 'n' and dyad probability 'p'. Asymptotically, this goes to 1, but for small samples, it's not necessarily 1. It is needed since the shape of the null distribution very well approximates a chi-square but with a larger than expected 'df' simply due to being a smaller sample
+#' 
+#' @param n [int] :: Sample size
+#' @param p [numeric] :: Edge probability
+#' 
+#' @return [numeric] :: Returns Expected Value of chi-square test statistic
+#' 
+#' @export
+#' 
 compute_small_samp_dfadj = function(n, p) {
   
   compute_exp1 = function(n, p) {
