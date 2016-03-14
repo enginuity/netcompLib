@@ -29,13 +29,18 @@ computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
   ids = ids[ids > 0]
   
   cors = 0 * seq_along(ids)
+  ssadj = cors
   for(j in seq_along(ids)) {
     matches = (test_nodeids == ids[j])
     probs = fit_nodeprobs[matches]
     avprob = mean(probs)
     cors[j] = (mean(probs^2) - avprob^2)  /  (avprob - avprob^2)
+    ssadj[j] = compute_small_samp_dfadj(n = length(probs), p = avprob)
   }
-  return(1 - cors)
+  
+  res = data.frame(misspecAdj = 1 - cors, smallsampAdj = ssadj)
+  ## Note that smallsampAdj is an approximation, since computing the true adjustment requires lots of convolution computations... 
+  return(res)
 }
 
 
