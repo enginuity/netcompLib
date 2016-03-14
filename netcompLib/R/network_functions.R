@@ -15,6 +15,7 @@
 #' @export
 #' 
 computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
+## TODO: Change documentation due to Changed output --Sun Mar 13 22:58:03 2016--
   if (getNnodes(NetM) != getNnodes(NetS)) { stop("Number of nodes is not consistent between input NetM and NetS") }
   
   ## TODO: [Issue #16] Need to handle case when it's not standard hypothesis test...
