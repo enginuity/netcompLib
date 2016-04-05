@@ -52,12 +52,11 @@ computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 #' @param NetS [\code{\link{NetworkStruct}}] :: Structure used for testing
 #' @param model_type [char] :: Model type to compute degrees of freedom for. See ## FIX THIS## for description of model_type. 
 #' 
-#' @return [vector-double] :: Degrees of freedom for each parameter in NetS
+#' @return [df-vector-double] :: Two columns, 'coradj' and 'ssadj'. 'coradj' is the degrees of freedom for the dyad group provided that 
 #' 
 #' @export
 #' 
-computeEmpDfAdj = function(adjm1, adjm2, NetS, model_type = "default", pl) {
-  ## TODO: change to input pl
+computeEmpDfAdj = function(adjm1, adjm2, NetS, model_type = "default") {
   
   ## Computes empirical df with respect to a specific network structure
   ## TODO: This only works when the input is a single pair of matrices, and also with no missing values. Need to check what happens when there are missing values. 
@@ -80,8 +79,13 @@ computeEmpDfAdj = function(adjm1, adjm2, NetS, model_type = "default", pl) {
     cor_by_dyadgroup = nums/dens
     cor_by_dyadgroup[nums == 0] = 0 ## zero out any 0/0. 
     
+    ssadj = 0 * cor_by_dyadgroup
+    for (j in seq_along(cor_by_dyadgroup)) {
+      ssadj[j] = compute_small_samp_dfadj(fit1$n[j], pc[n])
+    }
+    
     ## Returns a per-dyad-group adjustment (returns the estimated 'df' for that dyad group)
-    return(1 - cor_by_dyadgroup) ## If correlation = 0, then the df = 1. 
+    return(data.frame(coradj = 1 - cor_by_dyadgroup, ssadj = ssadj )) ## If correlation = 0, then the df = 1. 
   }
 }
 
