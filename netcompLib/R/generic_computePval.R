@@ -86,12 +86,13 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
     dyad_counts = llA$group_size
     
     dyad_dfEst = computeEmpDfAdj(adja1, adja2, NetS)
+
     for (j in seq_along(pl$cc_adj)) {
       ## TODO: Add the computation to paper / thesis document
       SEs = 1/sqrt(dyad_counts)
       
       ## Adjust estimate by some number of SEs (given by cc_adj argument)
-      dyad_dfAdj = sapply(dyad_dfEst + SEs * pl$cc_adj[j], function(x) {min(1, x)})
+      dyad_dfAdj = sapply(dyad_dfEst$coradj + SEs * pl$cc_adj[j], function(x) {min(1, x)}) * dyad_dfEst$ssadj
       
       for (k in seq_along(pl$thres_ignore)) {
         ## Only keepdyad groups with enough observations (given by thres_ignore argument)
