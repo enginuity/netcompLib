@@ -56,7 +56,9 @@ computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
 #' 
 #' @export
 #' 
-computeEmpDfAdj = function(adjm1, adjm2, NetS, model_type = "default") {
+computeEmpDfAdj = function(adjm1, adjm2, NetS, model_type = "default", pl) {
+  ## TODO: change to input pl
+  
   ## Computes empirical df with respect to a specific network structure
   ## TODO: This only works when the input is a single pair of matrices, and also with no missing values. Need to check what happens when there are missing values. 
   ## TODO: Note that input can be extended to arrays? Same code should work... 

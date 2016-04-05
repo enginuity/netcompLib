@@ -240,7 +240,7 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
 completeMatrix = function(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs = 0, softImpute_rankmax = 5, softImpute_thresh = 1e-05, softImpute_maxit = 100) {
   require(rARPACK)
   
-  ## method -- values = "rcmeans", "softImpute"
+    ## method -- values = "rcmeans", "softImpute"
   ## softImpute requires the softImpute package
   ## softImpute_rank = number of SVD vectors to use in the approximation for imputation (be precise in final documentation)
   
