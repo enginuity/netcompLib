@@ -6,7 +6,7 @@
 \usage{
 set_sim_param(cc_adj = c(0, 2), thres_ignore = c(5, 10), alphas = 0.05,
   n_structs = c(1, 25, 50, 100), pval_fx_names = c("mult_bonferroni",
-  "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE),
+  "mult_highcrit", "mult_fisher"), pval_sim_null = c(FALSE, TRUE, TRUE),
   fitstruct_method = "random")
 }
 \arguments{
