@@ -1,6 +1,5 @@
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (fit_SBM)
 #' Fit a SBM given an input adjacency matrix (pair) and possibly starting model
 #' 
 #' @param adjm [matrix-int] :: Input adjacency matrix
@@ -13,25 +12,21 @@
 #' 
 fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) { 
   
-  # 1. outer loop - do CV iterations if desired? 
-  ## 1. Do matrix completion / spectral clustering if desired
+  ## TODO: Implement CV to help choose parameters... 
+  ## TODO: Make this take multiple inputs? adjacency arrays, multiple observations? Need to alter further arguments to make this work! 
   
-  ## 2. EM algorithm
-  
-  
-  
-  
-  #   
+  # TODO: Implement bic?
   #   best_loglik = best_loglik - (Nclass*(Nclass-1)/2 + Nclass)*log(sum(!is.na(adjm))) ## (n + n(n-1)/2) [parameters] * log(n) [from BIC]
   #   best_k = which.max(best_loglik)
   
-  
-  
-  ## TODO: FIX THIS FUNCTION. #&(#$@^#($*@(#$&@*(#&$\)))) CURRENTLY BROKEN. PLAN HOW TO FIX THIS? 
-  
   cl = control_list ## Shorten control_list variable name
   
-  ## TODO: Make this take multiple inputs? adjacency arrays, multiple observations? Need to alter further arguments to make this work! 
+  ## 1-2: If desired
+  ## 1. Do matrix completion
+  ## -- This will only ever be done once, as the results are deterministic
+  ## 2. Do spectral clustering
+  ## -- can rerun this (since it gives a different warm start)
+  ## 3. Throw stuff into EM algorithm
   
   ## For EM algo, use 'start' to decide how to initialize! If using spectral clustering to start, don't need to rerun the eigenvector computation part -- only need to rerun the k-means part! 
   ## start can take on values of 'spectral' or 'random'
@@ -83,8 +78,9 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
     edgeps[edgeps < 0.01] = .01; edgeps[edgeps > 0.99] = .99
     results = EM_SBM_mf(adjm = adjm, Nobs = Nobs, nodeps = nodeps, edgeps = edgeps, H = H, PHI = PHI, 
                         Niter = cl$SBM_EM_Niter, stop_thres = cl$SBM_EM_stopthres, verbose = cl$verbose)
-    # newm = NetworkModel(set_model_param(Nnodes = 30, block_assign = clusts, block_probs = edgeps))
-    # computeLik(newm, adjm)$sum
+
+    
+    
     loglik = computeLik(results$model, adja = adjm)$sum
     if (cl$verbose > 0) { print(loglik) }
     
@@ -240,7 +236,7 @@ EM_SBM_mf = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verb
 completeMatrix = function(adjm, method = "rcmeans", laplacian = FALSE, eigenvecs = 0, softImpute_rankmax = 5, softImpute_thresh = 1e-05, softImpute_maxit = 100) {
   require(rARPACK)
   
-    ## method -- values = "rcmeans", "softImpute"
+  ## method -- values = "rcmeans", "softImpute"
   ## softImpute requires the softImpute package
   ## softImpute_rank = number of SVD vectors to use in the approximation for imputation (be precise in final documentation)
   

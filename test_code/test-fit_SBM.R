@@ -3,14 +3,11 @@ library(igraph)
 
 
 ## For running fit_SBM
-#|----##If calling the version from netcompLib, the input parameters have been changed! --Thu Jan 14 20:48:05 2016--
 if (FALSE) {
   nm = NetworkModel(set_model_param(Nnodes = 50, block_assign = rep(c(1,2), each = 25)))
   adjm = sampleNetwork(nm)[,,1]
   Nobs = 1
-  Nclass = 2
-  Niter = 100
-  Ntries = 10
+  control_list = set_fit_param()
 } 
 
 ## For running EM mean field version
