@@ -81,7 +81,7 @@ computeEmpDfAdj = function(adjm1, adjm2, NetS, model_type = "default") {
     
     ssadj = 0 * cor_by_dyadgroup
     for (j in seq_along(cor_by_dyadgroup)) {
-      ssadj[j] = compute_small_samp_dfadj(fit1$n[j], pc[n])
+      ssadj[j] = compute_small_samp_dfadj(fit1$n[j], pc[j])
     }
     
     ## Returns a per-dyad-group adjustment (returns the estimated 'df' for that dyad group)

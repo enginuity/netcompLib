@@ -85,7 +85,7 @@ mult_fisher = function(x, adjust = NULL) {
 #' @export
 #' 
 mult_bonferroni = function(x) {
-  return(min(x))
+  return(min(x) * length(x))
 }
 
 
