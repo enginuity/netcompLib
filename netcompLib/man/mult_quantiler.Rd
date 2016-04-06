@@ -7,11 +7,11 @@
 mult_quantiler(x, alpha_min = 0.05, alpha_max = 1)
 }
 \arguments{
-\item{x}{temp}
+\item{x}{[vector-double] :: Input p-values}
 
-\item{alpha_min}{temp}
+\item{alpha_min}{[double] :: Lower threshold for alpha parameter}
 
-\item{alpha_max}{temp}
+\item{alpha_max}{[double] :: Upper threshold for alpha parameter}
 }
 \value{
 [double] :: Test statistic

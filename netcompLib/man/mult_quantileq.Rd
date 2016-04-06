@@ -7,9 +7,9 @@
 mult_quantileq(x, alpha = 0.05)
 }
 \arguments{
-\item{x}{temp}
+\item{x}{[vector-double] :: Input p-values}
 
-\item{alpha}{temp}
+\item{alpha}{[double] :: Alpha parameter in statistic}
 }
 \value{
 [double] :: Test statistic

@@ -1,27 +1,25 @@
 ##@S Functions that compute multiple testing p-values (or a statistic)
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (mult_quantileq)
 #' Compute quantile test statistic (Q)
 #' 
-#' @param x temp
-#' @param alpha temp
+#' @param x [vector-double] :: Input p-values
+#' @param alpha [double] :: Alpha parameter in statistic
 #' 
 #' @return [double] :: Test statistic
 #' 
 #' @export
 #' 
 mult_quantileq = function(x, alpha = 0.05) {
-  q = min(1, quantile(x, probs = alpha, type = 1))
+  q = min(1, quantile(x, probs = alpha, type = 1)/alpha)
   return(q)
 }
 
 
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (mult_quantiler)
 #' Compute quantile test statistic (R)
 #' 
-#' @param x temp
-#' @param alpha_min temp
-#' @param alpha_max temp
+#' @param x [vector-double] :: Input p-values
+#' @param alpha_min [double] :: Lower threshold for alpha parameter
+#' @param alpha_max [double] :: Upper threshold for alpha parameter
 #' 
 #' @return [double] :: Test statistic
 #' 
@@ -29,8 +27,9 @@ mult_quantileq = function(x, alpha = 0.05) {
 #' 
 mult_quantiler = function(x, alpha_min = 0.05, alpha_max = 1) {
   n = length(x)
-  qs = quantile(x, probs = seq(from = alpha_min, to = alpha_max, length.out = 3*n), type = 1)
-  r = min(c(1, (1 - log(alpha_min) * min(1, min(qs)))))
+  gridvals = seq(from = alpha_min, to = alpha_max, length.out = 3*n)
+  qs = quantile(x, probs = gridvals, type = 1)/gridvals
+  r = min(1, (1 - log(alpha_min) * min(1, qs) ) )
   return(r)
 }
 
