@@ -16,7 +16,7 @@ computeEmpDfAdj(adjm1, adjm2, NetS, model_type = "default")
 \item{model_type}{[char] :: Model type to compute degrees of freedom for. See ## FIX THIS## for description of model_type.}
 }
 \value{
-[vector-double] :: Degrees of freedom for each parameter in NetS
+[df-vector-double] :: Two columns, 'coradj' and 'ssadj'. 'coradj' is the degrees of freedom for the dyad group provided that
 }
 \description{
 Estimates the degrees of freedom empirically
