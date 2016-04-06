@@ -4,16 +4,20 @@
 \alias{set_fit_param}
 \title{Set model fitting parameters}
 \usage{
-set_fit_param(Ntries = 10, verbose = 0, SBM_start = "spectral",
+set_fit_param(Ntries = 10, verbose = 0, SBM_start = "spectral-mean",
   SBM_method = "mf", SBM_Nclass = 3, SBM_EM_Niter = 100,
-  SBM_EM_stopthres = 1e-05)
+  SBM_EM_stopthres = 1e-05, SBM_MC_laplacian = FALSE,
+  SBM_MC_Neigenvecs = SBM_Nclass * (SBM_MC_laplacian - 0.5) * (-2),
+  SBM_MC_softImpute_rankmax = 5, SBM_MC_softImpute_thresh = 1e-05,
+  SBM_MC_softImpute_maxit = 100, SBM_SC_Nclass = SBM_Nclass,
+  SBM_SC_Nstart = 3)
 }
 \arguments{
 \item{Ntries}{[int] :: Number of EM runs to optimize over}
 
 \item{verbose}{[int] :: Verbosity level -- higher = more output}
 
-\item{SBM_start}{[char] :: 'spectral' or 'random -- method to initialize starting state of EM algorithm}
+\item{SBM_start}{[char] :: 'spectral-mean', 'spectral-complete' or 'random -- method to initialize starting state of EM algorithm: spectral-mean uses row/column means to fill in the matrix. spectral-complete uses softImpute package. 'random' uses random initialiation}
 
 \item{SBM_method}{[char] :: 'spectral' or 'mf' -- method to fit SBM: spectral does spectral clustering; mf does EM algo}
 
@@ -22,6 +26,20 @@ set_fit_param(Ntries = 10, verbose = 0, SBM_start = "spectral",
 \item{SBM_EM_Niter}{[int] :: Number of maximum iterations in EM}
 
 \item{SBM_EM_stopthres}{[double] :: Threshold to declare convergence}
+
+\item{SBM_MC_laplacian}{[logical] :: If TRUE, the results are based on the Laplacian matrix}
+
+\item{SBM_MC_Neigenvecs}{[int] :: If nonzero, this function returns eigenvectors instead of a matrix. If this is positive, it returns the 'eigenvecs' largest eigenvectors; if negative, it returns the 'eigenvecs' smallest eigenvectors.}
+
+\item{SBM_MC_softImpute_rankmax}{[int] :: The max rank of the svd approximation, when using softImpute}
+
+\item{SBM_MC_softImpute_thresh}{[numeric] :: Convergence threshold, when using softImpute}
+
+\item{SBM_MC_softImpute_maxit}{[int] :: Maximum number of iterations, when using softImpute}
+
+\item{SBM_SC_Nclass}{[int] :: Number of classes to return for spectral clustering.}
+
+\item{SBM_SC_Nstart}{[int] :: Number of random starts for the k-means algorithm}
 }
 \value{
 [list] :: A list of parameters

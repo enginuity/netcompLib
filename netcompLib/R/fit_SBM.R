@@ -19,8 +19,6 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
   #   best_loglik = best_loglik - (Nclass*(Nclass-1)/2 + Nclass)*log(sum(!is.na(adjm))) ## (n + n(n-1)/2) [parameters] * log(n) [from BIC]
   #   best_k = which.max(best_loglik)
   
-  cl = control_list ## Shorten control_list variable name
-  
   ## 1-2: If desired
   ## 1. Do matrix completion
   ## -- This will only ever be done once, as the results are deterministic
@@ -31,20 +29,24 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
   ## For EM algo, use 'start' to decide how to initialize! If using spectral clustering to start, don't need to rerun the eigenvector computation part -- only need to rerun the k-means part! 
   ## start can take on values of 'spectral' or 'random'
   
+  cl = control_list ## Shorten control_list variable name
+  if (cl$SBM_start != "random") {
+    ## (1) Matrix Completion (if needed)
+    ## Some error checking / warnings
+    
+    if (cl$SBM_MC_Neigenvecs > 0 & cl$SBM_MC_laplacian) { print("WARNING: Using Laplacian and largest eigenvectors... is this intended?")}
+    if (cl$SBM_MC_Neigenvecs < 0 & !cl$SBM_MC_laplacian) { print("WARNING: Using adjacnecy matrices and smallest eigenvectors... is this intended?")}
+    if (cl$SBM_MC_Neigenvecs == 0) { stop("Must use a nonzero number of eigenvectors") }
+    
+    if (cl$SBM_start == "spectral-mean") {
+      cmMethod = "rcmeans"
+    } else if (cl$SBM_start == "spectral-complete") {
+      cmMethod = "complete"
+    }
+    compEVS = completeMatrix(adjm = adjm, method = cmMethod, laplacian = cl$SBM_MC_laplacian, eigenvecs = cl$SBM_MC_Neigenvecs, softImpute_maxit = cl$SBM_MC_softImpute_maxit, softImpute_thresh = cl$SBM_MC_softImpute_thresh, softImpute_rankmax = cl$SBM_MC_softImpute_rankmax)
+  }
   
-  
-  
-  #   ## method = 'spectral' or 'mf'
-  #   ## method 'mf' for mean field EM approach, 'spectral' for just doing spectral clustering
-  #   if (cl$SBM_method == "spectral") {
-  #     ## For spectral clustering, simply apply spectral clustering 
-  #     return(specClust(adjm, cl$SBM_Nclass, cl$Ntries))
-  #     
-  #   } else 
-  
-  
-  
-  
+  ## (2) Spectral Clustering and (3) EM algorithm
   for(j in 1:cl$Ntries) {
     N = nrow(adjm) ## This is the number of nodes
     
@@ -58,10 +60,11 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
       H = matrix(0, nrow = N, ncol = cl$SBM_Nclass)
       PHI = matrix(runif(cl$SBM_Nclass*N, min = 0.1, max = 0.9), nrow = N)
       PHI = PHI / rowSums(PHI)
-    } else if (cl$SBM_start == 'spectral') {
-      
+    } else if (length(grep("spectral", cl$SBM_start)) > 0) {
+
       ## Do spectral clustering once to give a rough start
-      res = specClust(adjm, cl$SBM_Nclass, 2)
+      res = specClust(compEVS, Nclass = cl$SBM_SC_Nclass, NStart = cl$SBM_SC_Nstart)
+      res = fitModel(res, adjm)
       clusts = res@groups
       
       nodeps = sapply(1:cl$SBM_Nclass, function(x) {mean(clusts == x)})
@@ -78,8 +81,6 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
     edgeps[edgeps < 0.01] = .01; edgeps[edgeps > 0.99] = .99
     results = EM_SBM_mf(adjm = adjm, Nobs = Nobs, nodeps = nodeps, edgeps = edgeps, H = H, PHI = PHI, 
                         Niter = cl$SBM_EM_Niter, stop_thres = cl$SBM_EM_stopthres, verbose = cl$verbose)
-
-    
     
     loglik = computeLik(results$model, adja = adjm)$sum
     if (cl$verbose > 0) { print(loglik) }
@@ -113,7 +114,7 @@ specClust = function(evs, Nclass, NStart = 3) {
   
   clusts = kmeans(evs, centers = Nclass, nstart = NStart)$cluster
   NetS = NetworkStruct(set_model_param(Nnodes = length(clusts), type = 'block', block_nclass = Nclass, block_assign = clusts))
-
+  
   return(NetS)
 }
 

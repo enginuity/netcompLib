@@ -7,7 +7,7 @@ if (FALSE) {
   nm = NetworkModel(set_model_param(Nnodes = 50, block_assign = rep(c(1,2), each = 25)))
   adjm = sampleNetwork(nm)[,,1]
   Nobs = 1
-  control_list = set_fit_param()
+  control_list = set_fit_param(SBM_start = "spectral-mean", SBM_Nclass = 2)
 } 
 
 ## For running EM mean field version
