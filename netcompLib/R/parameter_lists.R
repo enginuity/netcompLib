@@ -86,8 +86,8 @@ set_model_param = function(Nnodes = 30, type = 'block', pairtype = NULL, pmin = 
 #' 
 #' @export
 #' 
-set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_structs = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_pearson"), pval_sim_null = c(FALSE, TRUE, TRUE), fitstruct_method = "random") {
-  
+set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05, n_structs = c(1,25,50,100), pval_fx_names = c("mult_bonferroni", "mult_highcrit", "mult_fisher"), pval_sim_null = c(FALSE, TRUE, TRUE), fitstruct_method = "random") {
+
   # TODO: [Improve] 'random' and 'recycle' to use more structures for small n_structs
   
   ## Extract appropriate information from function inputs

@@ -57,7 +57,7 @@ mult_highcrit = function(x, alpha_min = 10^(-8), alpha_max = 0.2) {
 }
 
 
-#' Computes pearson-like test statistic (or p-value)
+#' Computes Fisher's method test statistic (or p-value)
 #' 
 #' Computes p-value by assuming normality (using larger variance estimate)
 #' Larger variance estiamte is bounded by 1/n + cor, but uses 1/n * adjust as variance. 
@@ -69,7 +69,7 @@ mult_highcrit = function(x, alpha_min = 10^(-8), alpha_max = 0.2) {
 #' 
 #' @export
 #' 
-mult_pearson = function(x, adjust = NULL) { 
+mult_fisher = function(x, adjust = NULL) { 
   stat = sum(-1 * log(x)) / length(x)
   if (is.null(adjust)) { return(stat) }
   return(1 - pnorm(q = ( (stat - 1) / sqrt(1/n * adjust))))
