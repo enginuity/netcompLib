@@ -8,6 +8,9 @@ if (FALSE) {
   adjm = sampleNetwork(nm)[,,1]
   Nobs = 1
   control_list = set_fit_param(SBM_start = "spectral-mean", SBM_Nclass = 2)
+  
+  adjm1 = sampleNetwork(nm)[,,1]
+  adjm2 = sampleNetwork(nm)[,,1]
 } 
 
 ## For running EM mean field version
@@ -24,16 +27,18 @@ if (FALSE) {
   verbose = TRUE
 }
 
+
+
 adjm = hide_edges(adjm, frac = .5)
 
 
-nm = NetworkModel(set_model_param(Nnodes = 100, block_assign = rep(c(1,2), each = 50)))
+nm = NetworkModel(set_model_param(Nnodes = 40, block_assign = rep(c(1,2), each = 20)))
 adjm = sampleNetwork(nm)[,,1]
-z = fit_SBM(adjm)
+z = fit_SBM(adjm, control_list = set_fit_param(SBM_EM_mode = "no-node-default"))
 #|----##If calling the version from netcompLib, the input parameters have been changed! --Thu Jan 14 20:48:05 2016--
 computeLik(z$model, adjm)$sum
 
-
+EM_SBM_mf_default_nonode
 
 nm1 = NetworkModel(set_model_param(Nnodes = 50, block_assign = rep(c(1,2), each = 25), block_probs = matrix(c(.5, .1, .1, .5), nrow = 2) ))
 nm2 = NetworkModel(set_model_param(Nnodes = 50, block_assign = rep(c(1,2), each = 25), block_probs = matrix(c(.1, .5, .5, .1), nrow = 2) ))

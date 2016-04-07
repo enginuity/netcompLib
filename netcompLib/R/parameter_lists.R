@@ -116,6 +116,7 @@ set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05
 
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (set_fit_param)
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (set_fit_param)
 #' Set model fitting parameters
 #' 
 #' This function sets up the (list of) parameters to be passed into model fitting functions. There are default parameters that are used if this function is called with no arguments. 
@@ -127,6 +128,7 @@ set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05
 #' @param SBM_Nclass [int] :: Number of classes in SBM
 #' @param SBM_EM_Niter [int] :: Number of maximum iterations in EM
 #' @param SBM_EM_stopthres [double] :: Threshold to declare convergence
+#' @param SBM_EM_mode temp
 #' @param SBM_MC_laplacian [logical] :: If TRUE, the results are based on the Laplacian matrix
 #' @param SBM_MC_Neigenvecs [int] :: If nonzero, this function returns eigenvectors instead of a matrix. If this is positive, it returns the 'eigenvecs' largest eigenvectors; if negative, it returns the 'eigenvecs' smallest eigenvectors. 
 #' @param SBM_MC_softImpute_rankmax [int] :: The max rank of the svd approximation, when using softImpute
@@ -139,11 +141,11 @@ set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05
 #' 
 #' @export
 #' 
-set_fit_param = function(Ntries = 10, verbose = 0, SBM_start = 'spectral-mean', SBM_method = 'mf', SBM_Nclass = 3, SBM_EM_Niter = 100, SBM_EM_stopthres = 0.00001, SBM_MC_laplacian = FALSE, SBM_MC_Neigenvecs = SBM_Nclass * (SBM_MC_laplacian - 0.5)*(-2), SBM_MC_softImpute_rankmax = 5, SBM_MC_softImpute_thresh = 1e-05, SBM_MC_softImpute_maxit = 100, SBM_SC_Nclass = SBM_Nclass, SBM_SC_Nstart = 3) {
+set_fit_param = function(Ntries = 10, verbose = 0, SBM_start = 'spectral-mean', SBM_method = 'mf', SBM_Nclass = 3, SBM_EM_Niter = 100, SBM_EM_stopthres = 0.00001, SBM_EM_mode = 'default', SBM_MC_laplacian = FALSE, SBM_MC_Neigenvecs = SBM_Nclass * (SBM_MC_laplacian - 0.5)*(-2), SBM_MC_softImpute_rankmax = 5, SBM_MC_softImpute_thresh = 1e-05, SBM_MC_softImpute_maxit = 100, SBM_SC_Nclass = SBM_Nclass, SBM_SC_Nstart = 3) {
   
   if (!(SBM_start %in% c('random', 'spectral-mean', 'spectral-complete'))) { stop("Invalid SBM_start value") }
   if (!(SBM_method %in% c('mf', 'spectral'))) { stop("Invalid SBM_method value") }
   
-  return(list(Ntries = Ntries, verbose = verbose, SBM_start = SBM_start, SBM_method = SBM_method, SBM_Nclass = SBM_Nclass, SBM_EM_Niter = SBM_EM_Niter, SBM_EM_stopthres = SBM_EM_stopthres, SBM_MC_laplacian = SBM_MC_laplacian, SBM_MC_Neigenvecs = SBM_MC_Neigenvecs, SBM_MC_softImpute_rankmax = SBM_MC_softImpute_rankmax, SBM_MC_softImpute_thresh = SBM_MC_softImpute_thresh, SBM_MC_softImpute_maxit = SBM_MC_softImpute_maxit, SBM_SC_Nclass = SBM_SC_Nclass, SBM_SC_Nstart = SBM_SC_Nstart))
+  return(list(Ntries = Ntries, verbose = verbose, SBM_start = SBM_start, SBM_method = SBM_method, SBM_Nclass = SBM_Nclass, SBM_EM_Niter = SBM_EM_Niter, SBM_EM_stopthres = SBM_EM_stopthres, SBM_EM_mode = SBM_EM_mode, SBM_MC_laplacian = SBM_MC_laplacian, SBM_MC_Neigenvecs = SBM_MC_Neigenvecs, SBM_MC_softImpute_rankmax = SBM_MC_softImpute_rankmax, SBM_MC_softImpute_thresh = SBM_MC_softImpute_thresh, SBM_MC_softImpute_maxit = SBM_MC_softImpute_maxit, SBM_SC_Nclass = SBM_SC_Nclass, SBM_SC_Nstart = SBM_SC_Nstart))
 }
 

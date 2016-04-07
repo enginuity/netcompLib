@@ -6,11 +6,11 @@
 \usage{
 set_fit_param(Ntries = 10, verbose = 0, SBM_start = "spectral-mean",
   SBM_method = "mf", SBM_Nclass = 3, SBM_EM_Niter = 100,
-  SBM_EM_stopthres = 1e-05, SBM_MC_laplacian = FALSE,
-  SBM_MC_Neigenvecs = SBM_Nclass * (SBM_MC_laplacian - 0.5) * (-2),
-  SBM_MC_softImpute_rankmax = 5, SBM_MC_softImpute_thresh = 1e-05,
-  SBM_MC_softImpute_maxit = 100, SBM_SC_Nclass = SBM_Nclass,
-  SBM_SC_Nstart = 3)
+  SBM_EM_stopthres = 1e-05, SBM_EM_mode = "default",
+  SBM_MC_laplacian = FALSE, SBM_MC_Neigenvecs = SBM_Nclass *
+  (SBM_MC_laplacian - 0.5) * (-2), SBM_MC_softImpute_rankmax = 5,
+  SBM_MC_softImpute_thresh = 1e-05, SBM_MC_softImpute_maxit = 100,
+  SBM_SC_Nclass = SBM_Nclass, SBM_SC_Nstart = 3)
 }
 \arguments{
 \item{Ntries}{[int] :: Number of EM runs to optimize over}
@@ -26,6 +26,8 @@ set_fit_param(Ntries = 10, verbose = 0, SBM_start = "spectral-mean",
 \item{SBM_EM_Niter}{[int] :: Number of maximum iterations in EM}
 
 \item{SBM_EM_stopthres}{[double] :: Threshold to declare convergence}
+
+\item{SBM_EM_mode}{temp}
 
 \item{SBM_MC_laplacian}{[logical] :: If TRUE, the results are based on the Laplacian matrix}
 
