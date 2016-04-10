@@ -376,7 +376,7 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
   } else if (model_type == "densitydiff") {
     ## In this case, null hypothesis must be true, as the second model must have same structure AND be exactly a fixed density parameter away. 
     
-    if (!(dd_param_add %in% names(addl_param))) { addl_param$dd_param_add = rnorm(1) }
+    if (!("dd_param_add" %in% names(addl_param))) { addl_param$dd_param_add = rnorm(1) }
     m2 = m1
     origprobs = get_dyadgroup_prob(m1)
     m2 = set_dyadgroup_prob(
@@ -392,20 +392,20 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
     } 
     
     ## Assign correlation parameter if not inputted
-    if (!(c_param_corr %in% names(addl_param))) { addl_param$c_param_corr = rnorm(1) }
+    if (!("c_param_corr" %in% names(addl_param))) { addl_param$c_param_corr = rnorm(1) }
     
     ## Check if remaining parameters are already assigned; assign if not. 
-    if (!(c_param_a %in% names(addl_param))) { 
+    if (!("c_param_a" %in% names(addl_param))) { 
       temp = aggstat_single(m1, getEdgeProbMat(m1)) 
       addl_params$c_param_a = temp$x / temp$n
     }
     
-    if (!(c_param_b %in% names(addl_param))) { 
+    if (!("c_param_b" %in% names(addl_param))) { 
       temp = aggstat_single(m2, getEdgeProbMat(m2)) 
       addl_params$c_param_b = temp$x / temp$n
     }
     
-    if (!(c_names %in% names(addl_param))) {
+    if (!("c_names" %in% names(addl_param))) {
       addl_param$c_names = aggstat_single(m1, getEdgeProbMat(m1))$names
     }
     

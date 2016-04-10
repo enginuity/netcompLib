@@ -223,18 +223,8 @@ EM_SBM_mf_default_nonode = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, s
                 block_probs = edgeps))))
 }
 
-
-
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (EM_SBM_mf_twoedgeps_nonode)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (EM_SBM_mf_twoedgeps_nonode)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (EM_SBM_mf_twoedgeps_nonode)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (EM_SBM_mf_twoedgeps_nonode)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (EM_SBM_mf_twoedgeps_nonode)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (EM_SBM_mf_twoedgeps_nonode)
 #' Fit SBM using mean field approx
 #' 
-#' @param adjm [matrix-int] :: Input adjacency matrix
-#' @param edgeps [matrix-double] :: Initial between-block probabilities
 #' @param adjm1 temp
 #' @param adjm2 temp
 #' @param Nobs [int] :: Number of observations per dyad
