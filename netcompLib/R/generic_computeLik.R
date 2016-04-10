@@ -74,8 +74,8 @@ computeLik.NetworkModelPair = function(NetM, adja, by_node = FALSE, by_group = F
     
   } else { 
     ## Run computeLik separately and add results
-    l1 = computeLik(NetM@m1, adja[,,1], loglik, by_node, na.rm)
-    l2 = computeLik(NetM@m2, adja[,,2], loglik, by_node, na.rm)
+    l1 = computeLik(NetM@m1, adja[,,1], by_node, by_group, na.rm)
+    l2 = computeLik(NetM@m2, adja[,,2], by_node, by_group, na.rm)
     res = addComputeLik(l1, l2, add_sizes = TRUE)
   }
   return(res)

@@ -29,10 +29,6 @@ EM_SBM_mf_twoedgeps_nonode(adjm1, adjm2, Nobs, nodeps, edgeps1, edgeps2, H, PHI,
 \item{stop_thres}{[double] :: Stop condition}
 
 \item{verbose}{[logical] :: Output stuff?}
-
-\item{adjm}{[matrix-int] :: Input adjacency matrix}
-
-\item{edgeps}{[matrix-double] :: Initial between-block probabilities}
 }
 \value{
 [list] :: EM algorithm output, with the following elements: 

@@ -382,7 +382,9 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
     m2 = set_dyadgroup_prob(
       m2, origprobs$names, faraway::ilogit(faraway::logit(origprobs$probs) + addl_param$dd_param_add))
     
+    netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m1, is_null = FALSE, model_type = model_type, addl_param = addl_param)
   } else if (model_type == "correlated") {
+    
     ## In this case, the structure should be the same, but can either be null or non-null. 
     ## If null -> model must be the same, so m2 is ignored. 
     if (is_null) { 
@@ -409,6 +411,7 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
       addl_param$c_names = aggstat_single(m1, getEdgeProbMat(m1))$names
     }
     
+    netmp = new("NetworkModelPair", Nnodes = getNnodes(m1), m1 = m1, m2 = m1, is_null = FALSE, model_type = model_type, addl_param = addl_param)
   } else {
     stop("Invalid model_type")
   }
