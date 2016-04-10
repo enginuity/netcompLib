@@ -4,13 +4,26 @@ library(igraph)
 
 ## For running fit_SBM
 if (FALSE) {
-  nm = NetworkModel(set_model_param(Nnodes = 50, block_assign = rep(c(1,2), each = 25)))
+  nm = NetworkModel(set_model_param(Nnodes = 30, block_assign = rep(c(1,2), each = 15), block_probs = matrix(c(.4,.2,.2,.4), nrow = 2)))
   adjm = sampleNetwork(nm)[,,1]
   Nobs = 1
+  adjm = hide_edges(adjm, frac = .5)
   control_list = set_fit_param(SBM_start = "spectral-mean", SBM_Nclass = 2)
+  control_list = set_fit_param(SBM_start = "spectral-mean", SBM_Nclass = 2, SBM_MC_Neigenvecs = 4, SBM_MC_softImpute_maxit = 500, SBM_MC_softImpute_rankmax = 5, SBM_EM_mode = "no-node-default")
   
   adjm1 = sampleNetwork(nm)[,,1]
   adjm2 = sampleNetwork(nm)[,,1]
+  
+  NN = 60
+  genSBM = NetworkModelSBM(
+    model_params = set_model_param(
+      Nnodes = NN, block_assign = rep(1:3, times = NN/3)[seq_len(NN)],
+      block_probs = matrix(c(.8,.3,.1, .3,.6,.1, .1,.1,.5), nrow = 3)))
+  adjm = sampleNetwork(genSBM)[,,1]
+  control_list = set_fit_param(SBM_start = "spectral-mean", SBM_Nclass = 3, SBM_MC_Neigenvecs = 4)
+  
+  bestmod = fitModel(NetworkStruct(set_model_param(Nnodes = 30, block_assign = rep(c(1,2), each = 15))), adjm)
+  computeLik(bestmod, adjm)$sum
 } 
 
 ## For running EM mean field version
@@ -72,3 +85,13 @@ adjm = sampleNetwork(GL@m1)[,,1]
 specClust(hide_edges(adjm, frac = .1), 3)
 
 adjm = hide_edges(adjm, frac = .2)
+
+
+
+
+nm = NetworkModel(set_model_param(Nnodes = 30, block_assign = rep(c(1,2), each = 15), block_probs = matrix(c(.4,.2,.2,.4), nrow = 2)))
+adjm = sampleNetwork(nm)[,,1]
+Nobs = 1
+adjm = hide_edges(adjm, frac = .5)
+test = 
+  fit_SBM(adjm, control_list = set_fit_param(SBM_start = "random", SBM_Nclass = 2, SBM_MC_Neigenvecs = 4, SBM_EM_mode = "no-node-default", SBM_SC_Nstart = 10))
