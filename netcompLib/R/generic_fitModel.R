@@ -48,7 +48,7 @@ fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10
   
   if (mode == "default") {
     aggstat = aggstat_single(res, adja)
-
+    
     return(set_dyadgroup_prob(res, aggstat$names, probs = aggstat$x/aggstat$n))
   } else if (mode == "densitydiff") {
     ## TODO: Allow fitting when inputting longer adjacency arrays? (or perhaps a pair of them)
@@ -60,7 +60,7 @@ fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10
     
     m1 = set_dyadgroup_prob(res, aggstat$names, probs = faraway::ilogit(best$par[-1]))
     m2 = set_dyadgroup_prob(res, aggstat$names, probs = faraway::ilogit(best$par[-1] + best$par[1]))
-        return(NetworkModelPair(m1 = m1, m2 = m2, is_null = FALSE, model_type = "densitydiff", addl_param = list(dd_param_add = best$par[1])))
+    return(NetworkModelPair(m1 = m1, m2 = m2, is_null = FALSE, model_type = "densitydiff", addl_param = list(dd_param_add = best$par[1])))
   }
   
   if (mode == "corr-global-null") {
