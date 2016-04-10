@@ -41,7 +41,7 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
     if (cl$SBM_start == "spectral-mean") {
       cmMethod = "rcmeans"
     } else if (cl$SBM_start == "spectral-complete") {
-      cmMethod = "complete"
+      cmMethod = "softImpute"
     }
     compEVS = completeMatrix(adjm = adjm, method = cmMethod, laplacian = cl$SBM_MC_laplacian, eigenvecs = cl$SBM_MC_Neigenvecs, softImpute_maxit = cl$SBM_MC_softImpute_maxit, softImpute_thresh = cl$SBM_MC_softImpute_thresh, softImpute_rankmax = cl$SBM_MC_softImpute_rankmax)
   }
@@ -83,6 +83,7 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
                         Niter = cl$SBM_EM_Niter, stop_thres = cl$SBM_EM_stopthres, mode = cl$SBM_EM_mode, verbose = cl$verbose)
     
     loglik = computeLik(results$model, adja = adjm)$sum
+    
     if (cl$verbose > 0) { print(loglik) }
     
     if (loglik > best_loglik) {

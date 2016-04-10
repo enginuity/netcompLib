@@ -29,7 +29,7 @@ mult_quantiler = function(x, alpha_min = 0.05, alpha_max = 1) {
   n = length(x)
   gridvals = seq(from = alpha_min, to = alpha_max, length.out = 3*n)
   qs = quantile(x, probs = gridvals, type = 1)/gridvals
-  r = min(1, (1 - log(alpha_min) * min(1, qs) ) )
+  r = min(1, ((1 - log(alpha_min)) * min(1, qs) ) )
   return(r)
 }
 

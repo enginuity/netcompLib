@@ -61,6 +61,7 @@ EM_SBM_mf_chooser = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thr
 #' 
 EM_SBM_mf_default = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thres, verbose) {
   
+  diag(adjm) = NA
   N = nrow(adjm)
   Nclass = nrow(edgeps)
   
@@ -83,7 +84,7 @@ EM_SBM_mf_default = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, stop_thr
     H = H * 0
     for(r in 1:Nclass) { for(s in 1:Nclass) {
       h1 = adjm * log(edgeps[r,s]) + (Nobs - adjm) * log(1 - edgeps[r,s])
-      H[,r] = H[,r] + sapply(1:N, function(x) {sum(h1[x,-x] * PHI[-x,s], na.rm = TRUE)})
+      H[,r] = H[,r] + sapply(1:N, function(x) {sum(h1[x,] * PHI[,s], na.rm = TRUE)})
     }}
     H = H + abs(max(H)) #rescale to prevent exponentiation errors
     peH = t(nodeps * t(exp(H)))
@@ -229,10 +230,11 @@ EM_SBM_mf_default_nonode = function(adjm, Nobs, nodeps, edgeps, H, PHI, Niter, s
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (EM_SBM_mf_twoedgeps_nonode)
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (EM_SBM_mf_twoedgeps_nonode)
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (EM_SBM_mf_twoedgeps_nonode)
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (EM_SBM_mf_twoedgeps_nonode)
 #' Fit SBM using mean field approx
 #' 
-#' @param edgeps [matrix-double] :: Initial between-block probabilities
 #' @param adjm [matrix-int] :: Input adjacency matrix
+#' @param edgeps [matrix-double] :: Initial between-block probabilities
 #' @param adjm1 temp
 #' @param adjm2 temp
 #' @param Nobs [int] :: Number of observations per dyad
