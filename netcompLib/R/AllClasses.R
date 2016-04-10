@@ -399,12 +399,12 @@ NetworkModelPair = function(m1, m2 = NULL, is_null = FALSE, model_type = "defaul
     ## Check if remaining parameters are already assigned; assign if not. 
     if (!("c_param_a" %in% names(addl_param))) { 
       temp = aggstat_single(m1, getEdgeProbMat(m1)) 
-      addl_params$c_param_a = temp$x / temp$n
+      addl_param$c_param_a = temp$x / temp$n
     }
     
     if (!("c_param_b" %in% names(addl_param))) { 
       temp = aggstat_single(m2, getEdgeProbMat(m2)) 
-      addl_params$c_param_b = temp$x / temp$n
+      addl_param$c_param_b = temp$x / temp$n
     }
     
     if (!("c_names" %in% names(addl_param))) {
