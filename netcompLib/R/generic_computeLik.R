@@ -62,6 +62,8 @@ computeLik.NetworkModelPair = function(NetM, adja, by_node = FALSE, by_group = F
   res = list(sum = NULL, bynode = NULL, group_ll = NULL, group_size = NULL)
   
   if (NetM@model_type == "correlated") {
+    ## TODO: Make error such that Nobs MUST be only 1. 
+    
     pt = hCorr_paramToProb(NetM@addl_param$c_param_corr, NetM@addl_param$c_param_a, NetM@addl_param$c_param_b)
     adjm = adja[,,1] * 10 + adja[,,2]
     matches_x = matrix(match(adjm, as.numeric(colnames(pt))), nrow = nrow(adjm))

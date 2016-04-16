@@ -27,7 +27,8 @@ sampleNetwork.NetworkModel = function(NetM, Nobs = 1, Nsim = 1) {
   Nnodes = getNnodes(NetM)
   epmat = getEdgeProbMat(NetM)
   
-  gen_one_network = function() { # uses variables out of scope (epmat, Nnodes)
+  gen_one_network = function() { 
+    ## NOTE: uses variables out of scope (epmat, Nnodes)
     res = matrix(0, nrow = Nnodes, ncol = Nnodes) 
     for(k in 1:Nnodes) { for(j in 1:Nnodes) {
       if (k < j) {

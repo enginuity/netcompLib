@@ -36,8 +36,11 @@ fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10
   }
   
   
-  ## If adja is NULL, just fill in random probabilities, which extractModel already does! 
+  ## If adja is NULL, just fill in random probabilities, which extractModel does. 
   if (is.null(adja)) {
+    # if (mode == "default") { 
+    #   return()
+    # }
     return(res)
     ## TODO: [Issue #33] This doesn't work when mode is NOT default. Need to handle this properly eventually. 
   }

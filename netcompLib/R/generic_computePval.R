@@ -43,10 +43,18 @@ computePval = function(NetS, adja1, adja2, Nobs = 1, pl, output_mode = 'pval', m
 computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mode = "pval", model_type = "default", verbose = TRUE, vbset = c(1,0,0)) {
   
   ## TODO: [Update documentation] to show this case
-  if (is.list(adja1) & is.list(adja2) & (length(adja1) == length(adja2))) {
-    return(mapply(function(x,y) { computePval(NetS, x, y, Nobs, pl, output_mode, model_type, verbose, vbset) }, adja1, adja2, SIMPLIFY = FALSE))
-    ## TODO: update verbosity settings in this case?
+  if (is.list(adja1) & is.list(adja2)) { # If inputs are both lists: 
+    if (length(adja1) == length(adja2)) { # Make sure there is a proper amount of comparisons
+      return(mapply(function(x,y) { computePval(NetS, x, y, Nobs, pl, output_mode, model_type, verbose, vbset) }, adja1, adja2, SIMPLIFY = FALSE))
+      ## TODO: update verbosity settings in this case?
+    } else {
+      stop("Unable to compute p-values given an unequal amount of pairs of network data")
+    }
+  } else if (is.list(adja1) + is.list(adja2) == 1) {
+    stop("Unable to compute p-values given an unequal amount of pairs of network data")
   }
+  
+  
   
   ## TODO: Change code to work when Nobs != 1... 
   
