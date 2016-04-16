@@ -116,7 +116,6 @@ set_sim_param = function(cc_adj = c(0,2), thres_ignore = c(5, 10), alphas = 0.05
 
 
 ## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (set_fit_param)
-## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (set_fit_param)
 #' Set model fitting parameters
 #' 
 #' This function sets up the (list of) parameters to be passed into model fitting functions. There are default parameters that are used if this function is called with no arguments. 
