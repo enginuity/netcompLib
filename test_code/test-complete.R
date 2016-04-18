@@ -29,6 +29,7 @@ abs(mc@probmat - matrix(c(3/6, 5/12, 5/12, 2/2), nrow = 2))
 
 l1 = computeLik(m1, adj1, by_node = TRUE, by_group = TRUE)
 computePval(NetS, adj1, adj2, pl = set_sim_param(cc_adj = 0, thres_ignore = 0), output_mode = "chisq")
+#|----##Change available modes (default vs default-slow) --Mon Apr 18 14:31:29 2016--
 
 
 

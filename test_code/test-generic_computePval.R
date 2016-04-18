@@ -1,4 +1,5 @@
 ## For testing computePval 
+#|----##Change available modes (default vs default-slow) --Mon Apr 18 14:31:29 2016--
 library(netcompLib)
 library(abind)
 library(faraway)
@@ -22,6 +23,8 @@ NetS = NetworkStructSBM(set_model_param(Nnodes = 30, block_nclass = 3))
 
 
 computePval(NetS, ta, te, pl = pl, mode = 'chisq')
+#|----##Change available modes (default vs default-slow) --Mon Apr 18 14:31:29 2016--
 #|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
 computePval(NetworkStructList(Nmodels = 10, set_model_param()), ta, te, pl = pl, mode = 'chisq')
+#|----##Change available modes (default vs default-slow) --Mon Apr 18 14:31:29 2016--
 #|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
