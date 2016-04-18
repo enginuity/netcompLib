@@ -42,12 +42,12 @@ computePval = function(NetS, adja1, adja2, Nobs = 1, pl, output_mode = 'pval', m
 
 
 computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mode = "pval", model_type = "default-slow", verbose = TRUE, vbset = c(1,0,0)) {
-
-  if (model_type != "default") {
+  
+  if (model_type == "default") {
     ## This only handles the main default case, with no frills - just outputs chi-square test statistic -- cannot do nodal contributions
     ## Special case - handle this faster with improper functions (uses variables in this function environment, instead of their own local function environment)
     ## This case handles multiple input networks gracefully / quickly... 
-    if (getNetType(NetS) == "random") { stop("Cant use fast mode for 'random' structs")}
+    if (getNetType(NetS) == "random") { stop("Cant use fast mode for 'random' structs") }
     if (output_mode == "nodal") { stop("Cannot use 'nodal' method in fast mode") }
     
     compute_one_pair = function() {
@@ -57,14 +57,13 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
       if (getNetType(NetS) == "tree") { correct = rep(1, times = getNnodes(NetS)) }
       if (getNetType(NetS) == "block") { correct = NetS@correct }
       
-      n = rep(0, times = length(NetS@counts)); x1 = n; x2 = n
+      n = rep(0, times = length(NetS@counts)); x1 = n; x2 = n; xc = n
       for(j in seq_along(NetS@expand)) {
         x1[j] = sum(A1[NetS@expand[[j]][[1]],NetS@expand[[j]][[2]]], na.rm = TRUE)/correct[j]
         x2[j] = sum(A2[NetS@expand[[j]][[1]],NetS@expand[[j]][[2]]], na.rm = TRUE)/correct[j]
         xc[j] = sum((A1*A2)[NetS@expand[[j]][[1]],NetS@expand[[j]][[2]]], na.rm = TRUE)/correct[j]
-        n[j] = sum(!is.na(A1[NetS@expand[[j]][[1]],NetS@expand[[j]][[2]]], na.rm = TRUE))/correct[j]
+        n[j] = sum(!is.na(A1[NetS@expand[[j]][[1]],NetS@expand[[j]][[2]]]))/correct[j]
       }
-      xc = x1 + x2
       
       ## Compute likelihoods by group
       llN = compute_loglik_fromPC(x1+x2, 2*n)
@@ -78,12 +77,13 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
       pvals = matrix(0, nrow = length(pl$cc_adj), ncol = length(pl$thres_ignore))
       dyad_dfEst = computeEmpDfAdj(A1, A2, NetS)
       
-      px = x1/n; py = x2/n; pc = (x1+x2)/(2*n)
+      px = x1/n; py = x2/n; pc = (xc)/(n)
       nums = pc - px*py; dens = sqrt(px * (1-px) * py * (1-py))
       cor_by_dyadgroup = nums/dens
       cor_by_dyadgroup[nums == 0] = 0 ## zero out any 0/0. 
       
-      ssadj = sapply(seq_along(cor_by_dyadgroup), function(j) {compute_small_samp_dfadj(fit1$n[j], pc[j], mode = "bound")})
+      ssadj = sapply(seq_along(cor_by_dyadgroup), 
+                     function(j) {compute_small_samp_dfadj(n[j], (p1[j]+p2[j])/2, mode = "bound")})
       dfadj = data.frame(coradj = 1 - cor_by_dyadgroup, ssadj = ssadj)
       
       ## Setup pval result matrix. 
@@ -95,7 +95,7 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
         
         for (k in seq_along(pl$thres_ignore)) {
           ## Only keepdyad groups with enough observations (given by thres_ignore argument)
-          inds = which(dyad_counts >= pl$thres_ignore[k])
+          inds = which(n >= pl$thres_ignore[k])
           pvals[j,k] = pchisq(q = sum(chisqByGroup[inds]), df = sum(dyad_dfAdj[inds]), lower.tail = FALSE)
         }
       }
@@ -105,13 +105,16 @@ computePval.NetworkStruct = function(NetS, adja1, adja2, Nobs = 1, pl, output_mo
     ## Set up A1 and A2 and iterate...
     if (is.list(adja1)) {
       reslist = list()
-      for (j in seq_along(adjda1)) {
+      for (j in seq_along(adja1)) {
         A1 = adja1[[j]][,,1]; A2 = adja2[[j]][,,1]
+        diag(A1) = NA; diag(A2) = NA
         reslist[[j]] = compute_one_pair()
       }
       return(reslist)
     } else { ## Only one adjm pair: 
-      A1 = adja1[,,1]; A2 = adja2[,,1]
+      if (length(dim(adja1)) == 2) { A1 = adja1 } else { A1 = adja1[,,1] }
+      if (length(dim(adja2)) == 2) { A2 = adja2 } else { A2 = adja2[,,1] }
+      diag(A1) = NA; diag(A2) = NA
       return(compute_one_pair())
     }
     

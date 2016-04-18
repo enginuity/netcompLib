@@ -11,7 +11,7 @@ fitModel(NetS, adja, mode = "default", optim_tries = 10)
 
 \item{adja}{[matrix/array] :: Adjacency array or matrix}
 
-\item{mode}{[char] :: Method to fit model -- choices are: "default", "densitydiff", "corr-global-null", "corr-global"}
+\item{mode}{[char] :: Method to fit model -- choices are: "default", "default-slow", "densitydiff", "corr-global-null", "corr-global"}
 
 \item{optim_tries}{[int] :: Number of attempts at optimization of likelihood function}
 }

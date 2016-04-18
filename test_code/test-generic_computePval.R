@@ -1,14 +1,15 @@
 ## For testing computePval 
-#|----##Change available modes (default vs default-slow) --Mon Apr 18 14:31:29 2016--
+
 library(netcompLib)
 library(abind)
 library(faraway)
-load("../../network-comparison/netcomp-project/data/method_data/small_samp_DFcorr.Rdata")
+library(microbenchmark)
 
 ## For setting parameters
 NetM = NetworkModel(set_model_param(Nnodes = 30, type = "block"))
 adja1 = sampleNetwork(NetM)
 adja2 = sampleNetwork(NetM)
+
 Nobs = 1
 pl = list(cc_adj = c(0,1,2), thres_ignore = c(2,5,10), alphas = 0.05, n_structs = c(1,20))
 
@@ -21,10 +22,13 @@ NetS = NetworkStructRND(set_model_param(Nnodes = 30, block_nclass = 3))
 NetS = NetworkStructHRG(set_model_param(Nnodes = 30, block_nclass = 3))
 NetS = NetworkStructSBM(set_model_param(Nnodes = 30, block_nclass = 3))
 
+computePval(NetS = NetS, adja1, adja2, pl = pl, output_mode = 'chisq', model_type = 'default')
+computePval(NetS = NetS, adja1, adja2, pl = pl, output_mode = 'chisq', model_type = 'default-slow')
+computePval(NetS = NetS, ta, te, pl = pl, output_mode = 'chisq', model_type = 'default')
+computePval(NetS = NetS, ta, te, pl = pl, output_mode = 'chisq', model_type = 'default-slow')
 
-computePval(NetS, ta, te, pl = pl, mode = 'chisq')
-#|----##Change available modes (default vs default-slow) --Mon Apr 18 14:31:29 2016--
-#|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
-computePval(NetworkStructList(Nmodels = 10, set_model_param()), ta, te, pl = pl, mode = 'chisq')
-#|----##Change available modes (default vs default-slow) --Mon Apr 18 14:31:29 2016--
-#|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
+microbenchmark(computePval(NetS = NetS, ta, te, pl = pl, output_mode = 'chisq', model_type = 'default'), 
+               computePval(NetS = NetS, ta, te, pl = pl, output_mode = 'chisq', model_type = 'default-slow'))
+
+
+

@@ -9,7 +9,7 @@ setGeneric("fitModel", function(NetS, adja, mode, optim_tries) standardGeneric("
 #' 
 #' @param NetS [\code{\link{NetworkStruct}}] :: Edge partition to fit model on
 #' @param adja [matrix/array] :: Adjacency array or matrix
-#' @param mode [char] :: Method to fit model -- choices are: "default", "densitydiff", "corr-global-null", "corr-global"
+#' @param mode [char] :: Method to fit model -- choices are: "default", "default-slow", "densitydiff", "corr-global-null", "corr-global"
 #' @param optim_tries [int] :: Number of attempts at optimization of likelihood function
 #' 
 #' @return [\code{\link{NetworkModel}}] :: Returns the best-fit model for each structure. If input is a \code{\link{NetworkStructList}}, output will actually be a list of \code{\link{NetworkModel}}s. 
@@ -49,7 +49,7 @@ fitModel.NetworkStruct = function(NetS, adja, mode = "default", optim_tries = 10
   Nobs = dim(adja)[3]
   if (length(dim(adja)) == 2) { Nobs = 1 }
   
-  if (mode == "default") {
+  if (mode == "default" | mode == "default-slow") {
     aggstat = aggstat_single(res, adja)
     
     return(set_dyadgroup_prob(res, aggstat$names, probs = aggstat$x/aggstat$n))
