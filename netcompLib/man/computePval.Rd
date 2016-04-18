@@ -5,7 +5,7 @@
 \title{Computes single p-value for likelihood ratio test}
 \usage{
 computePval(NetS, adja1, adja2, Nobs = 1, pl, output_mode = "pval",
-  model_type = "default", verbose = TRUE, vbset = c(1, 0, 0))
+  model_type = "default-slow", verbose = TRUE, vbset = c(1, 0, 0))
 }
 \arguments{
 \item{NetS}{[\code{\link{NetworkStruct}}] :: Model to compute p-value with}
@@ -28,6 +28,7 @@ computePval(NetS, adja1, adja2, Nobs = 1, pl, output_mode = "pval",
 \item{model_type}{[char] :: What model type to fit? Options are: 
 \itemize{
 \item 'default' :: Uses the standard hypothesis test
+\item 'default-slow' :: Uses the standard hypothesis test, but slower (but cleaner) R code
 \item 'densitydiff' :: Uses version where null allows for a global additive parameter in probability difference
 \item 'correlated' :: Uses version where null allows for correlated models
 }}

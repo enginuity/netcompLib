@@ -50,6 +50,7 @@ sim_hyptest = function(gen_NetMPair, fit_NetSList = NULL, fitm_params = set_mode
     
     ## Compute p-values
     pval_results = computePval(fit_NetSList, adja1 = adjm_list[[1]][[j]], adja2 = adjm_list[[2]][[j]], pl = pl, Nobs = 1, verbose = verbose, vbset = vbset_new)
+#|----##Change available modes (default vs default-slow) --Mon Apr 18 14:31:29 2016--
 #|----##Changed parameter 'mode' to 'output_mode' --Fri Feb 12 15:17:37 2016--
 #|----##** MUST EDIT -- TODO -- Added model_type parameter --Thu Sep 17 03:10:20 2015--
     pval_reslist[[j]] = abind::abind(pval_results, along = 3)

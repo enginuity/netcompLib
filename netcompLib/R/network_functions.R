@@ -37,6 +37,7 @@ computeTrueDfAdj = function(NetM, NetS, hidden_edges = NULL) {
     avprob = mean(probs)
     cors[j] = (mean(probs^2) - avprob^2)  /  (avprob - avprob^2)
     ssadj[j] = compute_small_samp_dfadj(n = length(probs), p = avprob)
+#|----##Add new parameter 'mode' --Sat Apr 16 13:45:48 2016--
   }
   
   res = data.frame(misspecAdj = 1 - cors, smallsampAdj = ssadj)
@@ -61,6 +62,7 @@ computeEmpDfAdj = function(adjm1, adjm2, NetS, model_type = "default") {
   ## Computes empirical df with respect to a specific network structure
   ## TODO: This only works when the input is a single pair of matrices, and also with no missing values. Need to check what happens when there are missing values. 
   ## TODO: Note that input can be extended to arrays? Same code should work... 
+  ## TODO: Need a fast version that uses an approximation 
   
   ## Input adjm1,2 should be matrices. 
   
@@ -82,6 +84,7 @@ computeEmpDfAdj = function(adjm1, adjm2, NetS, model_type = "default") {
     ssadj = 0 * cor_by_dyadgroup
     for (j in seq_along(cor_by_dyadgroup)) {
       ssadj[j] = compute_small_samp_dfadj(fit1$n[j], pc[j])
+#|----##Add new parameter 'mode' --Sat Apr 16 13:45:48 2016--
     }
     
     ## Returns a per-dyad-group adjustment (returns the estimated 'df' for that dyad group)

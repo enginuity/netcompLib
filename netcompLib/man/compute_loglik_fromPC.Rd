@@ -4,14 +4,14 @@
 \alias{compute_loglik_fromPC}
 \title{Compute the loglikelihood from probabilities and counts}
 \usage{
-compute_loglik_fromPC(x, n, p)
+compute_loglik_fromPC(x, n, p = x/n)
 }
 \arguments{
 \item{x}{[vector-int] :: observed counts in each edge group}
 
 \item{n}{[vector-int] :: Corresponding size of edge groups (cells)}
 
-\item{p}{[vector-double] :: Corresponding estimated cell probabilities (is just x / n)}
+\item{p}{[vector-double] :: Corresponding estimated cell probabilities (defaults to x / n)}
 }
 \value{
 [vector-double] :: Vectorized version of log-likelihood (per edge group)

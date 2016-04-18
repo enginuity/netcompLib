@@ -4,12 +4,14 @@
 \alias{compute_small_samp_dfadj}
 \title{Computes Expected Value of test statistic under small-sample regime}
 \usage{
-compute_small_samp_dfadj(n, p)
+compute_small_samp_dfadj(n, p, mode = "exact")
 }
 \arguments{
 \item{n}{[int] :: Sample size}
 
 \item{p}{[numeric] :: Edge probability}
+
+\item{mode}{temp}
 }
 \value{
 [numeric] :: Returns Expected Value of chi-square test statistic
