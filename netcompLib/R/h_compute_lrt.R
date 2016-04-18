@@ -27,35 +27,50 @@ compute_cellwise_loglik = function(x, n, p) {
 }
 
 
+## TODO: [Documentation-AUTO] Check/fix Roxygen2 Documentation (compute_small_samp_dfadj)
 #' Computes Expected Value of test statistic under small-sample regime
 #' 
 #' Computes the expected likelihood ratio test statistic for dyad group of size 'n' and dyad probability 'p'. Asymptotically, this goes to 1, but for small samples, it's not necessarily 1. It is needed since the shape of the null distribution very well approximates a chi-square but with a larger than expected 'df' simply due to being a smaller sample
 #' 
 #' @param n [int] :: Sample size
 #' @param p [numeric] :: Edge probability
+#' @param mode temp
 #' 
 #' @return [numeric] :: Returns Expected Value of chi-square test statistic
 #' 
 #' @export
 #' 
-compute_small_samp_dfadj = function(n, p) {
-  
-  compute_exp1 = function(n, p) {
-    x = 1:n # Ignore x = 0 since that gives a log-likelihood of 0 (likelihood of 1)
-    exp_split = dbinom(x, n, p) * x * log(x/n)
-    return(sum(exp_split))
+compute_small_samp_dfadj = function(n, p, mode = "exact") {
+  ## TODO: Update documentation -- mode can be 'exact' or 'bound', with boudn being much faster (uses approximation)
+  if (mode == "exact") {
+    compute_exp1 = function(n, p) {
+      x = 1:n # Ignore x = 0 since that gives a log-likelihood of 0 (likelihood of 1)
+      exp_split = dbinom(x, n, p) * x * log(x/n)
+      return(sum(exp_split))
+    }
+    compute_expsym = function(n,p) { return(compute_exp1(n,p) + compute_exp1(n, 1-p)) }  
+    compute_expLLR = function(n, p) {
+      Enull_ll = compute_expsym(2*n, p) 
+      Ealt_ll = 2*compute_expsym(n, p) 
+      Ellr = -2 * (Enull_ll - Ealt_ll)
+      return(Ellr)
+    }
+    
+    return(compute_expLLR(n,p))
+    
+  } else if (mode == "bound") {
+    fast_bound = function(n) {
+      if (n > 25) { return(3/(x-10) + 1) } else {
+        return(c(1.39, 1.56, 1.46, 1.35, 1.30,
+                 1.28, 1.27, 1.26, 1.26, 1.25,
+                 1.25, 1.25, 1.24, 1.24, 1.24,
+                 1.24, 1.24, 1.23, 1.23, 1.22,
+                 1.21, 1.21, 1.20, 1.19, 1.18)[n])
+      }
+    }
+    return(fast_bound(n))
   }
-  
-  compute_expsym = function(n,p) { return(compute_exp1(n,p) + compute_exp1(n, 1-p)) }  
-  
-  compute_expLLR = function(n, p) {
-    Enull_ll = compute_expsym(2*n, p) 
-    Ealt_ll = 2*compute_expsym(n, p) 
-    Ellr = -2 * (Enull_ll - Ealt_ll)
-    return(Ellr)
-  }
-  
-  return(compute_expLLR(n,p))
+  stop("Bad input value for 'mode'")
 }
 
 
@@ -63,15 +78,16 @@ compute_small_samp_dfadj = function(n, p) {
 #' 
 #' @param x [vector-int] :: observed counts in each edge group
 #' @param n [vector-int] :: Corresponding size of edge groups (cells)
-#' @param p [vector-double] :: Corresponding estimated cell probabilities (is just x / n)
+#' @param p [vector-double] :: Corresponding estimated cell probabilities (defaults to x / n)
 #' 
 #' @return [vector-double] :: Vectorized version of log-likelihood (per edge group)
 #' 
 #' @export
 #' 
-compute_loglik_fromPC = function(x, n, p) {
+compute_loglik_fromPC = function(x, n, p = x/n) {
   ## x is the observed count; n is total count, p is x / n
   ## this function returns vectorized output
+  
   res = x * log(p) + (n - x) * log(1 - p)
   res[is.nan(res)] = 0
   return(res)
