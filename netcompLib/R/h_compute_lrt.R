@@ -60,6 +60,7 @@ compute_small_samp_dfadj = function(n, p, mode = "exact") {
     
   } else if (mode == "bound") {
     fast_bound = function(n) {
+      if (n < 1) { return(1) }
       if (n > 25) {
         return(3/(n-10) + 1) 
       } else {
