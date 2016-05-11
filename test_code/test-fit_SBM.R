@@ -4,7 +4,7 @@ library(igraph)
 
 ## For running fit_SBM
 if (FALSE) {
-  nm = NetworkModel(set_model_param(Nnodes = 30, block_assign = rep(c(1,2), each = 15), block_probs = matrix(c(.4,.2,.2,.4), nrow = 2)))
+  nm = NetworkModel(set_model_param(Nnodes = 60, block_assign = rep(c(1,2), each = 30), block_probs = matrix(c(.4,.2,.2,.4), nrow = 2)))
   adjm = sampleNetwork(nm)[,,1]
   Nobs = 1
   adjm = hide_edges(adjm, frac = .5)

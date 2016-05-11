@@ -47,11 +47,12 @@ fit_SBM = function(adjm, Nobs = 1, control_list = set_fit_param()) {
   }
   
   ## (2) Spectral Clustering and (3) EM algorithm
+  best_loglik = -Inf
+  best_res = NULL
+  
   for(j in 1:cl$Ntries) {
     N = nrow(adjm) ## This is the number of nodes
     
-    best_loglik = -Inf
-    best_res = NULL
     if (cl$SBM_start == 'random') {
       ## Random start
       nodeps = rep(1/cl$SBM_Nclass, length = cl$SBM_Nclass)
@@ -149,11 +150,13 @@ fit_SBM_pair = function(adjm1, adjm2, Nobs = 1, control_list = set_fit_param()) 
   }
   
   ## (2) Spectral Clustering and (3) EM algorithm
+  
+  best_loglik = -Inf
+  best_res = NULL
+  
   for(j in 1:cl$Ntries) {
     N = nrow(adjm1) ## This is the number of nodes
     
-    best_loglik = -Inf
-    best_res = NULL
     if (cl$SBM_start == 'random') {
       ## Random start
       nodeps = rep(1/cl$SBM_Nclass, length = cl$SBM_Nclass)
@@ -201,6 +204,34 @@ fit_SBM_pair = function(adjm1, adjm2, Nobs = 1, control_list = set_fit_param()) 
   }
   
   return(best_res)
+}
+
+
+#' Way to fit SBM while searching both single fits and combined fits. 
+#' 
+#' @param adjm1 temp
+#' @param adjm2 temp
+#' @param Nobs temp
+#' @param control_list temp
+#' 
+#' @return temp
+#' 
+#' @export
+#' 
+fit_SBM_pair_searchboth = function(adjm1, adjm2, Nobs = 1, control_list = set_fit_param()) {
+  m1 = try(fit_SBM(adjm1, Nobs = Nobs, control_list = control_list)$model)
+  m2 = try(fit_SBM(adjm2, Nobs = Nobs, control_list = control_list)$model)
+  m3 = try(fit_SBM_pair(adjm1, adjm2, Nobs = Nobs, control_list = control_list)$model)
+  mlist = list(m1, m2, m3)
+  for(j in 1:3) {
+    if (class(mlist[[j]]) == "try-error") { mlist[[j]] = NetworkModel(set_model_param(Nnodes = nrow(adjm1))) }
+  }
+  
+  ## Find best fit pair models. 
+  fit1 = sapply(mlist, function(x) { fitModel(NetworkStruct(NetM = x), adja = adjm1) } )
+  fit2 = sapply(mlist, function(x) { fitModel(NetworkStruct(NetM = x), adja = adjm2) } )
+  liks = sapply(fit1, function(x) { computeLik(x, adjm1)$sum}) + sapply(fit2, function(x) { computeLik(x, adjm2)$sum})
+  return(list(model = mlist[[which.max(liks)]]))
 }
 
 
